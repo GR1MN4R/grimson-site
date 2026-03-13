@@ -7,143 +7,276 @@
 <title>GRIMSON</title>
 
 <style>
-
-body{
-margin:0;
-height:100vh;
-font-family:Arial, Helvetica, sans-serif;
-background:
-linear-gradient(rgba(0,0,0,.6),rgba(0,0,0,.8)),
-url("grimson-bg.jpg");
-background-size:cover;
-background-position:center;
-display:flex;
-align-items:center;
-justify-content:center;
-color:#dbe7f3;
+html, body{
+  margin:0;
+  width:100%;
+  height:100%;
+  font-family:Arial, Helvetica, sans-serif;
+  background:#05070a;
+  color:#dbe7f3;
+  overflow:hidden;
 }
 
-/* popup */
+/* background image layer */
+.bgImage{
+  position:fixed;
+  inset:0;
+  background:
+    linear-gradient(rgba(0,0,0,.6), rgba(0,0,0,.8)),
+    url("grimson-bg.jpg");
+  background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;
+  opacity:1;
+  transition:opacity 1.15s ease;
+  z-index:1;
+}
 
-/* popup */
+/* age popup */
 .popup{
-position:absolute;
-top:78%;
-left:50%;
-transform:translate(-50%, -60%);
-width:1100px;
-max-width:92vw;
-
-background:rgba(10,15,20,.90);
-border:1px solid #2c3f55;
-border-radius:12px;
-
-padding:22px 28px;
-
-backdrop-filter:blur(6px);
-box-shadow:0 0 30px rgba(0,0,0,.7);
+  position:absolute;
+  top:78%;
+  left:50%;
+  transform:translate(-50%, -60%);
+  width:1100px;
+  max-width:92vw;
+  background:rgba(10,15,20,.90);
+  border:1px solid #2c3f55;
+  border-radius:12px;
+  padding:22px 28px;
+  backdrop-filter:blur(6px);
+  -webkit-backdrop-filter:blur(6px);
+  box-shadow:0 0 30px rgba(0,0,0,.7);
+  z-index:3;
+  opacity:1;
+  visibility:visible;
+  transition:opacity .8s ease, visibility .8s ease, transform .8s ease;
 }
+
 .popup h2{
-text-align:center;
-text-decoration:underline;
-margin-bottom:14px;
+  text-align:center;
+  text-decoration:underline;
+  margin:0 0 14px 0;
 }
+
 .popup p,
 .popup li{
-font-size:14px;
-line-height:1.35;
-margin:4px 0;
+  font-size:14px;
+  line-height:1.35;
+  margin:4px 0;
 }
 
 .popup ul{
-margin:8px 0 10px 18px;
+  margin:8px 0 10px 18px;
 }
 
 .buttons{
-display:flex;
-justify-content:center;
-gap:12px;
-margin-top:18px;
+  display:flex;
+  justify-content:center;
+  gap:12px;
+  margin-top:18px;
+  flex-wrap:wrap;
 }
 
 .btn{
-display:inline-block;
-padding:10px 22px;
-margin:6px;
-border-radius:6px;
-border:1px solid #2c3f55;
-background:linear-gradient(180deg,#1a2633,#0f1822);
-color:#cfe6ff;
-font-size:14px;
-font-weight:700;
-cursor:pointer;
-transition:.25s;
-width:auto;
-box-shadow:
-0 0 6px rgba(40,90,140,.4),
-inset 0 0 6px rgba(80,140,200,.25);
+  display:inline-block;
+  padding:10px 22px;
+  margin:6px;
+  border-radius:6px;
+  border:1px solid #2c3f55;
+  background:linear-gradient(180deg,#1a2633,#0f1822);
+  color:#cfe6ff;
+  font-size:14px;
+  font-weight:700;
+  cursor:pointer;
+  transition:.25s;
+  width:auto;
+  box-shadow:
+    0 0 6px rgba(40,90,140,.4),
+    inset 0 0 6px rgba(80,140,200,.25);
 }
-  
+
 .btn:hover{
-background:linear-gradient(180deg,#21364a,#15212e);
-border-color:#4a7bb5;
-box-shadow:
-0 0 8px rgba(80,140,200,.6),
-inset 0 0 8px rgba(120,180,255,.35);
+  background:linear-gradient(180deg,#21364a,#15212e);
+  border-color:#4a7bb5;
+  box-shadow:
+    0 0 8px rgba(80,140,200,.6),
+    inset 0 0 8px rgba(120,180,255,.35);
+}
+
+/* hero page */
+.heroPage{
+  position:relative;
+  z-index:2;
+  min-height:100vh;
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  opacity:0;
+  visibility:hidden;
+  transform:translateY(12px);
+  transition:opacity 1s ease, transform 1s ease, visibility 1s ease;
+  pointer-events:none;
+  padding:24px;
+  box-sizing:border-box;
+}
+
+.heroInner{
+  width:100%;
+  max-width:1200px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:26px;
+}
+
+.heroLogo{
+  max-width:560px;
+  width:min(78vw, 560px);
+  height:auto;
+  display:block;
+  filter:drop-shadow(0 0 18px rgba(0,0,0,.45));
+}
+
+.heroNav{
+  display:flex;
+  flex-wrap:wrap;
+  gap:14px;
+  justify-content:center;
+}
+
+.heroNav a{
+  text-decoration:none;
+  color:#f5f7fa;
+  padding:12px 20px;
+  border-radius:10px;
+  background:rgba(10,15,20,.72);
+  border:1px solid #2c3f55;
+  font-size:14px;
+  font-weight:700;
+  letter-spacing:.03em;
+  box-shadow:
+    0 0 6px rgba(40,90,140,.25),
+    inset 0 0 6px rgba(80,140,200,.14);
+  transition:.25s;
+}
+
+.heroNav a:hover{
+  background:rgba(20,30,42,.88);
+  border-color:#4a7bb5;
+  box-shadow:
+    0 0 8px rgba(80,140,200,.45),
+    inset 0 0 8px rgba(120,180,255,.22);
+  transform:translateY(-1px);
+}
+
+/* state after entering site */
+.siteEntered .popup{
+  opacity:0;
+  visibility:hidden;
+  transform:translate(-50%, -60%) scale(.985);
+  pointer-events:none;
+}
+
+.siteEntered .bgImage{
+  opacity:0;
+}
+
+.siteEntered .heroPage{
+  opacity:1;
+  visibility:visible;
+  transform:translateY(0);
+  pointer-events:auto;
+}
+
+/* mobile */
+@media (max-width: 700px){
+  .popup{
+    top:76%;
+    padding:18px 18px;
+  }
+
+  .popup p,
+  .popup li{
+    font-size:13px;
+  }
+
+  .heroInner{
+    gap:20px;
+  }
+
+  .heroNav{
+    gap:10px;
+  }
+
+  .heroNav a{
+    padding:11px 16px;
+    font-size:13px;
+  }
 }
 </style>
 </head>
 
 <body>
 
-<div class="popup">
+<div class="bgImage"></div>
 
-<h2>Age Verification</h2>
+<div class="popup" id="ageGate">
+  <h2>Age Verification</h2>
 
-<p><strong>GRIMSON products are intended for responsible adult customers only.</strong></p>
+  <p><strong>GRIMSON products are intended for responsible adult customers only.</strong></p>
 
-<ul>
-<li>I confirm that I am <strong>18 years of age or older</strong>.</li>
-<li>I am legally permitted to purchase and possess knives in my jurisdiction.</li>
-<li>All orders require <strong>valid government-issued identification upon pickup or delivery</strong>.</li>
-<li>Attempts to bypass age verification may result in order cancellation.</li>
-</ul>
+  <ul>
+    <li>I confirm that I am <strong>18 years of age or older</strong>.</li>
+    <li>I am legally permitted to purchase and possess knives in my jurisdiction.</li>
+    <li>All orders require <strong>valid government-issued identification upon pickup or delivery</strong>.</li>
+    <li>Attempts to bypass age verification may result in order cancellation.</li>
+  </ul>
 
-<p><strong>Refund and Verification Policy</strong></p>
+  <p><strong>Refund and Verification Policy</strong></p>
 
-<p>
-Orders placed by individuals who fail age verification will not be eligible for refunds of processing, handling, payment processing, or associated transaction fees.
-</p>
+  <p>
+    Orders placed by individuals who fail age verification will not be eligible for refunds of processing, handling, payment processing, or associated transaction fees.
+  </p>
 
-<p>
-Any shipment returned due to failed age verification will be subject to all applicable return shipping charges and administrative costs, which remain the responsibility of the purchaser.
-</p>
+  <p>
+    Any shipment returned due to failed age verification will be subject to all applicable return shipping charges and administrative costs, which remain the responsibility of the purchaser.
+  </p>
 
-<div class="buttons">
-<button class="btn">
-I confirm I am 18+ — Enter Site
-</button>
+  <div class="buttons">
+    <button class="btn" id="enterSite">
+      I confirm I am 18+ — Enter Site
+    </button>
 
-<button class="btn"
-onclick="window.location.href='https://google.com'">
-I am under 18 — Exit
-</button>
+    <button class="btn" onclick="window.location.href='https://google.com'">
+      I am under 18 — Exit
+    </button>
+  </div>
 </div>
 
-</div>
+<main class="heroPage" id="heroPage">
+  <div class="heroInner">
+    <!-- Replace grimson-logo.png with your actual logo file if different -->
+    <img src="grimson-logo.png" alt="GRIMSON" class="heroLogo">
+
+    <nav class="heroNav">
+      <a href="#products">Products</a>
+      <a href="#technology">Technology</a>
+      <a href="#about">About</a>
+      <a href="#support">Support</a>
+      <a href="#shop">Shop</a>
+    </nav>
+  </div>
+</main>
+
+<script>
+document.getElementById("enterSite").addEventListener("click", function(){
+  document.body.classList.add("siteEntered");
+});
+</script>
 
 </body>
-
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
