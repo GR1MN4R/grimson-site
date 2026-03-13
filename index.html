@@ -149,28 +149,10 @@ display:flex;
 flex-wrap:wrap;
 gap:28px;
 justify-content:center;
-position:relative;
 padding:22px 28px;
-}
-
-.heroNav::before{
-content:"";
-position:absolute;
-left:50%;
-top:50%;
-transform:translate(-50%,-50%);
-width:700px;
-height:180px;
-background:radial-gradient(
-ellipse at center,
-rgba(80,140,200,.18) 0%,
-rgba(80,140,200,.08) 42%,
-rgba(80,140,200,.03) 62%,
-transparent 78%
-);
-filter:blur(22px);
-pointer-events:none;
-z-index:0;
+filter:
+drop-shadow(0 0 18px rgba(80,140,200,.22))
+drop-shadow(0 0 38px rgba(80,140,200,.14));
 }
 
 .heroNav a{
@@ -307,6 +289,7 @@ document.getElementById("enterSite").addEventListener("click", function(){
 
 </body>
 </html>
+
 
 
 
