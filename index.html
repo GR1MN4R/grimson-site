@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>GRIMSON</title>
+
+<style>
+
+body{
+margin:0;
+height:100vh;
+font-family:Arial, Helvetica, sans-serif;
+background:
+linear-gradient(rgba(0,0,0,.6),rgba(0,0,0,.8)),
+url("grimson-bg.jpg");
+background-size:cover;
+background-position:center;
+display:flex;
+align-items:center;
+justify-content:center;
+color:#dbe7f3;
+}
+
+/* popup */
+
+.popup{
+position:absolute;
+top:58%;
+left:50%;
+transform:translate(-50%,-50%);
+width:520px;
+max-width:90vw;
+background:rgba(10,15,20,.88);
+border:1px solid #2c3f55;
+border-radius:12px;
+padding:28px;
+backdrop-filter:blur(6px);
+box-shadow:0 0 30px rgba(0,0,0,.7);
+}
+
+.popup h2{
+margin-top:0;
+text-align:center;
+letter-spacing:.5px;
+}
+
+.popup p{
+font-size:14px;
+line-height:1.5;
+color:#cfd8e3;
+}
+
+.popup ul{
+font-size:14px;
+line-height:1.6;
+color:#cfd8e3;
+padding-left:18px;
+}
+
+/* primary button */
+
+.enter-btn{
+background:linear-gradient(180deg,#1a2129,#0d1218);
+border:1px solid #2c3f55;
+color:#e5edf5;
+padding:12px 22px;
+border-radius:6px;
+font-weight:600;
+letter-spacing:.5px;
+width:100%;
+margin-top:18px;
+cursor:pointer;
+
+box-shadow:0 0 10px rgba(30,80,120,.35);
+transition:.25s;
+}
+
+.enter-btn:hover{
+box-shadow:
+0 0 12px rgba(50,120,200,.6),
+0 0 25px rgba(20,80,140,.4);
+transform:translateY(-1px);
+}
+
+/* exit button */
+
+.exit-btn{
+background:#0e0e0e;
+border:1px solid #333;
+color:#999;
+padding:10px 18px;
+border-radius:6px;
+width:100%;
+margin-top:10px;
+cursor:pointer;
+}
+
+.exit-btn:hover{
+background:#1a1a1a;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="popup">
+
+<h2>Age Verification</h2>
+
+<p><strong>GRIMSON products are intended for responsible adult customers only.</strong></p>
+
+<ul>
+<li>I confirm that I am <strong>18 years of age or older</strong>.</li>
+<li>I am legally permitted to purchase and possess knives in my jurisdiction.</li>
+<li>All orders require <strong>valid government-issued identification upon pickup or delivery</strong>.</li>
+<li>Attempts to bypass age verification may result in order cancellation.</li>
+</ul>
+
+<p><strong>Refund and Verification Policy</strong></p>
+
+<p>
+Orders placed by individuals who fail age verification will not be eligible for refunds of processing, handling, payment processing, or associated transaction fees.
+</p>
+
+<p>
+Any shipment returned due to failed age verification will be subject to all applicable return shipping charges and administrative costs, which remain the responsibility of the purchaser.
+</p>
+
+<button class="enter-btn">
+I confirm I am 18+ — Enter Site
+</button>
+
+<button class="exit-btn"
+onclick="window.location.href='https://google.com'">
+I am under 18 — Exit
+</button>
+
+</div>
+
+</body>
+</html>
