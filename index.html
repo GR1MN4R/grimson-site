@@ -150,11 +150,29 @@ flex-wrap:wrap;
 gap:28px;
 justify-content:center;
 padding:22px 28px;
-filter:
-drop-shadow(0 0 18px rgba(80,140,200,.22))
-drop-shadow(0 0 38px rgba(80,140,200,.14));
+position:relative;
 }
-
+  
+.heroNavGlow{
+position:absolute;
+left:50%;
+top:50%;
+transform:translate(-50%,-50%);
+width:720px;
+height:220px;
+border-radius:999px;
+background:radial-gradient(
+ellipse at center,
+rgba(80,140,200,.18) 0%,
+rgba(80,140,200,.08) 45%,
+rgba(80,140,200,.03) 65%,
+transparent 80%
+);
+filter:blur(22px);
+pointer-events:none;
+z-index:0;
+}
+  
 .heroNav a{
 position:relative;
 z-index:1;
@@ -272,6 +290,7 @@ box-shadow:
   <div class="heroInner">
   
     <nav class="heroNav">
+      <div class="heroNavGlow"></div>
       <a href="#products">Products</a>
       <a href="#technology">Technology</a>
       <a href="#about">About</a>
@@ -289,6 +308,7 @@ document.getElementById("enterSite").addEventListener("click", function(){
 
 </body>
 </html>
+
 
 
 
