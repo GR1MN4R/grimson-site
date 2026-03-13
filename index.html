@@ -301,8 +301,20 @@ box-shadow:
 </main>
 
 <script>
+const popup = document.querySelector(".popup");
+
+if(localStorage.getItem("grimsonAgeVerified") === "true"){
+popup.style.display = "none";
+document.body.classList.add("siteEntered");
+}
+
 document.getElementById("enterSite").addEventListener("click", function(){
-  document.body.classList.add("siteEntered");
+
+localStorage.setItem("grimsonAgeVerified","true");
+
+popup.style.display="none";
+document.body.classList.add("siteEntered");
+
 });
 </script>
 
