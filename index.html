@@ -149,19 +149,22 @@ html, body{
 }
 
 .heroNav a{
-  text-decoration:none;
-  color:#f5f7fa;
-  padding:12px 20px;
-  border-radius:10px;
-  background:rgba(10,15,20,.72);
-  border:1px solid #2c3f55;
-  font-size:14px;
-  font-weight:700;
-  letter-spacing:.03em;
-  box-shadow:
-    0 0 6px rgba(40,90,140,.25),
-    inset 0 0 6px rgba(80,140,200,.14);
-  transition:.25s;
+display:inline-block;
+padding:10px 22px;
+margin:6px;
+border-radius:6px;
+border:1px solid #2c3f55;
+background:linear-gradient(180deg,#1a2633,#0f1822);
+color:#cfe6ff;
+font-size:14px;
+font-weight:700;
+text-decoration:none;
+cursor:pointer;
+transition:.25s;
+width:auto;
+box-shadow:
+ 0 0 6px rgba(40,90,140,.4),
+ inset 0 0 6px rgba(80,140,200,.25);
 }
 
 .heroNav a:hover{
@@ -179,10 +182,6 @@ html, body{
   visibility:hidden;
   transform:translate(-50%, -60%) scale(.985);
   pointer-events:none;
-}
-
-.siteEntered .bgImage{
-  opacity:0;
 }
 
 .siteEntered .heroPage{
@@ -260,7 +259,7 @@ html, body{
 <main class="heroPage" id="heroPage">
   <div class="heroInner">
     <!-- Replace grimson-logo.png with your actual logo file if different -->
-    <img src="grimson-logo.png" alt="GRIMSON" class="heroLogo">
+    <img src="grimson-bg.jpg" alt="GRIMSON" class="heroLogo">
 
     <nav class="heroNav">
       <a href="#products">Products</a>
@@ -280,3 +279,4 @@ document.getElementById("enterSite").addEventListener("click", function(){
 
 </body>
 </html>
+
