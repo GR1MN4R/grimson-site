@@ -27,79 +27,51 @@ color:#dbe7f3;
 
 .popup{
 position:absolute;
-top:76%;
+top:78%;
 left:50%;
 transform:translate(-50%,-50%);
-width:1050px;
-max-width:94vw;
-max-height:78vh;
-overflow-y:auto;
-background:rgba(10,15,20,.88);
+width:1200px;
+max-width:95vw;
+background:rgba(10,15,20,.90);
 border:1px solid #2c3f55;
 border-radius:12px;
-padding:32px 42px;
+padding:22px 30px;
 backdrop-filter:blur(6px);
 box-shadow:0 0 30px rgba(0,0,0,.7);
 }
-.popup h2{
-margin-top:0;
-text-align:center;
-letter-spacing:.5px;
-}
 
-.popup p{
+.popup p,
+.popup li{
 font-size:14px;
-line-height:1.5;
-color:#cfd8e3;
+line-height:1.35;
+margin:4px 0;
 }
 
 .popup ul{
-font-size:14px;
-line-height:1.6;
-color:#cfd8e3;
-padding-left:18px;
+margin:8px 0 10px 18px;
 }
 
-/* primary button */
+.buttons{
+text-align:center;
+margin-top:12px;
+}
 
-.enter-btn{
-background:linear-gradient(180deg,#1a2129,#0d1218);
-border:1px solid #2c3f55;
-color:#e5edf5;
-padding:12px 22px;
+.btn{
+display:inline-block;
+padding:10px 22px;
+margin:6px;
 border-radius:6px;
-font-weight:600;
-letter-spacing:.5px;
-width:100%;
-margin-top:18px;
+border:1px solid #2c3f55;
+background:rgba(15,20,28,.85);
+color:#cfe6ff;
+font-size:14px;
 cursor:pointer;
-
-box-shadow:0 0 10px rgba(30,80,120,.35);
 transition:.25s;
 }
 
-.enter-btn:hover{
-box-shadow:
-0 0 12px rgba(50,120,200,.6),
-0 0 25px rgba(20,80,140,.4);
-transform:translateY(-1px);
-}
-
-/* exit button */
-
-.exit-btn{
-background:#0e0e0e;
-border:1px solid #333;
-color:#999;
-padding:10px 18px;
-border-radius:6px;
-width:100%;
-margin-top:10px;
-cursor:pointer;
-}
-
-.exit-btn:hover{
-background:#1a1a1a;
+.btn:hover{
+background:#1e3a5a;
+border-color:#4a7bb5;
 }
 
 </style>
@@ -144,5 +116,6 @@ I am under 18 — Exit
 </body>
 
 </html>
+
 
 
