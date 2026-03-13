@@ -15,6 +15,26 @@ background:#0c1116;
 color:#dbe7f3;
 }
 
+/* home logo */
+
+.homeLogo{
+position:fixed;
+top:24px;
+right:28px;
+z-index:10;
+}
+
+.homeLogo img{
+height:38px;
+opacity:.88;
+transition:.25s ease;
+}
+
+.homeLogo img:hover{
+opacity:1;
+transform:scale(1.05);
+}
+
 /* page container */
 
 .container{
@@ -54,6 +74,7 @@ align-items:center;
 .product img{
 width:100%;
 border-radius:10px;
+display:block;
 }
 
 /* description */
@@ -77,6 +98,7 @@ margin-bottom:12px;
 .specs ul{
 list-style:none;
 padding:0;
+margin:0;
 }
 
 .specs li{
@@ -90,6 +112,7 @@ border-bottom:1px solid #233141;
 margin-top:30px;
 display:flex;
 gap:20px;
+flex-wrap:wrap;
 }
 
 .btn{
@@ -117,6 +140,27 @@ border-color:#4a7bb5;
 grid-template-columns:1fr;
 }
 
+.homeLogo{
+top:18px;
+right:18px;
+}
+
+.homeLogo img{
+height:34px;
+}
+
+.container{
+padding:70px 18px 40px;
+}
+
+.title h1{
+font-size:34px;
+}
+
+.title p{
+font-size:16px;
+}
+
 }
 
 </style>
@@ -124,57 +168,56 @@ grid-template-columns:1fr;
 
 <body>
 
+<a href="index.html" class="homeLogo">
+  <img src="logo-home.png" alt="GRIMSON Home">
+</a>
+
 <div class="container">
 
-<div class="title">
-<h1>GRIMSON MK-I</h1>
-<p>Precision field knife engineered for controlled utility.</p>
-</div>
+  <div class="title">
+    <h1>GRIMSON MK-I</h1>
+    <p>Precision field knife engineered for controlled utility.</p>
+  </div>
 
-<div class="product">
+  <div class="product">
 
-<div>
-<img src="knife.jpg" alt="GRIMSON MK-I">
-</div>
+    <div>
+      <img src="knife.jpg" alt="GRIMSON MK-I">
+    </div>
 
-<div class="description">
+    <div class="description">
 
-<p>
-The MK-I is GRIMSON’s flagship launch model. Designed around clean geometry, durable steel, and a controlled working profile for demanding everyday use.
-</p>
+      <p>
+        The MK-I is GRIMSON’s flagship launch model. Designed around clean geometry, durable steel, and a controlled working profile for demanding everyday use.
+      </p>
 
-<p>
-Its balanced proportions and reinforced construction make it suitable for field tasks where reliability and precision matter more than excess.
-</p>
+      <p>
+        Its balanced proportions and reinforced construction make it suitable for field tasks where reliability and precision matter more than excess.
+      </p>
 
-<div class="specs">
+      <div class="specs">
+        <h3>Specifications</h3>
 
-<h3>Specifications</h3>
+        <ul>
+          <li>Steel: TBD</li>
+          <li>Hardness: TBD</li>
+          <li>Grind: TBD</li>
+          <li>Edge Angle: TBD</li>
+          <li>Handle: TBD</li>
+          <li>Blade Length: TBD</li>
+          <li>Overall Length: TBD</li>
+          <li>Weight: TBD</li>
+        </ul>
+      </div>
 
-<ul>
-<li>Steel: TBD</li>
-<li>Hardness: TBD</li>
-<li>Grind: TBD</li>
-<li>Edge Angle: TBD</li>
-<li>Handle: TBD</li>
-<li>Blade Length: TBD</li>
-<li>Overall Length: TBD</li>
-<li>Weight: TBD</li>
-</ul>
+      <div class="buttons">
+        <a href="technology.html" class="btn">View Technology</a>
+        <a href="shop.html" class="btn">Shop MK-I</a>
+      </div>
 
-</div>
+    </div>
 
-<div class="buttons">
-
-<a href="technology.html" class="btn">View Technology</a>
-
-<a href="shop.html" class="btn">Shop MK-I</a>
-
-</div>
-
-</div>
-
-</div>
+  </div>
 
 </div>
 
