@@ -19,22 +19,24 @@ html, body{
 
 /* background image layer */
 .bgImage{
-position:fixed;
-inset:0;
-background:
-  linear-gradient(rgba(0,0,0,.15), rgba(0,0,0,.25)),
-  url("grimson-bg.jpg");
-background-size:cover;
-background-position:center;
-background-repeat:no-repeat;
-opacity:1;
-transition:opacity 1.15s ease, filter .8s ease;
-filter:brightness(.45);
-z-index:1;
+  position:fixed;
+  inset:0;
+  background:
+    linear-gradient(rgba(0,0,0,.15), rgba(0,0,0,.25)),
+    url("grimson-bg.jpg");
+  background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;
+  opacity:1;
+  transition:opacity 1.15s ease, filter .8s ease;
+  filter:brightness(.45);
+  z-index:1;
 }
-  .siteEntered .bgImage{
-filter:brightness(1);
+
+.siteEntered .bgImage{
+  filter:brightness(1);
 }
+
 /* age popup */
 .popup{
   position:absolute;
@@ -127,74 +129,68 @@ filter:brightness(1);
 }
 
 .heroInner{
-display:flex;
-flex-direction:column;
-align-items:center;
-justify-content:center;
-gap:26px;
-margin-top:140px;
-position:relative;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:26px;
+  margin-top:140px;
+  position:relative;
 }
 
-.heroLogo{
-  max-width:560px;
-  width:min(78vw, 560px);
-  height:auto;
-  display:block;
-  filter:drop-shadow(0 0 18px rgba(0,0,0,.45));
+/* hidden on desktop, shown on mobile only */
+.heroLogoMobile{
+  display:none;
 }
 
 .heroNav{
-display:flex;
-flex-wrap:wrap;
-gap:28px;
-justify-content:center;
-padding:22px 28px;
-position:relative;
+  display:flex;
+  flex-wrap:wrap;
+  gap:28px;
+  justify-content:center;
+  padding:22px 28px;
+  position:relative;
 }
-  
+
 .heroNavGlow{
-position:absolute;
-left:50%;
-top:50%;
-transform:translate(-50%,-50%);
-width:720px;
-height:220px;
-border-radius:999px;
-background:radial-gradient(
-ellipse at center,
-rgba(80,140,200,.18) 0%,
-rgba(80,140,200,.08) 45%,
-rgba(80,140,200,.03) 65%,
-transparent 80%
-);
-filter:blur(22px);
-pointer-events:none;
-z-index:0;
-}
-  
-.heroNav a{
-position:relative;
-z-index:1;
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+  width:720px;
+  height:220px;
+  border-radius:999px;
+  background:radial-gradient(
+    ellipse at center,
+    rgba(80,140,200,.18) 0%,
+    rgba(80,140,200,.08) 45%,
+    rgba(80,140,200,.03) 65%,
+    transparent 80%
+  );
+  filter:blur(22px);
+  pointer-events:none;
+  z-index:0;
 }
 
 .heroNav a{
-display:inline-block;
-padding:14px 30px;
-margin:6px;
-border-radius:6px;
-border:1px solid #2c3f55;
-background:linear-gradient(180deg,#1a2633,#0f1822);
-color:#cfe6ff;
-font-size:18px;
-font-weight:700;
-text-decoration:none;
-cursor:pointer;
-transition:.25s;
-width:auto;
-box-shadow:
- 0 0 6px rgba(40,90,140,.4),
- inset 0 0 6px rgba(80,140,200,.25);
+  position:relative;
+  z-index:1;
+  display:inline-block;
+  padding:14px 30px;
+  margin:6px;
+  border-radius:6px;
+  border:1px solid #2c3f55;
+  background:linear-gradient(180deg,#1a2633,#0f1822);
+  color:#cfe6ff;
+  font-size:18px;
+  font-weight:700;
+  text-decoration:none;
+  cursor:pointer;
+  transition:.25s;
+  width:auto;
+  box-shadow:
+    0 0 6px rgba(40,90,140,.4),
+    inset 0 0 6px rgba(80,140,200,.25);
 }
 
 .heroNav a:hover{
@@ -222,19 +218,34 @@ box-shadow:
 }
 
 /* mobile */
-@media (max-width: 700px){
+@media (max-width:700px){
 
+  /* ON MOBILE ONLY:
+     switch to plain metal background instead of the giant baked-in logo image */
   .bgImage{
-    background-size: cover;
-    background-position: 56% top;
+    background:
+      linear-gradient(rgba(0,0,0,.15), rgba(0,0,0,.25)),
+      url("bg-metal.jpg");
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+  }
+
+  /* show small png logo on mobile hero */
+  .heroLogoMobile{
+    display:block;
+    width:72vw;
+    max-width:420px;
+    height:auto;
+    margin:0 auto 10px;
+    opacity:.95;
+    filter:drop-shadow(0 0 14px rgba(0,0,0,.45));
   }
 
   .popup{
     top:76%;
     padding:18px 18px;
   }
-
-}
 
   .popup p,
   .popup li{
@@ -243,15 +254,22 @@ box-shadow:
 
   .heroInner{
     gap:20px;
+    margin-top:0;
   }
 
   .heroNav{
     gap:10px;
+    padding:12px 10px;
+  }
+
+  .heroNavGlow{
+    width:92vw;
+    height:180px;
   }
 
   .heroNav a{
-  padding:12px 22px;
-  font-size:15px;
+    padding:12px 22px;
+    font-size:15px;
   }
 }
 </style>
@@ -296,7 +314,10 @@ box-shadow:
 
 <main class="heroPage" id="heroPage">
   <div class="heroInner">
-  
+
+    <!-- shown only on mobile -->
+    <img src="logo-home.png" class="heroLogoMobile" alt="GRIMSON">
+
     <nav class="heroNav">
       <div class="heroNavGlow"></div>
       <a href="products.html">Products</a>
@@ -312,32 +333,16 @@ box-shadow:
 const popup = document.querySelector(".popup");
 
 if(localStorage.getItem("grimsonAgeVerified") === "true"){
-popup.style.display = "none";
-document.body.classList.add("siteEntered");
+  popup.style.display = "none";
+  document.body.classList.add("siteEntered");
 }
 
 document.getElementById("enterSite").addEventListener("click", function(){
-
-localStorage.setItem("grimsonAgeVerified","true");
-
-popup.style.display="none";
-document.body.classList.add("siteEntered");
-
+  localStorage.setItem("grimsonAgeVerified","true");
+  popup.style.display = "none";
+  document.body.classList.add("siteEntered");
 });
 </script>
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
