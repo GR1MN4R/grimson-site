@@ -271,6 +271,22 @@ html, body{
     padding:12px 22px;
     font-size:15px;
   }
+
+  .footer{
+  margin-top:60px;
+  padding:18px 10px;
+  font-size:12px;
+  color:#6b7785;
+  border-top:1px solid rgba(255,255,255,.08);
+}
+
+.footerRow{
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:18px;
+  text-align:center;
+}
 }
 </style>
 </head>
@@ -343,6 +359,15 @@ document.getElementById("enterSite").addEventListener("click", function(){
   document.body.classList.add("siteEntered");
 });
 </script>
+
+<footer class="footer">
+  <div class="footerRow">
+    <span>© 2026 GWR TEAM</span>
+    <span>GRIMSON™ is a trademark of GWR TEAM</span>
+    <span>Age verification required for purchase</span>
+    <span>Website engineered by GWR TEAM</span>
+  </div>
+</footer>
 
 </body>
 </html>
