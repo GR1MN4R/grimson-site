@@ -17,6 +17,10 @@ html, body{
   overflow:hidden;
 }
 
+body{
+  position:relative;
+}
+
 /* background image layer */
 .bgImage{
   position:fixed;
@@ -202,6 +206,33 @@ html, body{
   transform:translateY(-1px);
 }
 
+/* FIXED FOOTER - ALWAYS VISIBLE */
+.footer{
+  position:fixed;
+  left:0;
+  bottom:0;
+  width:100%;
+  z-index:5;
+  padding:10px 14px;
+  box-sizing:border-box;
+  font-size:12px;
+  color:#b9c7d6;
+  text-align:center;
+  background:rgba(5,7,10,.78);
+  border-top:1px solid rgba(255,255,255,.10);
+  backdrop-filter:blur(4px);
+  -webkit-backdrop-filter:blur(4px);
+}
+
+.footerRow{
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:10px 18px;
+  max-width:1400px;
+  margin:0 auto;
+}
+
 /* state after entering site */
 .siteEntered .popup{
   opacity:0;
@@ -220,8 +251,6 @@ html, body{
 /* mobile */
 @media (max-width:700px){
 
-  /* ON MOBILE ONLY:
-     switch to plain metal background instead of the giant baked-in logo image */
   .bgImage{
     background:
       linear-gradient(rgba(0,0,0,.15), rgba(0,0,0,.25)),
@@ -231,7 +260,6 @@ html, body{
     background-repeat:no-repeat;
   }
 
-  /* show small png logo on mobile hero */
   .heroLogoMobile{
     display:block;
     width:72vw;
@@ -273,20 +301,13 @@ html, body{
   }
 
   .footer{
-  margin-top:60px;
-  padding:18px 10px;
-  font-size:12px;
-  color:#6b7785;
-  border-top:1px solid rgba(255,255,255,.08);
-}
+    font-size:11px;
+    padding:9px 10px;
+  }
 
-.footerRow{
-  display:flex;
-  justify-content:center;
-  flex-wrap:wrap;
-  gap:18px;
-  text-align:center;
-}
+  .footerRow{
+    gap:8px 12px;
+  }
 }
 </style>
 </head>
@@ -331,7 +352,6 @@ html, body{
 <main class="heroPage" id="heroPage">
   <div class="heroInner">
 
-    <!-- shown only on mobile -->
     <img src="logo-home.png" class="heroLogoMobile" alt="GRIMSON">
 
     <nav class="heroNav">
@@ -344,6 +364,15 @@ html, body{
     </nav>
   </div>
 </main>
+
+<footer class="footer">
+  <div class="footerRow">
+    <span>© 2026 GWR TEAM</span>
+    <span>GRIMSON™ is a trademark of GWR TEAM</span>
+    <span>Age verification required for purchase</span>
+    <span>Website engineered by GWR TEAM</span>
+  </div>
+</footer>
 
 <script>
 const popup = document.querySelector(".popup");
@@ -359,15 +388,6 @@ document.getElementById("enterSite").addEventListener("click", function(){
   document.body.classList.add("siteEntered");
 });
 </script>
-
-<footer class="footer">
-  <div class="footerRow">
-    <span>© 2026 GWR TEAM</span>
-    <span>GRIMSON™ is a trademark of GWR TEAM</span>
-    <span>Age verification required for purchase</span>
-    <span>Website engineered by GWR TEAM</span>
-  </div>
-</footer>
 
 </body>
 </html>
