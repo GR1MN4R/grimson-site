@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>About — GRIMSON</title>
+
+<style>
+
+@font-face{
+  font-family:"ElementalEnd";
+  src:url("ElementalEnd.woff2") format("woff2");
+  font-weight:normal;
+  font-style:normal;
+}
+
+html, body{
+  margin:0;
+  min-height:100%;
+}
+
+body{
+  font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  color:#e6edf3;
+  background-image:url("bg-metal.png");
+  background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;
+  background-attachment:fixed;
+  overflow-x:hidden;
+  padding-bottom:70px;
+}
+
+/* home logo */
+
+.homeLogo{
+  position:fixed;
+  top:30px;
+  left:30px;
+  z-index:10;
+}
+
+.homeLogo img{
+  height:38px;
+  opacity:.88;
+  transition:.25s ease;
+}
+
+.homeLogo img:hover{
+  opacity:1;
+  transform:scale(1.05);
+}
+
+/* page container */
+
+.container{
+  max-width:980px;
+  margin:auto;
+  padding:80px 20px;
+  box-sizing:border-box;
+}
+
+/* title */
+
+.title{
+  text-align:center;
+  margin-bottom:34px;
+}
+
+.title h1{
+  font-family:"ElementalEnd", Arial, sans-serif;
+  font-size:42px;
+  margin-bottom:10px;
+  letter-spacing:3px;
+}
+
+.title p{
+  font-size:24px;
+  color:#b7c9db;
+  letter-spacing:.35px;
+  line-height:1.4;
+  max-width:760px;
+  margin:0 auto;
+}
+
+/* content */
+
+.aboutWrap{
+  background:rgba(7,12,18,.42);
+  border:1px solid rgba(255,255,255,.06);
+  border-radius:12px;
+  padding:34px 34px 30px;
+  backdrop-filter:blur(3px);
+  -webkit-backdrop-filter:blur(3px);
+}
+
+.aboutText{
+  font-size:16px;
+  line-height:1.72;
+  color:#c9d8e8;
+}
+
+.aboutText p{
+  margin:0 0 18px 0;
+}
+
+/* principles */
+
+.principles{
+  margin-top:34px;
+}
+
+.principles h2{
+  margin:0 0 18px 0;
+  font-size:22px;
+  color:#dfeaf5;
+  letter-spacing:.5px;
+}
+
+.principlesList{
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+}
+
+.principlesList div{
+  padding:0 0 14px 0;
+  border-bottom:1px solid #233141;
+  font-size:16px;
+  line-height:1.6;
+  color:#d3e0ec;
+}
+
+/* buttons */
+
+.buttons{
+  margin-top:34px;
+  display:flex;
+  gap:20px;
+  flex-wrap:wrap;
+}
+
+.btn{
+  display:inline-block;
+  padding:12px 28px;
+  border-radius:6px;
+  border:1px solid #2c3f55;
+  background:linear-gradient(180deg,#1a2633,#0f1822);
+  color:#cfe6ff;
+  font-weight:700;
+  text-decoration:none;
+  transition:.25s;
+}
+
+.btn:hover{
+  background:linear-gradient(180deg,#21364a,#15212e);
+  border-color:#4a7bb5;
+}
+
+/* footer */
+
+.footer{
+  position:fixed;
+  left:0;
+  bottom:0;
+  width:100%;
+  z-index:20;
+  padding:10px 14px;
+  box-sizing:border-box;
+  font-size:12px;
+  color:#b9c7d6;
+  text-align:center;
+  background:rgba(5,7,10,.78);
+  border-top:1px solid rgba(255,255,255,.10);
+  backdrop-filter:blur(4px);
+  -webkit-backdrop-filter:blur(4px);
+}
+
+.footerRow{
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:10px 18px;
+  max-width:1400px;
+  margin:0 auto;
+}
+
+/* mobile */
+
+@media (max-width:700px){
+
+  body{
+    color:#0f2a44;
+    background-image:url("bg-metal-mobile.png");
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+    background-attachment:scroll;
+    padding-bottom:78px;
+  }
+
+  .homeLogo{
+    display:block;
+    top:20px;
+    left:20px;
+  }
+
+  .homeLogo img{
+    height:26px;
+  }
+
+  .container{
+    padding:55px 18px 40px;
+  }
+
+  .title{
+    margin-bottom:14px;
+  }
+
+  .title h1{
+    color:#0f2a44;
+    font-size:34px;
+  }
+
+  .title p{
+    color:#0f2a44;
+    font-size:18px;
+    line-height:1.4;
+  }
+
+  .aboutWrap{
+    padding:22px 18px 22px;
+    background:rgba(255,255,255,.18);
+    border:1px solid rgba(15,42,68,.12);
+  }
+
+  .aboutText{
+    color:#0f2a44;
+  }
+
+  .principles h2{
+    color:#0f2a44;
+    font-size:20px;
+  }
+
+  .principlesList div{
+    color:#0f2a44;
+    border-bottom:1px solid rgba(15,42,68,.18);
+    font-size:15px;
+    line-height:1.55;
+  }
+
+  .buttons{
+    gap:12px;
+  }
+
+  .btn{
+    padding:12px 20px;
+  }
+
+  .footer{
+    font-size:11px;
+    padding:9px 10px;
+  }
+
+  .footerRow{
+    gap:8px 12px;
+  }
+}
+
+</style>
+</head>
+
+<body>
+
+<a href="/index.html" class="homeLogo">
+  <img src="logo-home.png" alt="GRIMSON Home">
+</a>
+
+<div class="container">
+
+  <div class="title">
+    <h1>About GRIMSON</h1>
+    <p>Design-defined tools built around controlled performance.</p>
+  </div>
+
+  <div class="aboutWrap">
+
+    <div class="aboutText">
+      <p>
+        GRIMSON develops tools built around controlled performance.
+      </p>
+
+      <p>
+        Each design begins with a clear objective: create equipment that performs reliably under real field conditions. Geometry, material selection, and balance are carefully specified to ensure durability, stability, and precise handling.
+      </p>
+
+      <p>
+        Every dimension is intentional. Blade geometry, edge profile, and overall weight distribution are defined to support consistent performance during demanding use.
+      </p>
+
+      <p>
+        The philosophy is simple: remove what is unnecessary, refine what matters, and build tools defined by purpose.
+      </p>
+
+      <p>
+        GRIMSON stands on a set of core engineering principles.
+      </p>
+    </div>
+
+    <div class="principles">
+      <h2>What GRIMSON stands for</h2>
+
+      <div class="principlesList">
+        <div>G for Geometry — blade angles and structural proportions engineered for controlled performance.</div>
+        <div>R for Reliability — consistent function under repeated use and harsh field conditions.</div>
+        <div>I for Integrity — materials and construction that perform exactly as specified.</div>
+        <div>M for Mastery — precision manufacturing and disciplined finishing.</div>
+        <div>S for Strength — structural durability in both blade and handle.</div>
+        <div>O for Optimization — every dimension and feature serves a functional purpose.</div>
+        <div>N for Nexus — connection between form and function.</div>
+      </div>
+    </div>
+
+    <div class="buttons">
+      <a href="technology.html" class="btn">View Technology</a>
+      <a href="products.html" class="btn">View Product</a>
+    </div>
+
+  </div>
+
+</div>
+
+<footer class="footer">
+  <div class="footerRow">
+    <span>© 2026 GWR TEAM</span>
+    <span>GRIMSON™ is a trademark of GWR TEAM</span>
+    <span>Age verification required for purchase</span>
+    <span>Website engineered by GWR TEAM</span>
+  </div>
+</footer>
+
+</body>
+</html>
