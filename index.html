@@ -20,82 +20,7 @@ html, body{
 body{
   position:relative;
 }
-.contactModal{
-  position:fixed;
-  inset:0;
-  display:none;
-  align-items:center;
-  justify-content:center;
-  background:rgba(0,0,0,.55);
-  z-index:9999;
-  padding:20px;
-  box-sizing:border-box;
-}
 
-.contactModal.active{
-  display:flex;
-}
-
-.contactBox{
-  position:relative;
-  width:min(560px, 100%);
-  padding:28px 24px 24px;
-  border-radius:18px;
-  background:rgba(10,16,24,.96);
-  border:1px solid rgba(255,255,255,.10);
-  box-shadow:0 20px 60px rgba(0,0,0,.45);
-  color:#dfeaf5;
-  text-align:center;
-}
-
-.contactBox h2{
-  margin:0 0 14px 0;
-  font-size:26px;
-  letter-spacing:.4px;
-}
-
-.contactBox p{
-  margin:0 0 14px 0;
-  line-height:1.6;
-  color:#c7d6e4;
-}
-
-.contactEmail{
-  font-size:18px;
-  font-weight:700;
-  color:#ffffff;
-  letter-spacing:.3px;
-}
-
-.contactAction{
-  display:inline-block;
-  margin-top:8px;
-  padding:12px 22px;
-  border-radius:6px;
-  border:1px solid #2c3f55;
-  background:linear-gradient(180deg,#1a2633,#0f1822);
-  color:#cfe6ff;
-  font-weight:700;
-  text-decoration:none;
-  transition:.25s;
-}
-
-.contactAction:hover{
-  background:linear-gradient(180deg,#21364a,#15212e);
-  border-color:#4a7bb5;
-}
-
-.contactClose{
-  position:absolute;
-  top:10px;
-  right:12px;
-  border:none;
-  background:transparent;
-  color:#dfeaf5;
-  font-size:28px;
-  line-height:1;
-  cursor:pointer;
-}
 /* background image layer */
 .bgImage{
   position:fixed;
@@ -281,7 +206,85 @@ body{
   transform:translateY(-1px);
 }
 
-/* FIXED FOOTER - ALWAYS VISIBLE */
+/* contact modal */
+.contactModal{
+  position:fixed;
+  inset:0;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  background:rgba(0,0,0,.55);
+  z-index:9999;
+  padding:20px;
+  box-sizing:border-box;
+}
+
+.contactModal.active{
+  display:flex;
+}
+
+.contactBox{
+  position:relative;
+  width:min(560px, 100%);
+  padding:28px 24px 24px;
+  border-radius:18px;
+  background:rgba(10,16,24,.96);
+  border:1px solid rgba(255,255,255,.10);
+  box-shadow:0 20px 60px rgba(0,0,0,.45);
+  color:#dfeaf5;
+  text-align:center;
+}
+
+.contactBox h2{
+  margin:0 0 14px 0;
+  font-size:26px;
+  letter-spacing:.4px;
+}
+
+.contactBox p{
+  margin:0 0 14px 0;
+  line-height:1.6;
+  color:#c7d6e4;
+}
+
+.contactEmail{
+  font-size:18px;
+  font-weight:700;
+  color:#ffffff;
+  letter-spacing:.3px;
+}
+
+.contactAction{
+  display:inline-block;
+  margin-top:8px;
+  padding:12px 22px;
+  border-radius:6px;
+  border:1px solid #2c3f55;
+  background:linear-gradient(180deg,#1a2633,#0f1822);
+  color:#cfe6ff;
+  font-weight:700;
+  text-decoration:none;
+  transition:.25s;
+}
+
+.contactAction:hover{
+  background:linear-gradient(180deg,#21364a,#15212e);
+  border-color:#4a7bb5;
+}
+
+.contactClose{
+  position:absolute;
+  top:10px;
+  right:12px;
+  border:none;
+  background:transparent;
+  color:#dfeaf5;
+  font-size:28px;
+  line-height:1;
+  cursor:pointer;
+}
+
+/* footer */
 .footer{
   position:fixed;
   left:0;
@@ -374,7 +377,8 @@ body{
     padding:12px 22px;
     font-size:15px;
   }
- .contactBox{
+
+  .contactBox{
     padding:24px 18px 20px;
     border-radius:14px;
   }
@@ -389,7 +393,8 @@ body{
 
   .contactEmail{
     font-size:17px;
-    
+  }
+
   .footer{
     font-size:11px;
     padding:9px 10px;
@@ -451,35 +456,10 @@ body{
       <a href="shop.html">Shop</a>
       <a href="about.html">About</a>
       <a href="#" id="contactBtn">Contact</a>
-
-      
     </nav>
   </div>
 </main>
 
-<footer class="footer">
-  <div class="footerRow">
-    <span>© 2026 GWR TEAM</span>
-    <span>GRIMSON™ is a trademark of GWR TEAM</span>
-    <span>Age verification required for purchase</span>
-    <span>Website engineered by GWR TEAM</span>
-  </div>
-</footer>
-
-<script>
-const popup = document.querySelector(".popup");
-
-if(localStorage.getItem("grimsonAgeVerified") === "true"){
-  popup.style.display = "none";
-  document.body.classList.add("siteEntered");
-}
-
-document.getElementById("enterSite").addEventListener("click", function(){
-  localStorage.setItem("grimsonAgeVerified","true");
-  popup.style.display = "none";
-  document.body.classList.add("siteEntered");
-});
-</script>
 <div id="contactModal" class="contactModal">
   <div class="contactBox">
     <button class="contactClose" id="contactClose" aria-label="Close">×</button>
@@ -496,25 +476,48 @@ document.getElementById("enterSite").addEventListener("click", function(){
     <a href="contact.html" class="contactAction">Use Contact Form</a>
   </div>
 </div>
+
+<footer class="footer">
+  <div class="footerRow">
+    <span>© 2026 GWR TEAM</span>
+    <span>GRIMSON™ is a trademark of GWR TEAM</span>
+    <span>Age verification required for purchase</span>
+    <span>Website engineered by GWR TEAM</span>
+  </div>
+</footer>
+
 <script>
-  const contactBtn = document.getElementById("contactBtn");
-  const contactModal = document.getElementById("contactModal");
-  const contactClose = document.getElementById("contactClose");
+const popup = document.getElementById("ageGate");
+const enterSiteBtn = document.getElementById("enterSite");
+const contactBtn = document.getElementById("contactBtn");
+const contactModal = document.getElementById("contactModal");
+const contactClose = document.getElementById("contactClose");
 
-  contactBtn.addEventListener("click", function(e){
-    e.preventDefault();
-    contactModal.classList.add("active");
-  });
+if(localStorage.getItem("grimsonAgeVerified") === "true"){
+  popup.style.display = "none";
+  document.body.classList.add("siteEntered");
+}
 
-  contactClose.addEventListener("click", function(){
+enterSiteBtn.addEventListener("click", function(){
+  localStorage.setItem("grimsonAgeVerified", "true");
+  popup.style.display = "none";
+  document.body.classList.add("siteEntered");
+});
+
+contactBtn.addEventListener("click", function(e){
+  e.preventDefault();
+  contactModal.classList.add("active");
+});
+
+contactClose.addEventListener("click", function(){
+  contactModal.classList.remove("active");
+});
+
+contactModal.addEventListener("click", function(e){
+  if(e.target === contactModal){
     contactModal.classList.remove("active");
-  });
-
-  contactModal.addEventListener("click", function(e){
-    if(e.target === contactModal){
-      contactModal.classList.remove("active");
-    }
-  });
+  }
+});
 </script>
 
 </body>
