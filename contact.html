@@ -54,16 +54,21 @@ body{
 
 .container{
   max-width:1100px;
-  margin:auto;
-  padding:110px 20px 50px;
+  margin:0 auto;
+  padding:140px 20px 80px;
   box-sizing:border-box;
+  position:relative;
+  z-index:2;
 }
+
 
 /* title */
 
 .title{
   text-align:center;
-  margin-bottom:28px;
+  margin-bottom:18px;
+  position:relative;
+  z-index:3;
 }
 
 .title h1{
@@ -85,8 +90,9 @@ body{
 /* form panel */
 
 .formWrap{
-  width:min(980px, 100%);
-  margin:0 auto;
+  width:100%;
+  max-width:980px;
+  margin:40px auto 0 auto;
   background:rgba(7,12,18,.42);
   border:1px solid rgba(255,255,255,.06);
   border-radius:12px;
