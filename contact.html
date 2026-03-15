@@ -283,8 +283,15 @@ body{
     </div>
 
     <div class="formWrap">
-      <form class="contactForm" name="contact" method="POST" data-netlify="true">
+
+      <!-- NETLIFY FORM -->
+      <form name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/thanks.html" class="contactForm">
+
         <input type="hidden" name="form-name" value="contact">
+
+        <p hidden>
+          <label>Don’t fill this out if you're human: <input name="bot-field"></label>
+        </p>
 
         <input type="text" name="name" placeholder="Your Name" required>
         <input type="email" name="email" placeholder="Your Email" required>
@@ -293,7 +300,9 @@ body{
         <div class="actions">
           <button type="submit" class="btn">Send Message</button>
         </div>
+
       </form>
+
     </div>
 
   </div>
