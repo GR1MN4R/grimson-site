@@ -4,60 +4,334 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>GRIMSON MK-I – Buy</title>
+<title>Shop – Grimson Mk-I</title>
 
 <style>
 
-body{
-margin:0;
-font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-background:#05070a;
-color:#e6edf3;
-text-align:center;
+@font-face{
+  font-family:"ElementalEnd";
+  src:url("ElementalEnd.woff2") format("woff2");
+  font-weight:normal;
+  font-style:normal;
 }
+
+html, body{
+  margin:0;
+  min-height:100%;
+}
+
+body{
+  font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  color:#e6edf3;
+  background-image:url("bg-metal.png");
+  background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;
+  background-attachment:fixed;
+  overflow-x:hidden;
+  padding-bottom:70px;
+}
+
+/* home logo */
+
+.homeLogo{
+  position:fixed;
+  top:30px;
+  left:30px;
+  z-index:10;
+}
+
+.homeLogo img{
+  height:38px;
+  opacity:.88;
+  transition:.25s ease;
+}
+
+.homeLogo img:hover{
+  opacity:1;
+  transform:scale(1.05);
+}
+
+/* page container */
 
 .container{
-max-width:900px;
-margin:auto;
-padding:60px 20px;
+  max-width:1100px;
+  margin:auto;
+  padding:80px 20px;
+  box-sizing:border-box;
 }
 
-h1{
-font-size:32px;
-margin-bottom:20px;
+/* title */
+
+.title{
+  text-align:center;
+  margin-bottom:40px;
 }
 
-.productImage{
-width:100%;
-max-width:500px;
-margin-bottom:30px;
+.title h1{
+  font-family:"ElementalEnd", Arial, sans-serif;
+  font-size:42px;
+  margin-bottom:10px;
+  letter-spacing:3px;
 }
 
-.colorSelect{
-margin:30px 0;
+.title p{
+  font-size:26px;
+  color:#b7c9db;
+  letter-spacing:.4px;
 }
 
-select{
-padding:10px 15px;
-font-size:16px;
-border-radius:6px;
-border:none;
+/* product layout */
+
+.product{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:60px;
+  align-items:start;
 }
 
-.buyButton{
-display:inline-block;
-margin-top:30px;
-padding:14px 28px;
-background:#1e2a35;
-color:white;
-text-decoration:none;
-border-radius:8px;
-font-weight:600;
-letter-spacing:1px;
+/* image */
+
+.product img{
+  width:100%;
+  border-radius:10px;
+  display:block;
 }
 
-.buyButton:hover{
-background:#2b3a48;
+/* right side */
+
+.description{
+  font-size:16px;
+  line-height:1.6;
+  color:#c9d8e8;
+}
+
+.sectionTitle{
+  font-size:22px;
+  font-weight:700;
+  margin-top:0;
+  margin-bottom:12px;
+  letter-spacing:.5px;
+  color:#dfeaf5;
+}
+
+.orderIntro{
+  margin-bottom:24px;
+}
+
+.orderPanel{
+  margin-top:22px;
+  border-top:1px solid #233141;
+  border-bottom:1px solid #233141;
+}
+
+.orderRow{
+  display:grid;
+  grid-template-columns:minmax(120px,1fr) auto auto;
+  gap:16px;
+  align-items:center;
+  padding:18px 0;
+  border-bottom:1px solid #233141;
+}
+
+.orderRow:last-child{
+  border-bottom:none;
+}
+
+.variantInfo{
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+}
+
+.variantName{
+  font-size:18px;
+  font-weight:700;
+  color:#e6edf3;
+  letter-spacing:.3px;
+}
+
+.variantNote{
+  font-size:14px;
+  color:#9fb2c6;
+  line-height:1.4;
+}
+
+.qtyWrap{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.qtyBtn{
+  width:38px;
+  height:38px;
+  border-radius:6px;
+  border:1px solid #2c3f55;
+  background:linear-gradient(180deg,#1a2633,#0f1822);
+  color:#cfe6ff;
+  font-size:22px;
+  font-weight:700;
+  line-height:1;
+  cursor:pointer;
+  transition:.25s;
+}
+
+.qtyBtn:hover{
+  background:linear-gradient(180deg,#21364a,#15212e);
+  border-color:#4a7bb5;
+}
+
+.qtyValue{
+  min-width:28px;
+  text-align:center;
+  font-size:18px;
+  font-weight:700;
+  color:#e6edf3;
+}
+
+.buyBtn{
+  display:inline-block;
+  padding:12px 24px;
+  border-radius:6px;
+  border:1px solid #2c3f55;
+  background:linear-gradient(180deg,#1a2633,#0f1822);
+  color:#cfe6ff;
+  font-weight:700;
+  text-decoration:none;
+  transition:.25s;
+  letter-spacing:.4px;
+}
+
+.buyBtn:hover{
+  background:linear-gradient(180deg,#21364a,#15212e);
+  border-color:#4a7bb5;
+}
+
+.buyBtn.disabled{
+  opacity:.45;
+  pointer-events:none;
+}
+
+.notice{
+  margin-top:22px;
+  font-size:14px;
+  color:#9fb2c6;
+  line-height:1.5;
+}
+
+/* footer */
+
+.footer{
+  position:fixed;
+  left:0;
+  bottom:0;
+  width:100%;
+  z-index:20;
+  padding:10px 14px;
+  box-sizing:border-box;
+  font-size:12px;
+  color:#b9c7d6;
+  text-align:center;
+  background:rgba(5,7,10,.78);
+  border-top:1px solid rgba(255,255,255,.10);
+  backdrop-filter:blur(4px);
+  -webkit-backdrop-filter:blur(4px);
+}
+
+.footerRow{
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:10px 18px;
+  max-width:1400px;
+  margin:0 auto;
+}
+
+/* mobile */
+
+@media (max-width:700px){
+
+  body{
+    color:#16324c;
+    background-image:url("bg-metal-mobile.png");
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+    background-attachment:scroll;
+    padding-bottom:78px;
+  }
+
+  .title h1{
+    color:#16324c;
+    font-size:34px;
+  }
+
+  .title p{
+    color:#16324c;
+    font-size:18px;
+    line-height:1.4;
+  }
+
+  .product{
+    grid-template-columns:1fr;
+    gap:28px;
+  }
+
+  .homeLogo{
+    display:block;
+    top:20px;
+    left:20px;
+  }
+
+  .homeLogo img{
+    height:26px;
+  }
+
+  .container{
+    padding:55px 18px 40px;
+  }
+
+  .title{
+    margin-bottom:14px;
+  }
+
+  .description,
+  .description p,
+  .sectionTitle,
+  .variantName,
+  .qtyValue{
+    color:#16324c;
+  }
+
+  .variantNote,
+  .notice{
+    color:#35506a;
+  }
+
+  .orderPanel,
+  .orderRow{
+    border-color:rgba(22,50,76,.18);
+  }
+
+  .footer{
+    font-size:11px;
+    padding:9px 10px;
+  }
+
+  .footerRow{
+    gap:8px 12px;
+  }
+
+  .orderRow{
+    grid-template-columns:1fr;
+    gap:12px;
+    align-items:start;
+  }
+
+  .qtyWrap{
+    justify-content:flex-start;
+  }
 }
 
 </style>
@@ -65,31 +339,120 @@ background:#2b3a48;
 
 <body>
 
+<a href="/index.html" class="homeLogo">
+  <img src="logo-home.png" alt="GRIMSON Home">
+</a>
+
 <div class="container">
 
-<h1>GRIMSON MK-I</h1>
+  <div class="title">
+    <h1>Grimson Mk-I</h1>
+    <p>Choose handle variant and proceed to order</p>
+  </div>
 
-<img src="knife.jpg" class="productImage">
+  <div class="product">
 
-<p>Blade Steel: 440B stainless steel — Selected for corrosion resistance, structural durability, and practical field maintenance.</p>
+    <div>
+      <img src="knife.jpg" alt="Grimson Mk-I">
+    </div>
 
-<div class="colorSelect">
+    <div class="description">
 
-<label for="color">Choose handle color:</label>
+      <h2 class="sectionTitle">Order Variants</h2>
 
-<br><br>
+      <p class="orderIntro">
+        The MK-I is currently offered in two handle variants. Each order line is separated so the selected color remains clear during fulfillment.
+      </p>
 
-<select id="color">
-<option>Black</option>
-<option>Olive</option>
-<option>Khaki</option>
-</select>
+      <div class="orderPanel">
+
+        <div class="orderRow">
+          <div class="variantInfo">
+            <div class="variantName">Khaki Handle</div>
+            <div class="variantNote">Utility-oriented finish with restrained field character.</div>
+          </div>
+
+          <div class="qtyWrap">
+            <button class="qtyBtn" type="button" onclick="changeQty('khaki', -1)">−</button>
+            <div class="qtyValue" id="qty-khaki">0</div>
+            <button class="qtyBtn" type="button" onclick="changeQty('khaki', 1)">+</button>
+          </div>
+
+          <a id="buy-khaki"
+             href="YOUR_KHAKI_STRIPE_LINK"
+             target="_blank"
+             class="buyBtn disabled"
+             onclick="return handleBuy(event,'khaki')">BUY KHAKI</a>
+        </div>
+
+        <div class="orderRow">
+          <div class="variantInfo">
+            <div class="variantName">Green Handle</div>
+            <div class="variantNote">Darker field tone with a more subdued visual profile.</div>
+          </div>
+
+          <div class="qtyWrap">
+            <button class="qtyBtn" type="button" onclick="changeQty('green', -1)">−</button>
+            <div class="qtyValue" id="qty-green">0</div>
+            <button class="qtyBtn" type="button" onclick="changeQty('green', 1)">+</button>
+          </div>
+
+          <a id="buy-green"
+             href="YOUR_GREEN_STRIPE_LINK"
+             target="_blank"
+             class="buyBtn disabled"
+             onclick="return handleBuy(event,'green')">BUY GREEN</a>
+        </div>
+
+      </div>
+
+      <p class="notice">
+        Select quantity first. Orders are processed per variant line. Age verification and identification may be required prior to delivery.
+      </p>
+
+    </div>
+
+  </div>
 
 </div>
 
-<a href="https://buy.stripe.com/9B614mbcIgHv6li25TfjG00" target="_blank" class="buyButton">BUY NOW</a>
+<footer class="footer">
+  <div class="footerRow">
+    <span>© 2026 GWR TEAM</span>
+    <span>GRIMSON™ is a trademark of GWR TEAM</span>
+    <span>Age verification required for purchase</span>
+    <span>Website engineered by GWR TEAM</span>
+  </div>
+</footer>
 
-</div>
+<script>
+const qty = {
+  khaki: 0,
+  green: 0
+};
+
+function changeQty(type, change){
+  qty[type] += change;
+  if(qty[type] < 0) qty[type] = 0;
+
+  document.getElementById("qty-" + type).textContent = qty[type];
+
+  const btn = document.getElementById("buy-" + type);
+  if(qty[type] > 0){
+    btn.classList.remove("disabled");
+  }else{
+    btn.classList.add("disabled");
+  }
+}
+
+function handleBuy(event, type){
+  if(qty[type] <= 0){
+    event.preventDefault();
+    return false;
+  }
+  return true;
+}
+</script>
 
 </body>
 </html>
