@@ -3,17 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Contact — GRIMSON</title>
 
 <style>
-
 @font-face{
   font-family:"ElementalEnd";
   src:url("ElementalEnd.woff2") format("woff2");
+  font-weight:normal;
+  font-style:normal;
 }
 
-html,body{
+html, body{
   margin:0;
   min-height:100%;
 }
@@ -21,13 +21,11 @@ html,body{
 body{
   font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
   color:#e6edf3;
-
   background-image:url("bg-metal.png");
   background-size:cover;
   background-position:center;
   background-repeat:no-repeat;
   background-attachment:fixed;
-
   overflow-x:hidden;
   padding-bottom:70px;
 }
@@ -43,14 +41,21 @@ body{
 
 .homeLogo img{
   height:38px;
+  opacity:.88;
+  transition:.25s ease;
 }
 
-/* container */
+.homeLogo img:hover{
+  opacity:1;
+  transform:scale(1.05);
+}
+
+/* page container */
 
 .container{
-  max-width:700px;
+  max-width:1100px;
   margin:auto;
-  padding:120px 20px 60px;
+  padding:110px 20px 50px;
   box-sizing:border-box;
 }
 
@@ -58,61 +63,98 @@ body{
 
 .title{
   text-align:center;
-  margin-bottom:30px;
+  margin-bottom:28px;
 }
 
 .title h1{
-  font-family:"ElementalEnd",Arial;
-  font-size:40px;
+  font-family:"ElementalEnd", Arial, sans-serif;
+  font-size:42px;
+  margin:0 0 8px 0;
   letter-spacing:3px;
-  margin-bottom:10px;
 }
 
-.title p{
-  font-size:20px;
+.tagline{
+  font-size:24px;
   color:#b7c9db;
+  letter-spacing:.35px;
+  line-height:1.4;
+  max-width:760px;
+  margin:0 auto;
 }
 
-/* form box */
+/* form panel */
 
-.formBox{
+.formWrap{
+  width:min(980px, 100%);
+  margin:0 auto;
   background:rgba(7,12,18,.42);
   border:1px solid rgba(255,255,255,.06);
   border-radius:12px;
-  padding:30px;
+  padding:34px 34px 30px;
   backdrop-filter:blur(3px);
+  -webkit-backdrop-filter:blur(3px);
+  box-sizing:border-box;
 }
 
-/* inputs */
+.contactForm{
+  width:min(820px, 100%);
+  margin:0 auto;
+}
 
-input,textarea{
+.contactForm input,
+.contactForm textarea{
   width:100%;
-  padding:12px;
-  margin-bottom:14px;
+  display:block;
+  box-sizing:border-box;
+  padding:14px 14px;
+  margin:0 0 14px 0;
   border-radius:6px;
   border:1px solid #2c3f55;
-  background:#0f1822;
-  color:#fff;
+  background:#09131d;
+  color:#e6edf3;
   font-size:15px;
+  outline:none;
 }
 
-textarea{
+.contactForm textarea{
+  min-height:170px;
   resize:vertical;
+}
+
+.contactForm input::placeholder,
+.contactForm textarea::placeholder{
+  color:#7f94a8;
+}
+
+.contactForm input:focus,
+.contactForm textarea:focus{
+  border-color:#4a7bb5;
+  box-shadow:0 0 0 1px rgba(74,123,181,.25);
 }
 
 /* button */
 
-button{
-  padding:12px 26px;
+.actions{
+  display:flex;
+  justify-content:center;
+  margin-top:6px;
+}
+
+.btn{
+  display:inline-block;
+  padding:12px 28px;
   border-radius:6px;
   border:1px solid #2c3f55;
   background:linear-gradient(180deg,#1a2633,#0f1822);
   color:#cfe6ff;
   font-weight:700;
+  text-decoration:none;
+  transition:.25s;
   cursor:pointer;
 }
 
-button:hover{
+.btn:hover{
+  background:linear-gradient(180deg,#21364a,#15212e);
   border-color:#4a7bb5;
 }
 
@@ -123,49 +165,74 @@ button:hover{
   left:0;
   bottom:0;
   width:100%;
-  padding:10px;
-  text-align:center;
+  z-index:20;
+  padding:10px 14px;
+  box-sizing:border-box;
   font-size:12px;
+  color:#b9c7d6;
+  text-align:center;
   background:rgba(5,7,10,.78);
+  border-top:1px solid rgba(255,255,255,.10);
+  backdrop-filter:blur(4px);
+  -webkit-backdrop-filter:blur(4px);
 }
 
-</style>
-</head>
+.footerRow{
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:10px 18px;
+  max-width:1400px;
+  margin:0 auto;
+}
 
-<body>
+/* mobile */
 
-<a href="/index.html" class="homeLogo">
-<img src="logo-home.png">
-</a>
+@media (max-width:700px){
 
-<div class="container">
+  body{
+    background-image:url("bg-metal-mobile.png");
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+    background-attachment:scroll;
+    padding-bottom:78px;
+  }
 
-<div class="title">
-<h1>Contact</h1>
-<p>Wholesale, partnerships, or larger inquiries.</p>
-</div>
+  .homeLogo{
+    top:20px;
+    left:20px;
+  }
 
-<div class="formBox">
+  .homeLogo img{
+    height:26px;
+  }
 
-<form>
+  .container{
+    padding:70px 18px 40px;
+  }
 
-<input type="text" placeholder="Your Name" required>
+  .title{
+    margin-bottom:16px;
+  }
 
-<input type="email" placeholder="Your Email" required>
+  .title h1{
+    font-size:34px;
+    color:#16324c;
+  }
 
-<textarea rows="6" placeholder="Your Message"></textarea>
+  .tagline{
+    color:#16324c;
+    font-size:18px;
+    max-width:420px;
+  }
 
-<button type="submit">Send Message</button>
+  .formWrap{
+    padding:22px 18px 22px;
+    background:rgba(255,255,255,.18);
+    border:1px solid rgba(15,42,68,.12);
+  }
 
-</form>
-
-</div>
-
-</div>
-
-<footer class="footer">
-© 2026 GWR TEAM
-</footer>
-
-</body>
-</html>
+  .contactForm input,
+  .contactForm textarea{
+    background:rgb
