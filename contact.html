@@ -118,7 +118,17 @@ body{
   margin:0 auto;
 }
 
+.contactForm label{
+  display:block;
+  margin:0 0 8px 2px;
+  font-size:14px;
+  font-weight:600;
+  color:#c7d7e6;
+  letter-spacing:.2px;
+}
+
 .contactForm input,
+.contactForm select,
 .contactForm textarea{
   width:100%;
   display:block;
@@ -139,7 +149,23 @@ body{
   color:#7f94a8;
 }
 
+.contactForm select{
+  appearance:none;
+  -webkit-appearance:none;
+  -moz-appearance:none;
+  background-image:
+    linear-gradient(45deg, transparent 50%, #8ea5bb 50%),
+    linear-gradient(135deg, #8ea5bb 50%, transparent 50%);
+  background-position:
+    calc(100% - 18px) calc(50% - 3px),
+    calc(100% - 12px) calc(50% - 3px);
+  background-size:6px 6px, 6px 6px;
+  background-repeat:no-repeat;
+  padding-right:40px;
+}
+
 .contactForm input:focus,
+.contactForm select:focus,
 .contactForm textarea:focus{
   border-color:#4a7bb5;
   box-shadow:0 0 0 1px rgba(74,123,181,.22);
@@ -249,7 +275,12 @@ body{
     border:1px solid rgba(15,42,68,.12);
   }
 
+  .contactForm label{
+    color:#16324c;
+  }
+
   .contactForm input,
+  .contactForm select,
   .contactForm textarea{
     background:rgba(7,18,30,.95);
   }
@@ -279,7 +310,7 @@ body{
 
     <div class="title">
       <h1>CONTACT</h1>
-      <p class="tagline">Wholesale, partnerships, or larger inquiries.</p>
+      <p class="tagline">Product questions, order support, retail inquiries, or larger requests.</p>
     </div>
 
     <div class="formWrap">
@@ -288,7 +319,7 @@ body{
       <form name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/thanks.html" class="contactForm">
 
         <input type="hidden" name="form-name" value="contact">
-        <input type="hidden" name="subject" value="GRIMSON Product Inquiry">
+        <input type="hidden" name="subject" value="GRIMSON Website Inquiry">
         
         <p hidden>
           <label>Don’t fill this out if you're human: <input name="bot-field"></label>
@@ -296,6 +327,17 @@ body{
 
         <input type="text" name="name" placeholder="Your Name" required>
         <input type="email" name="email" placeholder="Your Email" required>
+
+        <label for="reason">Reason for inquiry</label>
+        <select name="reason" id="reason" required>
+          <option value="">Select inquiry topic</option>
+          <option value="Product question">Product question</option>
+          <option value="Order support">Order support</option>
+          <option value="Wholesale / retail inquiry">Wholesale / retail inquiry</option>
+          <option value="Media / press">Media / press</option>
+          <option value="Other">Other</option>
+        </select>
+
         <textarea name="message" placeholder="Your Message" required></textarea>
 
         <div class="actions">
