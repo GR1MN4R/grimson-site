@@ -7,7 +7,6 @@
 <title>Contact — GRIMSON</title>
 
 <style>
-
 @font-face{
   font-family:"ElementalEnd";
   src:url("ElementalEnd.woff2") format("woff2");
@@ -15,7 +14,6 @@
   font-style:normal;
 }
 
-html,body{
 html, body{
   margin:0;
   min-height:100%;
@@ -24,17 +22,23 @@ html, body{
 body{
   font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
   color:#e6edf3;
-
   background-image:url("bg-metal.png");
   background-size:cover;
   background-position:center;
   background-repeat:no-repeat;
   background-attachment:fixed;
-
   overflow-x:hidden;
   padding-bottom:70px;
 }
-@@ -43,76 +41,120 @@
+
+/* home logo */
+
+.homeLogo{
+  position:fixed;
+  top:30px;
+  left:30px;
+  z-index:10;
+}
 
 .homeLogo img{
   height:38px;
@@ -42,7 +46,6 @@ body{
   transition:.25s ease;
 }
 
-/* container */
 .homeLogo img:hover{
   opacity:1;
   transform:scale(1.05);
@@ -51,11 +54,9 @@ body{
 /* page container */
 
 .container{
-  max-width:700px;
-  max-width:1100px;
+  max-width:1200px;
   margin:auto;
-  padding:120px 20px 60px;
-  padding:110px 20px 50px;
+  padding:110px 20px 60px;
   box-sizing:border-box;
 }
 
@@ -63,22 +64,17 @@ body{
 
 .title{
   text-align:center;
-  margin-bottom:30px;
-  margin-bottom:28px;
+  margin-bottom:26px;
 }
 
 .title h1{
-  font-family:"ElementalEnd",Arial;
-  font-size:40px;
   font-family:"ElementalEnd", Arial, sans-serif;
   font-size:42px;
   margin:0 0 8px 0;
   letter-spacing:3px;
-  margin-bottom:10px;
+  color:#dfeaf5;
 }
 
-.title p{
-  font-size:20px;
 .tagline{
   font-size:24px;
   color:#b7c9db;
@@ -89,52 +85,38 @@ body{
 }
 
 /* form box */
-/* form panel */
 
-.formBox{
 .formWrap{
-  width:min(980px, 100%);
+  max-width:980px;
   margin:0 auto;
   background:rgba(7,12,18,.42);
   border:1px solid rgba(255,255,255,.06);
   border-radius:12px;
-  padding:30px;
-  padding:34px 34px 30px;
+  padding:34px;
+  box-sizing:border-box;
   backdrop-filter:blur(3px);
   -webkit-backdrop-filter:blur(3px);
-  box-sizing:border-box;
 }
 
-/* inputs */
 .contactForm{
-  width:min(820px, 100%);
+  max-width:860px;
   margin:0 auto;
 }
 
-input,textarea{
 .contactForm input,
 .contactForm textarea{
   width:100%;
-  padding:12px;
-  margin-bottom:14px;
-  display:block;
   box-sizing:border-box;
-  padding:14px 14px;
+  display:block;
+  padding:14px 16px;
   margin:0 0 14px 0;
   border-radius:6px;
   border:1px solid #2c3f55;
-  background:#0f1822;
-  color:#fff;
   background:#09131d;
   color:#e6edf3;
   font-size:15px;
+  font-family:inherit;
   outline:none;
-}
-
-textarea{
-.contactForm textarea{
-  min-height:170px;
-  resize:vertical;
 }
 
 .contactForm input::placeholder,
@@ -145,13 +127,14 @@ textarea{
 .contactForm input:focus,
 .contactForm textarea:focus{
   border-color:#4a7bb5;
-  box-shadow:0 0 0 1px rgba(74,123,181,.25);
+  box-shadow:0 0 0 1px rgba(74,123,181,.22);
 }
 
-/* button */
+.contactForm textarea{
+  min-height:180px;
+  resize:vertical;
+}
 
-button{
-  padding:12px 26px;
 .actions{
   display:flex;
   justify-content:center;
@@ -171,18 +154,18 @@ button{
   cursor:pointer;
 }
 
-button:hover{
 .btn:hover{
   background:linear-gradient(180deg,#21364a,#15212e);
   border-color:#4a7bb5;
 }
 
-@@ -123,49 +165,74 @@
+/* footer */
+
+.footer{
+  position:fixed;
   left:0;
   bottom:0;
   width:100%;
-  padding:10px;
-  text-align:center;
   z-index:20;
   padding:10px 14px;
   box-sizing:border-box;
@@ -190,48 +173,10 @@ button:hover{
   color:#b9c7d6;
   text-align:center;
   background:rgba(5,7,10,.78);
-  border-top:1px solid rgba(255,255,255,.10);
   backdrop-filter:blur(4px);
   -webkit-backdrop-filter:blur(4px);
 }
 
-</style>
-</head>
-
-<body>
-
-<a href="/index.html" class="homeLogo">
-<img src="logo-home.png">
-</a>
-
-<div class="container">
-
-<div class="title">
-<h1>Contact</h1>
-<p>Wholesale, partnerships, or larger inquiries.</p>
-</div>
-
-<div class="formBox">
-
-<form>
-
-<input type="text" placeholder="Your Name" required>
-
-<input type="email" placeholder="Your Email" required>
-
-<textarea rows="6" placeholder="Your Message"></textarea>
-
-<button type="submit">Send Message</button>
-
-</form>
-
-</div>
-
-</div>
-
-<footer class="footer">
-© 2026 GWR TEAM
-</footer>
 .footerRow{
   display:flex;
   justify-content:center;
@@ -241,8 +186,6 @@ button:hover{
   margin:0 auto;
 }
 
-</body>
-</html>
 /* mobile */
 
 @media (max-width:700px){
@@ -281,15 +224,70 @@ button:hover{
   .tagline{
     color:#16324c;
     font-size:18px;
+    line-height:1.4;
     max-width:420px;
   }
 
   .formWrap{
-    padding:22px 18px 22px;
+    padding:22px 18px;
     background:rgba(255,255,255,.18);
     border:1px solid rgba(15,42,68,.12);
   }
 
   .contactForm input,
   .contactForm textarea{
-    background:rgb
+    background:rgba(7,18,30,.95);
+  }
+
+  .footer{
+    font-size:11px;
+    padding:9px 10px;
+  }
+
+  .footerRow{
+    gap:8px 12px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<a href="/index.html" class="homeLogo">
+  <img src="logo-home.png" alt="GRIMSON Home">
+</a>
+
+<div class="container">
+
+  <div class="title">
+    <h1>CONTACT</h1>
+    <p class="tagline">Wholesale, partnerships, or larger inquiries.</p>
+  </div>
+
+  <div class="formWrap">
+    <form class="contactForm" name="contact" method="POST" data-netlify="true">
+      <input type="hidden" name="form-name" value="contact">
+
+      <input type="text" name="name" placeholder="Your Name" required>
+      <input type="email" name="email" placeholder="Your Email" required>
+      <textarea name="message" placeholder="Your Message" required></textarea>
+
+      <div class="actions">
+        <button type="submit" class="btn">Send Message</button>
+      </div>
+    </form>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <div class="footerRow">
+    <span>© 2026 GWR TEAM</span>
+    <span>GRIMSON™ is a trademark of GWR TEAM</span>
+    <span>Age verification required for purchase</span>
+    <span>Website engineered by GWR TEAM</span>
+  </div>
+</footer>
+
+</body>
+</html>
