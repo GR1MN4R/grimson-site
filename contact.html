@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Contact — GRIMSON</title>
 
 <style>
@@ -22,16 +21,24 @@ html, body{
 body{
   font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
   color:#e6edf3;
-  background-image:url("bg-metal.png");
+  overflow-x:hidden;
+  background:#05070a;
+}
+
+/* full-page background */
+.bgImage{
+  position:fixed;
+  inset:0;
+  z-index:1;
+  background:
+    linear-gradient(rgba(0,0,0,.12), rgba(0,0,0,.18)),
+    url("bg-metal.png");
   background-size:cover;
   background-position:center;
   background-repeat:no-repeat;
-  background-attachment:fixed;
-  overflow-x:hidden;
 }
 
 /* home logo */
-
 .homeLogo{
   position:fixed;
   top:30px;
@@ -50,17 +57,25 @@ body{
   transform:scale(1.05);
 }
 
-/* page container */
+/* content shell fills screen above footer */
+.page{
+  position:relative;
+  z-index:2;
+  min-height:calc(100vh - 44px);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-sizing:border-box;
+  padding:110px 20px 24px;
+}
 
 .container{
+  width:100%;
   max-width:1200px;
   margin:0 auto;
-  padding:110px 20px 0;
-  box-sizing:border-box;
 }
 
 /* title */
-
 .title{
   text-align:center;
   margin-bottom:24px;
@@ -84,7 +99,6 @@ body{
 }
 
 /* form box */
-
 .formWrap{
   width:90%;
   max-width:980px;
@@ -161,7 +175,6 @@ body{
 }
 
 /* footer */
-
 .footer{
   position:fixed;
   left:0;
@@ -188,15 +201,15 @@ body{
 }
 
 /* mobile */
-
 @media (max-width:700px){
 
-  body{
-    background-image:url("bg-metal-mobile.png");
+  .bgImage{
+    background:
+      linear-gradient(rgba(0,0,0,.12), rgba(0,0,0,.18)),
+      url("bg-metal-mobile.png");
     background-size:cover;
     background-position:center;
     background-repeat:no-repeat;
-    background-attachment:scroll;
   }
 
   .homeLogo{
@@ -208,8 +221,9 @@ body{
     height:26px;
   }
 
-  .container{
-    padding:70px 18px 0;
+  .page{
+    min-height:calc(100vh - 40px);
+    padding:70px 18px 18px;
   }
 
   .title{
@@ -254,32 +268,36 @@ body{
 
 <body>
 
+<div class="bgImage"></div>
+
 <a href="/index.html" class="homeLogo">
   <img src="logo-home.png" alt="GRIMSON Home">
 </a>
 
-<div class="container">
+<main class="page">
+  <div class="container">
 
-  <div class="title">
-    <h1>CONTACT</h1>
-    <p class="tagline">Wholesale, partnerships, or larger inquiries.</p>
+    <div class="title">
+      <h1>CONTACT</h1>
+      <p class="tagline">Wholesale, partnerships, or larger inquiries.</p>
+    </div>
+
+    <div class="formWrap">
+      <form class="contactForm" name="contact" method="POST" data-netlify="true">
+        <input type="hidden" name="form-name" value="contact">
+
+        <input type="text" name="name" placeholder="Your Name" required>
+        <input type="email" name="email" placeholder="Your Email" required>
+        <textarea name="message" placeholder="Your Message" required></textarea>
+
+        <div class="actions">
+          <button type="submit" class="btn">Send Message</button>
+        </div>
+      </form>
+    </div>
+
   </div>
-
-  <div class="formWrap">
-    <form class="contactForm" name="contact" method="POST" data-netlify="true">
-      <input type="hidden" name="form-name" value="contact">
-
-      <input type="text" name="name" placeholder="Your Name" required>
-      <input type="email" name="email" placeholder="Your Email" required>
-      <textarea name="message" placeholder="Your Message" required></textarea>
-
-      <div class="actions">
-        <button type="submit" class="btn">Send Message</button>
-      </div>
-    </form>
-  </div>
-
-</div>
+</main>
 
 <footer class="footer">
   <div class="footerRow">
