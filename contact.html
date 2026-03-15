@@ -3,9 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Contact — GRIMSON</title>
 
 <style>
+
 @font-face{
   font-family:"ElementalEnd";
   src:url("ElementalEnd.woff2") format("woff2");
@@ -13,6 +15,7 @@
   font-style:normal;
 }
 
+html,body{
 html, body{
   margin:0;
   min-height:100%;
@@ -21,23 +24,17 @@ html, body{
 body{
   font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
   color:#e6edf3;
+
   background-image:url("bg-metal.png");
   background-size:cover;
   background-position:center;
   background-repeat:no-repeat;
   background-attachment:fixed;
+
   overflow-x:hidden;
   padding-bottom:70px;
 }
-
-/* home logo */
-
-.homeLogo{
-  position:fixed;
-  top:30px;
-  left:30px;
-  z-index:10;
-}
+@@ -43,76 +41,120 @@
 
 .homeLogo img{
   height:38px;
@@ -45,6 +42,7 @@ body{
   transition:.25s ease;
 }
 
+/* container */
 .homeLogo img:hover{
   opacity:1;
   transform:scale(1.05);
@@ -53,31 +51,34 @@ body{
 /* page container */
 
 .container{
+  max-width:700px;
   max-width:1100px;
-  margin:0 auto;
-  padding:140px 20px 80px;
+  margin:auto;
+  padding:120px 20px 60px;
+  padding:110px 20px 50px;
   box-sizing:border-box;
-  position:relative;
-  z-index:2;
 }
-
 
 /* title */
 
 .title{
   text-align:center;
-  margin-bottom:18px;
-  position:relative;
-  z-index:3;
+  margin-bottom:30px;
+  margin-bottom:28px;
 }
 
 .title h1{
+  font-family:"ElementalEnd",Arial;
+  font-size:40px;
   font-family:"ElementalEnd", Arial, sans-serif;
   font-size:42px;
   margin:0 0 8px 0;
   letter-spacing:3px;
+  margin-bottom:10px;
 }
 
+.title p{
+  font-size:20px;
 .tagline{
   font-size:24px;
   color:#b7c9db;
@@ -87,41 +88,50 @@ body{
   margin:0 auto;
 }
 
+/* form box */
 /* form panel */
 
+.formBox{
 .formWrap{
-  width:100%;
-  max-width:980px;
-  margin:40px auto 0 auto;
+  width:min(980px, 100%);
+  margin:0 auto;
   background:rgba(7,12,18,.42);
   border:1px solid rgba(255,255,255,.06);
   border-radius:12px;
+  padding:30px;
   padding:34px 34px 30px;
   backdrop-filter:blur(3px);
   -webkit-backdrop-filter:blur(3px);
   box-sizing:border-box;
 }
 
+/* inputs */
 .contactForm{
   width:min(820px, 100%);
   margin:0 auto;
 }
 
+input,textarea{
 .contactForm input,
 .contactForm textarea{
   width:100%;
+  padding:12px;
+  margin-bottom:14px;
   display:block;
   box-sizing:border-box;
   padding:14px 14px;
   margin:0 0 14px 0;
   border-radius:6px;
   border:1px solid #2c3f55;
+  background:#0f1822;
+  color:#fff;
   background:#09131d;
   color:#e6edf3;
   font-size:15px;
   outline:none;
 }
 
+textarea{
 .contactForm textarea{
   min-height:170px;
   resize:vertical;
@@ -140,6 +150,8 @@ body{
 
 /* button */
 
+button{
+  padding:12px 26px;
 .actions{
   display:flex;
   justify-content:center;
@@ -159,18 +171,18 @@ body{
   cursor:pointer;
 }
 
+button:hover{
 .btn:hover{
   background:linear-gradient(180deg,#21364a,#15212e);
   border-color:#4a7bb5;
 }
 
-/* footer */
-
-.footer{
-  position:fixed;
+@@ -123,49 +165,74 @@
   left:0;
   bottom:0;
   width:100%;
+  padding:10px;
+  text-align:center;
   z-index:20;
   padding:10px 14px;
   box-sizing:border-box;
@@ -183,6 +195,43 @@ body{
   -webkit-backdrop-filter:blur(4px);
 }
 
+</style>
+</head>
+
+<body>
+
+<a href="/index.html" class="homeLogo">
+<img src="logo-home.png">
+</a>
+
+<div class="container">
+
+<div class="title">
+<h1>Contact</h1>
+<p>Wholesale, partnerships, or larger inquiries.</p>
+</div>
+
+<div class="formBox">
+
+<form>
+
+<input type="text" placeholder="Your Name" required>
+
+<input type="email" placeholder="Your Email" required>
+
+<textarea rows="6" placeholder="Your Message"></textarea>
+
+<button type="submit">Send Message</button>
+
+</form>
+
+</div>
+
+</div>
+
+<footer class="footer">
+© 2026 GWR TEAM
+</footer>
 .footerRow{
   display:flex;
   justify-content:center;
@@ -192,6 +241,8 @@ body{
   margin:0 auto;
 }
 
+</body>
+</html>
 /* mobile */
 
 @media (max-width:700px){
