@@ -55,9 +55,9 @@ body{
 /* page container */
 
 .container{
-  max-width:1100px;
+  max-width:1200px;
   margin:auto;
-  padding:80px 20px;
+  padding:80px 20px 40px;
   box-sizing:border-box;
 }
 
@@ -65,7 +65,7 @@ body{
 
 .title{
   text-align:center;
-  margin-bottom:40px;
+  margin-bottom:42px;
 }
 
 .title h1{
@@ -79,120 +79,61 @@ body{
   font-size:26px;
   color:#b7c9db;
   letter-spacing:.4px;
+  margin:0;
 }
 
-/* product layout */
+/* cards */
 
-.product{
+.variantGrid{
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:60px;
+  gap:34px;
   align-items:start;
 }
 
-/* image */
+.variantCard{
+  background:rgba(8,12,17,.42);
+  border:1px solid rgba(74,123,181,.18);
+  border-radius:12px;
+  padding:22px 22px 26px;
+  box-sizing:border-box;
+  backdrop-filter:blur(2px);
+  -webkit-backdrop-filter:blur(2px);
+}
 
-.product img{
+.variantCard img{
   width:100%;
-  border-radius:10px;
+  max-width:420px;
+  margin:0 auto 18px;
   display:block;
-}
-
-/* right side */
-
-.description{
-  font-size:16px;
-  line-height:1.6;
-  color:#c9d8e8;
-}
-
-.sectionTitle{
-  font-size:22px;
-  font-weight:700;
-  margin-top:0;
-  margin-bottom:12px;
-  letter-spacing:.5px;
-  color:#dfeaf5;
-}
-
-.orderIntro{
-  margin-bottom:24px;
-}
-
-.orderPanel{
-  margin-top:22px;
-  border-top:1px solid #233141;
-  border-bottom:1px solid #233141;
-}
-
-.orderRow{
-  display:grid;
-  grid-template-columns:minmax(120px,1fr) auto auto;
-  gap:16px;
-  align-items:center;
-  padding:18px 0;
-  border-bottom:1px solid #233141;
-}
-
-.orderRow:last-child{
-  border-bottom:none;
-}
-
-.variantInfo{
-  display:flex;
-  flex-direction:column;
-  gap:4px;
+  border-radius:10px;
 }
 
 .variantName{
-  font-size:18px;
+  font-size:26px;
   font-weight:700;
-  color:#e6edf3;
-  letter-spacing:.3px;
-}
-
-.variantNote{
-  font-size:14px;
-  color:#9fb2c6;
-  line-height:1.4;
-}
-
-.qtyWrap{
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-
-.qtyBtn{
-  width:38px;
-  height:38px;
-  border-radius:6px;
-  border:1px solid #2c3f55;
-  background:linear-gradient(180deg,#1a2633,#0f1822);
-  color:#cfe6ff;
-  font-size:22px;
-  font-weight:700;
-  line-height:1;
-  cursor:pointer;
-  transition:.25s;
-}
-
-.qtyBtn:hover{
-  background:linear-gradient(180deg,#21364a,#15212e);
-  border-color:#4a7bb5;
-}
-
-.qtyValue{
-  min-width:28px;
+  color:#dfeaf5;
+  margin-bottom:10px;
+  letter-spacing:.4px;
   text-align:center;
-  font-size:18px;
-  font-weight:700;
-  color:#e6edf3;
 }
 
-.buyBtn{
+.variantText{
+  font-size:16px;
+  line-height:1.65;
+  color:#c9d8e8;
+  text-align:center;
+  max-width:430px;
+  margin:0 auto 22px;
+}
+
+.chooseWrap{
+  text-align:center;
+}
+
+.btn{
   display:inline-block;
-  padding:12px 24px;
+  padding:12px 28px;
   border-radius:6px;
   border:1px solid #2c3f55;
   background:linear-gradient(180deg,#1a2633,#0f1822);
@@ -200,21 +141,17 @@ body{
   font-weight:700;
   text-decoration:none;
   transition:.25s;
-  letter-spacing:.4px;
+  letter-spacing:.6px;
 }
 
-.buyBtn:hover{
+.btn:hover{
   background:linear-gradient(180deg,#21364a,#15212e);
   border-color:#4a7bb5;
 }
 
-.buyBtn.disabled{
-  opacity:.45;
-  pointer-events:none;
-}
-
 .notice{
-  margin-top:22px;
+  margin-top:28px;
+  text-align:center;
   font-size:14px;
   color:#9fb2c6;
   line-height:1.5;
@@ -273,11 +210,6 @@ body{
     line-height:1.4;
   }
 
-  .product{
-    grid-template-columns:1fr;
-    gap:28px;
-  }
-
   .homeLogo{
     display:block;
     top:20px;
@@ -293,25 +225,32 @@ body{
   }
 
   .title{
-    margin-bottom:14px;
+    margin-bottom:18px;
   }
 
-  .description,
-  .description p,
-  .sectionTitle,
-  .variantName,
-  .qtyValue{
+  .variantGrid{
+    grid-template-columns:1fr;
+    gap:22px;
+  }
+
+  .variantCard{
+    padding:18px 16px 22px;
+    background:rgba(255,255,255,.20);
+    border:1px solid rgba(22,50,76,.16);
+  }
+
+  .variantName{
     color:#16324c;
+    font-size:24px;
   }
 
-  .variantNote,
+  .variantText{
+    color:#16324c;
+    font-size:15px;
+  }
+
   .notice{
     color:#35506a;
-  }
-
-  .orderPanel,
-  .orderRow{
-    border-color:rgba(22,50,76,.18);
   }
 
   .footer{
@@ -321,16 +260,6 @@ body{
 
   .footerRow{
     gap:8px 12px;
-  }
-
-  .orderRow{
-    grid-template-columns:1fr;
-    gap:12px;
-    align-items:start;
-  }
-
-  .qtyWrap{
-    justify-content:flex-start;
   }
 }
 
@@ -347,71 +276,37 @@ body{
 
   <div class="title">
     <h1>Grimson Mk-I</h1>
-    <p>Choose handle variant and proceed to order</p>
+    <p>Select handle variant and continue to secure checkout</p>
   </div>
 
-  <div class="product">
+  <div class="variantGrid">
 
-    <div>
-      <img src="knife.jpg" alt="Grimson Mk-I">
-    </div>
-
-    <div class="description">
-
-      <h2 class="sectionTitle">Order Variants</h2>
-
-      <p class="orderIntro">
-        The MK-I is currently offered in two handle variants. Each order line is separated so the selected color remains clear during fulfillment.
-      </p>
-
-      <div class="orderPanel">
-
-        <div class="orderRow">
-          <div class="variantInfo">
-            <div class="variantName">Khaki Handle</div>
-            <div class="variantNote">Utility-oriented finish with restrained field character.</div>
-          </div>
-
-          <div class="qtyWrap">
-            <button class="qtyBtn" type="button" onclick="changeQty('khaki', -1)">−</button>
-            <div class="qtyValue" id="qty-khaki">0</div>
-            <button class="qtyBtn" type="button" onclick="changeQty('khaki', 1)">+</button>
-          </div>
-
-          <a id="buy-khaki"
-             href="YOUR_KHAKI_STRIPE_LINK"
-             target="_blank"
-             class="buyBtn disabled"
-             onclick="return handleBuy(event,'khaki')">BUY KHAKI</a>
-        </div>
-
-        <div class="orderRow">
-          <div class="variantInfo">
-            <div class="variantName">Green Handle</div>
-            <div class="variantNote">Darker field tone with a more subdued visual profile.</div>
-          </div>
-
-          <div class="qtyWrap">
-            <button class="qtyBtn" type="button" onclick="changeQty('green', -1)">−</button>
-            <div class="qtyValue" id="qty-green">0</div>
-            <button class="qtyBtn" type="button" onclick="changeQty('green', 1)">+</button>
-          </div>
-
-          <a id="buy-green"
-             href="YOUR_GREEN_STRIPE_LINK"
-             target="_blank"
-             class="buyBtn disabled"
-             onclick="return handleBuy(event,'green')">BUY GREEN</a>
-        </div>
-
+    <div class="variantCard">
+      <img src="knife.jpg" alt="Grimson Mk-I Desert Fox">
+      <div class="variantName">Desert Fox</div>
+      <div class="variantText">
+        A lighter field tone designed for dry terrain and open environments.
       </div>
-
-      <p class="notice">
-        Select quantity first. Orders are processed per variant line. Age verification and identification may be required prior to delivery.
-      </p>
-
+      <div class="chooseWrap">
+        <a href="YOUR_DESERT_FOX_STRIPE_LINK" target="_blank" class="btn">CHOOSE</a>
+      </div>
     </div>
 
+    <div class="variantCard">
+      <img src="Knife2.jpg" alt="Grimson Mk-I Ranger">
+      <div class="variantName">Ranger</div>
+      <div class="variantText">
+        A darker field finish suited for woodland terrain and low-visibility environments.
+      </div>
+      <div class="chooseWrap">
+        <a href="YOUR_RANGER_STRIPE_LINK" target="_blank" class="btn">CHOOSE</a>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="notice">
+    Age verification and identification may be required prior to delivery.
   </div>
 
 </div>
@@ -424,35 +319,6 @@ body{
     <span>Website engineered by GWR TEAM</span>
   </div>
 </footer>
-
-<script>
-const qty = {
-  khaki: 0,
-  green: 0
-};
-
-function changeQty(type, change){
-  qty[type] += change;
-  if(qty[type] < 0) qty[type] = 0;
-
-  document.getElementById("qty-" + type).textContent = qty[type];
-
-  const btn = document.getElementById("buy-" + type);
-  if(qty[type] > 0){
-    btn.classList.remove("disabled");
-  }else{
-    btn.classList.add("disabled");
-  }
-}
-
-function handleBuy(event, type){
-  if(qty[type] <= 0){
-    event.preventDefault();
-    return false;
-  }
-  return true;
-}
-</script>
 
 </body>
 </html>
