@@ -109,6 +109,9 @@ body{
   margin:0 auto 12px;
   display:block;
   border-radius:10px;
+  cursor:pointer;
+  user-select:none;
+  -webkit-user-drag:none;
 }
 
 .thumbRow{
@@ -129,6 +132,8 @@ body{
   background:rgba(255,255,255,.05);
   cursor:pointer;
   transition:.2s ease;
+  user-select:none;
+  -webkit-user-drag:none;
 }
 
 .thumb:hover{
@@ -205,6 +210,127 @@ body{
   font-size:14px;
   color:#9fb2c6;
   line-height:1.5;
+}
+
+/* lightbox */
+
+.lightbox{
+  position:fixed;
+  inset:0;
+  z-index:9999;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:40px 90px;
+  background:rgba(3,6,10,.88);
+  backdrop-filter:blur(6px);
+  -webkit-backdrop-filter:blur(6px);
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .22s ease;
+}
+
+.lightbox.open{
+  opacity:1;
+  pointer-events:auto;
+}
+
+.lightboxInner{
+  position:relative;
+  width:min(100%, 1300px);
+  height:min(100%, 900px);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.lightboxImg{
+  max-width:100%;
+  max-height:100%;
+  width:auto;
+  height:auto;
+  display:block;
+  border-radius:14px;
+  box-shadow:0 24px 60px rgba(0,0,0,.45);
+  user-select:none;
+  -webkit-user-drag:none;
+  cursor:pointer;
+}
+
+.lightboxClose{
+  position:absolute;
+  top:-8px;
+  right:-8px;
+  width:44px;
+  height:44px;
+  border:none;
+  border-radius:999px;
+  background:rgba(10,16,23,.86);
+  color:#e7f1fb;
+  font-size:28px;
+  line-height:1;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border:1px solid rgba(74,123,181,.32);
+  transition:.2s ease;
+}
+
+.lightboxClose:hover{
+  background:rgba(20,32,45,.96);
+  border-color:#4a7bb5;
+}
+
+.lightboxNav{
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  width:54px;
+  height:54px;
+  border:none;
+  border-radius:999px;
+  background:rgba(10,16,23,.80);
+  color:#e7f1fb;
+  font-size:34px;
+  line-height:1;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border:1px solid rgba(74,123,181,.28);
+  transition:.2s ease;
+}
+
+.lightboxNav:hover{
+  background:rgba(20,32,45,.96);
+  border-color:#4a7bb5;
+}
+
+.lightboxPrev{
+  left:-74px;
+}
+
+.lightboxNext{
+  right:-74px;
+}
+
+.lightboxCounter{
+  position:absolute;
+  left:50%;
+  bottom:-34px;
+  transform:translateX(-50%);
+  padding:7px 12px;
+  border-radius:999px;
+  font-size:12px;
+  letter-spacing:.5px;
+  color:#d6e6f7;
+  background:rgba(10,16,23,.72);
+  border:1px solid rgba(74,123,181,.18);
+}
+
+.noScroll{
+  overflow:hidden;
 }
 
 /* footer */
@@ -343,6 +469,52 @@ body{
   .footerRow{
     gap:8px 12px;
   }
+
+  .lightbox{
+    padding:26px 16px 60px;
+  }
+
+  .lightboxInner{
+    width:100%;
+    height:auto;
+    max-height:100%;
+  }
+
+  .lightboxImg{
+    max-width:100%;
+    max-height:78vh;
+    border-radius:12px;
+  }
+
+  .lightboxClose{
+    top:-16px;
+    right:0;
+    width:40px;
+    height:40px;
+    font-size:24px;
+  }
+
+  .lightboxNav{
+    width:44px;
+    height:44px;
+    font-size:28px;
+    top:auto;
+    bottom:-56px;
+    transform:none;
+  }
+
+  .lightboxPrev{
+    left:calc(50% - 56px);
+  }
+
+  .lightboxNext{
+    right:calc(50% - 56px);
+  }
+
+  .lightboxCounter{
+    bottom:-52px;
+    font-size:11px;
+  }
 }
 </style>
 </head>
@@ -363,13 +535,27 @@ body{
   <div class="variantGrid">
 
     <div class="variantCard">
-      <img id="main-desert" class="mainImage" src="knife1.jpg" alt="Grimson Mk-I Desert Fox main image">
+      <img
+        id="main-desert"
+        class="mainImage"
+        src="knife1.jpg"
+        alt="Grimson Mk-I Desert Fox main image"
+        onclick="openLightbox('desert')"
+      >
 
       <div class="thumbRow">
-        <img src="knife1.jpg" alt="Desert Fox thumbnail 1" class="thumb active" onclick="swapImage('main-desert', 'knife1.jpg', this)">
-        <img src="knife2.jpg" alt="Desert Fox thumbnail 2" class="thumb" onclick="swapImage('main-desert', 'knife2.jpg', this)">
-        <img src="knife3.jpg" alt="Desert Fox thumbnail 3" class="thumb" onclick="swapImage('main-desert', 'knife3.jpg', this)">
-        <img src="knife4.jpg" alt="Desert Fox thumbnail 4" class="thumb" onclick="swapImage('main-desert', 'knife4.jpg', this)">
+        <img src="knife1.jpg" alt="Desert Fox thumbnail 1" class="thumb active desert-thumb"
+             onmouseenter="previewImage('main-desert','knife1.jpg', this)"
+             onclick="openLightboxAt('desert', 0)">
+        <img src="knife2.jpg" alt="Desert Fox thumbnail 2" class="thumb desert-thumb"
+             onmouseenter="previewImage('main-desert','knife2.jpg', this)"
+             onclick="openLightboxAt('desert', 1)">
+        <img src="knife3.jpg" alt="Desert Fox thumbnail 3" class="thumb desert-thumb"
+             onmouseenter="previewImage('main-desert','knife3.jpg', this)"
+             onclick="openLightboxAt('desert', 2)">
+        <img src="knife4.jpg" alt="Desert Fox thumbnail 4" class="thumb desert-thumb"
+             onmouseenter="previewImage('main-desert','knife4.jpg', this)"
+             onclick="openLightboxAt('desert', 3)">
       </div>
 
       <div class="variantName">Desert Fox</div>
@@ -389,13 +575,27 @@ body{
     </div>
 
     <div class="variantCard">
-      <img id="main-ranger" class="mainImage" src="knife5.jpg" alt="Grimson Mk-I Ranger main image">
+      <img
+        id="main-ranger"
+        class="mainImage"
+        src="knife5.jpg"
+        alt="Grimson Mk-I Ranger main image"
+        onclick="openLightbox('ranger')"
+      >
 
       <div class="thumbRow">
-        <img src="knife5.jpg" alt="Ranger thumbnail 1" class="thumb active" onclick="swapImage('main-ranger', 'knife5.jpg', this)">
-        <img src="knife6.jpg" alt="Ranger thumbnail 2" class="thumb" onclick="swapImage('main-ranger', 'knife6.jpg', this)">
-        <img src="knife7.jpg" alt="Ranger thumbnail 3" class="thumb" onclick="swapImage('main-ranger', 'knife7.jpg', this)">
-        <img src="knife8.jpg" alt="Ranger thumbnail 4" class="thumb" onclick="swapImage('main-ranger', 'knife8.jpg', this)">
+        <img src="knife5.jpg" alt="Ranger thumbnail 1" class="thumb active ranger-thumb"
+             onmouseenter="previewImage('main-ranger','knife5.jpg', this)"
+             onclick="openLightboxAt('ranger', 0)">
+        <img src="knife6.jpg" alt="Ranger thumbnail 2" class="thumb ranger-thumb"
+             onmouseenter="previewImage('main-ranger','knife6.jpg', this)"
+             onclick="openLightboxAt('ranger', 1)">
+        <img src="knife7.jpg" alt="Ranger thumbnail 3" class="thumb ranger-thumb"
+             onmouseenter="previewImage('main-ranger','knife7.jpg', this)"
+             onclick="openLightboxAt('ranger', 2)">
+        <img src="knife8.jpg" alt="Ranger thumbnail 4" class="thumb ranger-thumb"
+             onmouseenter="previewImage('main-ranger','knife8.jpg', this)"
+             onclick="openLightboxAt('ranger', 3)">
       </div>
 
       <div class="variantName">Ranger</div>
@@ -422,6 +622,16 @@ body{
 
 </div>
 
+<div id="lightbox" class="lightbox" onclick="backdropClose(event)">
+  <div class="lightboxInner">
+    <button class="lightboxClose" type="button" aria-label="Close image viewer" onclick="closeLightbox(event)">×</button>
+    <button class="lightboxNav lightboxPrev" type="button" aria-label="Previous image" onclick="prevImage(event)">‹</button>
+    <img id="lightboxImg" class="lightboxImg" src="" alt="Expanded product image" onclick="nextImage(event)">
+    <button class="lightboxNav lightboxNext" type="button" aria-label="Next image" onclick="nextImage(event)">›</button>
+    <div id="lightboxCounter" class="lightboxCounter">1 / 4</div>
+  </div>
+</div>
+
 <footer class="footer">
   <div class="footerRow">
     <span>© 2026 GWR TEAM</span>
@@ -437,18 +647,128 @@ body{
 </footer>
 
 <script>
-function swapImage(mainId, newSrc, thumbEl){
-  document.getElementById(mainId).src = newSrc;
+const galleries = {
+  desert: ["knife1.jpg", "knife2.jpg", "knife3.jpg", "knife4.jpg"],
+  ranger: ["knife5.jpg", "knife6.jpg", "knife7.jpg", "knife8.jpg"]
+};
+
+let currentGallery = "desert";
+let currentIndex = 0;
+
+function previewImage(mainId, newSrc, thumbEl){
+  const mainImg = document.getElementById(mainId);
+  mainImg.src = newSrc;
 
   const thumbRow = thumbEl.parentElement;
-  const thumbs = thumbRow.querySelectorAll('.thumb');
+  const thumbs = thumbRow.querySelectorAll(".thumb");
 
   thumbs.forEach(function(thumb){
-    thumb.classList.remove('active');
+    thumb.classList.remove("active");
   });
 
-  thumbEl.classList.add('active');
+  thumbEl.classList.add("active");
 }
+
+function syncActiveThumbs(galleryName, index){
+  const mainId = galleryName === "desert" ? "main-desert" : "main-ranger";
+  const thumbSelector = galleryName === "desert" ? ".desert-thumb" : ".ranger-thumb";
+  const images = galleries[galleryName];
+  const mainImg = document.getElementById(mainId);
+  const thumbs = document.querySelectorAll(thumbSelector);
+
+  mainImg.src = images[index];
+
+  thumbs.forEach(function(thumb, i){
+    thumb.classList.toggle("active", i === index);
+  });
+}
+
+function findCurrentMainIndex(galleryName){
+  const mainId = galleryName === "desert" ? "main-desert" : "main-ranger";
+  const currentSrc = document.getElementById(mainId).getAttribute("src");
+  const images = galleries[galleryName];
+  const foundIndex = images.indexOf(currentSrc);
+
+  return foundIndex >= 0 ? foundIndex : 0;
+}
+
+function updateLightbox(){
+  const lightboxImg = document.getElementById("lightboxImg");
+  const lightboxCounter = document.getElementById("lightboxCounter");
+  const images = galleries[currentGallery];
+
+  lightboxImg.src = images[currentIndex];
+  lightboxCounter.textContent = (currentIndex + 1) + " / " + images.length;
+}
+
+function openLightbox(galleryName){
+  currentGallery = galleryName;
+  currentIndex = findCurrentMainIndex(galleryName);
+
+  updateLightbox();
+  document.getElementById("lightbox").classList.add("open");
+  document.body.classList.add("noScroll");
+}
+
+function openLightboxAt(galleryName, index){
+  currentGallery = galleryName;
+  currentIndex = index;
+
+  syncActiveThumbs(galleryName, index);
+  updateLightbox();
+  document.getElementById("lightbox").classList.add("open");
+  document.body.classList.add("noScroll");
+}
+
+function closeLightbox(event){
+  if(event){
+    event.stopPropagation();
+  }
+  document.getElementById("lightbox").classList.remove("open");
+  document.body.classList.remove("noScroll");
+}
+
+function backdropClose(event){
+  if(event.target.id === "lightbox"){
+    closeLightbox();
+  }
+}
+
+function prevImage(event){
+  if(event){
+    event.stopPropagation();
+  }
+  const images = galleries[currentGallery];
+  currentIndex = (currentIndex - 1 + images.length) % images.length;
+  updateLightbox();
+  syncActiveThumbs(currentGallery, currentIndex);
+}
+
+function nextImage(event){
+  if(event){
+    event.stopPropagation();
+  }
+  const images = galleries[currentGallery];
+  currentIndex = (currentIndex + 1) % images.length;
+  updateLightbox();
+  syncActiveThumbs(currentGallery, currentIndex);
+}
+
+document.addEventListener("keydown", function(event){
+  const lightbox = document.getElementById("lightbox");
+
+  if(!lightbox.classList.contains("open")){
+    return;
+  }
+
+  if(event.key === "Escape"){
+    closeLightbox();
+  } else if(event.key === "ArrowLeft"){
+    prevImage();
+  } else if(event.key === "ArrowRight"){
+    nextImage();
+  }
+});
 </script>
 
 </body>
