@@ -652,16 +652,19 @@ const galleries = {
   ranger: ["knife5.jpg", "knife6.jpg", "knife7.jpg", "knife8.jpg"]
 };
 
-let currentGallery = "desert";
+let currentGallery = null;
 let currentIndex = 0;
 
 function previewImage(mainId, newSrc, thumbEl){
   const mainImg = document.getElementById(mainId);
-  mainImg.src = newSrc;
+  if(mainImg){
+    mainImg.src = newSrc;
+  }
 
-  const thumbRow = thumbEl.parentElement;
+  const thumbRow = thumbEl.closest(".thumbRow");
+  if(!thumbRow) return;
+
   const thumbs = thumbRow.querySelectorAll(".thumb");
-
   thumbs.forEach(function(thumb){
     thumb.classList.remove("active");
   });
@@ -676,7 +679,9 @@ function syncActiveThumbs(galleryName, index){
   const mainImg = document.getElementById(mainId);
   const thumbs = document.querySelectorAll(thumbSelector);
 
-  mainImg.src = images[index];
+  if(mainImg && images[index]){
+    mainImg.src = images[index];
+  }
 
   thumbs.forEach(function(thumb, i){
     thumb.classList.toggle("active", i === index);
@@ -685,10 +690,13 @@ function syncActiveThumbs(galleryName, index){
 
 function findCurrentMainIndex(galleryName){
   const mainId = galleryName === "desert" ? "main-desert" : "main-ranger";
-  const currentSrc = document.getElementById(mainId).getAttribute("src");
+  const mainImg = document.getElementById(mainId);
   const images = galleries[galleryName];
-  const foundIndex = images.indexOf(currentSrc);
 
+  if(!mainImg) return 0;
+
+  const currentSrc = mainImg.getAttribute("src");
+  const foundIndex = images.indexOf(currentSrc);
   return foundIndex >= 0 ? foundIndex : 0;
 }
 
@@ -696,6 +704,8 @@ function updateLightbox(){
   const lightboxImg = document.getElementById("lightboxImg");
   const lightboxCounter = document.getElementById("lightboxCounter");
   const images = galleries[currentGallery];
+
+  if(!images || !lightboxImg || !lightboxCounter) return;
 
   lightboxImg.src = images[currentIndex];
   lightboxCounter.textContent = (currentIndex + 1) + " / " + images.length;
@@ -721,23 +731,21 @@ function openLightboxAt(galleryName, index){
 }
 
 function closeLightbox(event){
-  if(event){
-    event.stopPropagation();
-  }
+  if(event) event.stopPropagation();
   document.getElementById("lightbox").classList.remove("open");
   document.body.classList.remove("noScroll");
 }
 
 function backdropClose(event){
-  if(event.target.id === "lightbox"){
+  if(event.target === document.getElementById("lightbox")){
     closeLightbox();
   }
 }
 
 function prevImage(event){
-  if(event){
-    event.stopPropagation();
-  }
+  if(event) event.stopPropagation();
+  if(!currentGallery) return;
+
   const images = galleries[currentGallery];
   currentIndex = (currentIndex - 1 + images.length) % images.length;
   updateLightbox();
@@ -745,9 +753,9 @@ function prevImage(event){
 }
 
 function nextImage(event){
-  if(event){
-    event.stopPropagation();
-  }
+  if(event) event.stopPropagation();
+  if(!currentGallery) return;
+
   const images = galleries[currentGallery];
   currentIndex = (currentIndex + 1) % images.length;
   updateLightbox();
@@ -756,10 +764,7 @@ function nextImage(event){
 
 document.addEventListener("keydown", function(event){
   const lightbox = document.getElementById("lightbox");
-
-  if(!lightbox.classList.contains("open")){
-    return;
-  }
+  if(!lightbox.classList.contains("open")) return;
 
   if(event.key === "Escape"){
     closeLightbox();
