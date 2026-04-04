@@ -1,7 +1,7 @@
 User-agent: *
 Allow: /
 
-# block heavy SEO crawlers
+# Block heavy commercial SEO crawlers
 User-agent: AhrefsBot
 Disallow: /
 
@@ -13,3 +13,16 @@ Disallow: /
 
 User-agent: SemrushBot
 Disallow: /
+
+# Allow important search engines explicitly
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+# Sitemap location
+Sitemap: https://grimson.no/sitemap.xml
