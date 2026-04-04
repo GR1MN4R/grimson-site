@@ -4,7 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>GRIMSON</title>
+<title>GRIMSON — Reinforced Tanto Utility Knives for Professional Use</title>
+<meta name="description" content="GRIMSON produces reinforced tanto utility knives designed for demanding construction, outdoor, and professional field use. Built for durability, precision, and long-term reliability.">
 
 <style>
 html, body{
@@ -206,6 +207,41 @@ body{
   transform:translateY(-1px);
 }
 
+/* stealth seo text */
+.stealthSeoText{
+  position:absolute;
+  left:50%;
+  bottom:58px;
+  transform:translateX(-50%);
+  width:92vw;
+  max-width:1320px;
+  text-align:center;
+  color:#b9c7d6;
+  opacity:.50;
+  z-index:2;
+  pointer-events:none;
+}
+
+.stealthSeoText h2{
+  margin:0 0 5px 0;
+  font-size:14px;
+  font-weight:600;
+  letter-spacing:1px;
+  color:#c7d6e4;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.stealthSeoText p{
+  margin:0;
+  font-size:12px;
+  line-height:1.35;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
 /* contact modal */
 .contactModal{
   position:fixed;
@@ -311,7 +347,7 @@ body{
   margin:0 auto;
 }
 
-  .footer a{
+.footer a{
   color:#b9c7d6;
   text-decoration:none;
   transition:.2s;
@@ -322,7 +358,6 @@ body{
 }
 
 /* separator style */
-
 .sep{
   opacity:.45;
 }
@@ -392,6 +427,21 @@ body{
   .heroNav a{
     padding:12px 22px;
     font-size:15px;
+  }
+
+  .stealthSeoText{
+    bottom:64px;
+    width:94vw;
+    opacity:.44;
+  }
+
+  .stealthSeoText h2{
+    font-size:11px;
+    margin-bottom:4px;
+  }
+
+  .stealthSeoText p{
+    font-size:10px;
   }
 
   .contactBox{
@@ -476,6 +526,11 @@ body{
   </div>
 </main>
 
+<div class="stealthSeoText">
+  <h2>PROFESSIONAL UTILITY KNIVES BUILT FOR REAL WORK</h2>
+  <p>GRIMSON develops reinforced tanto utility knives engineered for demanding construction, field work, and long-term professional use.</p>
+</div>
+
 <div id="contactModal" class="contactModal">
   <div class="contactBox">
     <button class="contactClose" id="contactClose" aria-label="Close">×</button>
@@ -483,12 +538,11 @@ body{
     <h2>Contact GRIMSON</h2>
 
     <p>
-  For wholesale, retail partnerships, or larger inquiries regarding GRIMSON products,
-  please contact us directly by using the contact form below.
-</p>
+      For wholesale, retail partnerships, or larger inquiries regarding GRIMSON products,
+      please contact us directly by using the contact form below.
+    </p>
 
-<a href="contact.html" class="contactAction">Use Contact Form</a>
-
+    <a href="contact.html" class="contactAction">Use Contact Form</a>
   </div>
 </div>
 
