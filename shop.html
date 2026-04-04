@@ -31,8 +31,6 @@ body{
   padding-bottom:70px;
 }
 
-/* home logo */
-
 .homeLogo{
   position:fixed;
   top:30px;
@@ -52,16 +50,12 @@ body{
   transform:scale(1.05);
 }
 
-/* page container */
-
 .container{
   max-width:1520px;
   margin:auto;
   padding:80px 28px 40px;
   box-sizing:border-box;
 }
-
-/* title */
 
 .title{
   text-align:center;
@@ -82,8 +76,6 @@ body{
   margin:0;
 }
 
-/* cards */
-
 .variantGrid{
   display:grid;
   grid-template-columns:1fr 1fr;
@@ -103,12 +95,24 @@ body{
   -webkit-backdrop-filter:blur(2px);
 }
 
-.mainImage{
+.mainImageWrap{
   width:100%;
   max-width:620px;
+  height:460px;
   margin:0 auto 16px;
-  display:block;
+  display:flex;
+  align-items:center;
+  justify-content:center;
   border-radius:12px;
+  background:rgba(255,255,255,.03);
+  overflow:hidden;
+}
+
+.mainImage{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  display:block;
   cursor:pointer;
   user-select:none;
   -webkit-user-drag:none;
@@ -125,15 +129,17 @@ body{
 .thumb{
   width:78px;
   height:78px;
-  object-fit:cover;
+  object-fit:contain;
   display:block;
   border-radius:8px;
   border:2px solid rgba(255,255,255,.88);
-  background:rgba(255,255,255,.05);
+  background:rgba(255,255,255,.06);
   cursor:pointer;
   transition:.2s ease;
   user-select:none;
   -webkit-user-drag:none;
+  padding:4px;
+  box-sizing:border-box;
 }
 
 .thumb:hover{
@@ -212,8 +218,6 @@ body{
   line-height:1.5;
 }
 
-/* lightbox */
-
 .lightbox{
   position:fixed;
   inset:0;
@@ -249,12 +253,12 @@ body{
   max-height:100%;
   width:auto;
   height:auto;
+  object-fit:contain;
   display:block;
   border-radius:14px;
   box-shadow:0 24px 60px rgba(0,0,0,.45);
   user-select:none;
   -webkit-user-drag:none;
-  cursor:pointer;
 }
 
 .lightboxClose{
@@ -333,8 +337,6 @@ body{
   overflow:hidden;
 }
 
-/* footer */
-
 .footer{
   position:fixed;
   left:0;
@@ -374,8 +376,6 @@ body{
 .sep{
   opacity:.45;
 }
-
-/* mobile */
 
 @media (max-width:700px){
 
@@ -428,6 +428,10 @@ body{
     padding:18px 16px 22px;
     background:rgba(255,255,255,.20);
     border:1px solid rgba(22,50,76,.16);
+  }
+
+  .mainImageWrap{
+    height:320px;
   }
 
   .variantName{
@@ -535,27 +539,29 @@ body{
   <div class="variantGrid">
 
     <div class="variantCard">
-      <img
-        id="main-desert"
-        class="mainImage"
-        src="knife1.jpg"
-        alt="Grimson Mk-I Desert Fox main image"
-        onclick="openLightbox('desert')"
-      >
+      <div class="mainImageWrap">
+        <img
+          id="main-desert"
+          class="mainImage"
+          src="knife1.jpg"
+          alt="Grimson Mk-I Desert Fox main image"
+          onclick="openLightbox('desert')"
+        >
+      </div>
 
       <div class="thumbRow">
         <img src="knife1.jpg" alt="Desert Fox thumbnail 1" class="thumb active desert-thumb"
-             onmouseenter="previewImage('main-desert','knife1.jpg', this)"
-             onclick="openLightboxAt('desert', 0)">
+             onmouseenter="setPreview('desert', 0)"
+             onclick="setPreview('desert', 0)">
         <img src="knife2.jpg" alt="Desert Fox thumbnail 2" class="thumb desert-thumb"
-             onmouseenter="previewImage('main-desert','knife2.jpg', this)"
-             onclick="openLightboxAt('desert', 1)">
+             onmouseenter="setPreview('desert', 1)"
+             onclick="setPreview('desert', 1)">
         <img src="knife3.jpg" alt="Desert Fox thumbnail 3" class="thumb desert-thumb"
-             onmouseenter="previewImage('main-desert','knife3.jpg', this)"
-             onclick="openLightboxAt('desert', 2)">
+             onmouseenter="setPreview('desert', 2)"
+             onclick="setPreview('desert', 2)">
         <img src="knife4.jpg" alt="Desert Fox thumbnail 4" class="thumb desert-thumb"
-             onmouseenter="previewImage('main-desert','knife4.jpg', this)"
-             onclick="openLightboxAt('desert', 3)">
+             onmouseenter="setPreview('desert', 3)"
+             onclick="setPreview('desert', 3)">
       </div>
 
       <div class="variantName">Desert Fox</div>
@@ -575,27 +581,29 @@ body{
     </div>
 
     <div class="variantCard">
-      <img
-        id="main-ranger"
-        class="mainImage"
-        src="knife5.jpg"
-        alt="Grimson Mk-I Ranger main image"
-        onclick="openLightbox('ranger')"
-      >
+      <div class="mainImageWrap">
+        <img
+          id="main-ranger"
+          class="mainImage"
+          src="knife5.jpg"
+          alt="Grimson Mk-I Ranger main image"
+          onclick="openLightbox('ranger')"
+        >
+      </div>
 
       <div class="thumbRow">
         <img src="knife5.jpg" alt="Ranger thumbnail 1" class="thumb active ranger-thumb"
-             onmouseenter="previewImage('main-ranger','knife5.jpg', this)"
-             onclick="openLightboxAt('ranger', 0)">
+             onmouseenter="setPreview('ranger', 0)"
+             onclick="setPreview('ranger', 0)">
         <img src="knife6.jpg" alt="Ranger thumbnail 2" class="thumb ranger-thumb"
-             onmouseenter="previewImage('main-ranger','knife6.jpg', this)"
-             onclick="openLightboxAt('ranger', 1)">
+             onmouseenter="setPreview('ranger', 1)"
+             onclick="setPreview('ranger', 1)">
         <img src="knife7.jpg" alt="Ranger thumbnail 3" class="thumb ranger-thumb"
-             onmouseenter="previewImage('main-ranger','knife7.jpg', this)"
-             onclick="openLightboxAt('ranger', 2)">
+             onmouseenter="setPreview('ranger', 2)"
+             onclick="setPreview('ranger', 2)">
         <img src="knife8.jpg" alt="Ranger thumbnail 4" class="thumb ranger-thumb"
-             onmouseenter="previewImage('main-ranger','knife8.jpg', this)"
-             onclick="openLightboxAt('ranger', 3)">
+             onmouseenter="setPreview('ranger', 3)"
+             onclick="setPreview('ranger', 3)">
       </div>
 
       <div class="variantName">Ranger</div>
@@ -626,7 +634,7 @@ body{
   <div class="lightboxInner">
     <button class="lightboxClose" type="button" aria-label="Close image viewer" onclick="closeLightbox(event)">×</button>
     <button class="lightboxNav lightboxPrev" type="button" aria-label="Previous image" onclick="prevImage(event)">‹</button>
-    <img id="lightboxImg" class="lightboxImg" src="" alt="Expanded product image" onclick="nextImage(event)">
+    <img id="lightboxImg" class="lightboxImg" src="" alt="Expanded product image">
     <button class="lightboxNav lightboxNext" type="button" aria-label="Next image" onclick="nextImage(event)">›</button>
     <div id="lightboxCounter" class="lightboxCounter">1 / 4</div>
   </div>
@@ -655,29 +663,18 @@ const galleries = {
 let currentGallery = null;
 let currentIndex = 0;
 
-function previewImage(mainId, newSrc, thumbEl){
-  const mainImg = document.getElementById(mainId);
-  if(mainImg){
-    mainImg.src = newSrc;
-  }
-
-  const thumbRow = thumbEl.closest(".thumbRow");
-  if(!thumbRow) return;
-
-  const thumbs = thumbRow.querySelectorAll(".thumb");
-  thumbs.forEach(function(thumb){
-    thumb.classList.remove("active");
-  });
-
-  thumbEl.classList.add("active");
+function getMainId(galleryName){
+  return galleryName === "desert" ? "main-desert" : "main-ranger";
 }
 
-function syncActiveThumbs(galleryName, index){
-  const mainId = galleryName === "desert" ? "main-desert" : "main-ranger";
-  const thumbSelector = galleryName === "desert" ? ".desert-thumb" : ".ranger-thumb";
+function getThumbSelector(galleryName){
+  return galleryName === "desert" ? ".desert-thumb" : ".ranger-thumb";
+}
+
+function setPreview(galleryName, index){
   const images = galleries[galleryName];
-  const mainImg = document.getElementById(mainId);
-  const thumbs = document.querySelectorAll(thumbSelector);
+  const mainImg = document.getElementById(getMainId(galleryName));
+  const thumbs = document.querySelectorAll(getThumbSelector(galleryName));
 
   if(mainImg && images[index]){
     mainImg.src = images[index];
@@ -689,10 +686,8 @@ function syncActiveThumbs(galleryName, index){
 }
 
 function findCurrentMainIndex(galleryName){
-  const mainId = galleryName === "desert" ? "main-desert" : "main-ranger";
-  const mainImg = document.getElementById(mainId);
+  const mainImg = document.getElementById(getMainId(galleryName));
   const images = galleries[galleryName];
-
   if(!mainImg) return 0;
 
   const currentSrc = mainImg.getAttribute("src");
@@ -705,7 +700,7 @@ function updateLightbox(){
   const lightboxCounter = document.getElementById("lightboxCounter");
   const images = galleries[currentGallery];
 
-  if(!images || !lightboxImg || !lightboxCounter) return;
+  if(!images) return;
 
   lightboxImg.src = images[currentIndex];
   lightboxCounter.textContent = (currentIndex + 1) + " / " + images.length;
@@ -714,17 +709,6 @@ function updateLightbox(){
 function openLightbox(galleryName){
   currentGallery = galleryName;
   currentIndex = findCurrentMainIndex(galleryName);
-
-  updateLightbox();
-  document.getElementById("lightbox").classList.add("open");
-  document.body.classList.add("noScroll");
-}
-
-function openLightboxAt(galleryName, index){
-  currentGallery = galleryName;
-  currentIndex = index;
-
-  syncActiveThumbs(galleryName, index);
   updateLightbox();
   document.getElementById("lightbox").classList.add("open");
   document.body.classList.add("noScroll");
@@ -737,29 +721,25 @@ function closeLightbox(event){
 }
 
 function backdropClose(event){
-  if(event.target === document.getElementById("lightbox")){
+  if(event.target.id === "lightbox"){
     closeLightbox();
   }
 }
 
 function prevImage(event){
   if(event) event.stopPropagation();
-  if(!currentGallery) return;
-
   const images = galleries[currentGallery];
   currentIndex = (currentIndex - 1 + images.length) % images.length;
   updateLightbox();
-  syncActiveThumbs(currentGallery, currentIndex);
+  setPreview(currentGallery, currentIndex);
 }
 
 function nextImage(event){
   if(event) event.stopPropagation();
-  if(!currentGallery) return;
-
   const images = galleries[currentGallery];
   currentIndex = (currentIndex + 1) % images.length;
   updateLightbox();
-  syncActiveThumbs(currentGallery, currentIndex);
+  setPreview(currentGallery, currentIndex);
 }
 
 document.addEventListener("keydown", function(event){
