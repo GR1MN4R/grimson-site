@@ -7,7 +7,6 @@
 <title>Shop – Grimson Mk-I</title>
 
 <style>
-
 @font-face{
   font-family:"ElementalEnd";
   src:url("ElementalEnd.woff2") format("woff2");
@@ -45,6 +44,7 @@ body{
   height:38px;
   opacity:.88;
   transition:.25s ease;
+  display:block;
 }
 
 .homeLogo img:hover{
@@ -71,7 +71,7 @@ body{
 .title h1{
   font-family:"ElementalEnd", Arial, sans-serif;
   font-size:42px;
-  margin-bottom:10px;
+  margin:0 0 10px;
   letter-spacing:3px;
 }
 
@@ -89,6 +89,8 @@ body{
   grid-template-columns:1fr 1fr;
   gap:34px;
   align-items:start;
+  max-width:780px;
+  margin:0 auto;
 }
 
 .variantCard{
@@ -101,12 +103,42 @@ body{
   -webkit-backdrop-filter:blur(2px);
 }
 
-.variantCard img{
+.mainImage{
   width:100%;
   max-width:420px;
-  margin:0 auto 18px;
+  margin:0 auto 12px;
   display:block;
   border-radius:10px;
+}
+
+.thumbRow{
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  margin:0 auto 16px;
+  flex-wrap:wrap;
+}
+
+.thumb{
+  width:58px;
+  height:58px;
+  object-fit:cover;
+  display:block;
+  border-radius:6px;
+  border:2px solid rgba(255,255,255,.88);
+  background:rgba(255,255,255,.05);
+  cursor:pointer;
+  transition:.2s ease;
+}
+
+.thumb:hover{
+  border-color:#4a7bb5;
+  transform:translateY(-1px);
+}
+
+.thumb.active{
+  border-color:#4a7bb5;
+  box-shadow:0 0 0 1px rgba(74,123,181,.35);
 }
 
 .variantName{
@@ -128,25 +160,43 @@ body{
 }
 
 .chooseWrap{
-  text-align:center;
+  display:flex;
+  justify-content:center;
+  gap:12px;
+  flex-wrap:wrap;
 }
 
 .btn{
-  display:inline-block;
-  padding:12px 28px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-width:96px;
+  min-height:44px;
+  padding:10px 14px;
+  box-sizing:border-box;
   border-radius:6px;
   border:1px solid #2c3f55;
   background:linear-gradient(180deg,#1a2633,#0f1822);
   color:#cfe6ff;
   font-weight:700;
+  font-size:14px;
+  line-height:1.05;
   text-decoration:none;
+  text-align:center;
   transition:.25s;
-  letter-spacing:.6px;
+  letter-spacing:.4px;
 }
 
 .btn:hover{
   background:linear-gradient(180deg,#21364a,#15212e);
   border-color:#4a7bb5;
+}
+
+.btn.na{
+  flex-direction:column;
+  gap:1px;
+  font-size:12px;
+  line-height:1.02;
 }
 
 .notice{
@@ -185,7 +235,7 @@ body{
   margin:0 auto;
 }
 
-  .footer a{
+.footer a{
   color:#b9c7d6;
   text-decoration:none;
   transition:.2s;
@@ -194,8 +244,6 @@ body{
 .footer a:hover{
   color:#ffffff;
 }
-
-/* separator style */
 
 .sep{
   opacity:.45;
@@ -247,6 +295,7 @@ body{
   .variantGrid{
     grid-template-columns:1fr;
     gap:22px;
+    max-width:100%;
   }
 
   .variantCard{
@@ -265,6 +314,23 @@ body{
     font-size:15px;
   }
 
+  .thumb{
+    border-color:rgba(22,50,76,.5);
+    width:54px;
+    height:54px;
+  }
+
+  .thumb.active{
+    border-color:#16324c;
+    box-shadow:0 0 0 1px rgba(22,50,76,.28);
+  }
+
+  .btn{
+    min-width:90px;
+    min-height:42px;
+    font-size:13px;
+  }
+
   .notice{
     color:#35506a;
   }
@@ -278,7 +344,6 @@ body{
     gap:8px 12px;
   }
 }
-
 </style>
 </head>
 
@@ -298,30 +363,61 @@ body{
   <div class="variantGrid">
 
     <div class="variantCard">
-      <img src="knife.jpg" alt="Grimson Mk-I Desert Fox">
+      <img id="main-desert" class="mainImage" src="knife1.jpg" alt="Grimson Mk-I Desert Fox main image">
+
+      <div class="thumbRow">
+        <img src="knife1.jpg" alt="Desert Fox thumbnail 1" class="thumb active" onclick="swapImage('main-desert', 'knife1.jpg', this)">
+        <img src="knife2.jpg" alt="Desert Fox thumbnail 2" class="thumb" onclick="swapImage('main-desert', 'knife2.jpg', this)">
+        <img src="knife3.jpg" alt="Desert Fox thumbnail 3" class="thumb" onclick="swapImage('main-desert', 'knife3.jpg', this)">
+        <img src="knife4.jpg" alt="Desert Fox thumbnail 4" class="thumb" onclick="swapImage('main-desert', 'knife4.jpg', this)">
+      </div>
+
       <div class="variantName">Desert Fox</div>
+
       <div class="variantText">
         A lighter field tone designed for dry terrain and open environments.
       </div>
+
       <div class="chooseWrap">
-        <a href="https://buy.stripe.com/00wdR8eoUcrfgZW6m9fjG03" target="_blank" class="btn">CHOOSE</a>
+        <a href="#" target="_blank" rel="noopener noreferrer" class="btn">NORWAY</a>
+        <a href="#" target="_blank" rel="noopener noreferrer" class="btn">EU</a>
+        <a href="#" target="_blank" rel="noopener noreferrer" class="btn na">
+          <span>NORTH</span>
+          <span>AMERICA</span>
+        </a>
       </div>
     </div>
 
     <div class="variantCard">
-      <img src="Knife2.jpg" alt="Grimson Mk-I Ranger">
+      <img id="main-ranger" class="mainImage" src="knife5.jpg" alt="Grimson Mk-I Ranger main image">
+
+      <div class="thumbRow">
+        <img src="knife5.jpg" alt="Ranger thumbnail 1" class="thumb active" onclick="swapImage('main-ranger', 'knife5.jpg', this)">
+        <img src="knife6.jpg" alt="Ranger thumbnail 2" class="thumb" onclick="swapImage('main-ranger', 'knife6.jpg', this)">
+        <img src="knife7.jpg" alt="Ranger thumbnail 3" class="thumb" onclick="swapImage('main-ranger', 'knife7.jpg', this)">
+        <img src="knife8.jpg" alt="Ranger thumbnail 4" class="thumb" onclick="swapImage('main-ranger', 'knife8.jpg', this)">
+      </div>
+
       <div class="variantName">Ranger</div>
+
       <div class="variantText">
         A darker field finish suited for woodland terrain and low-visibility environments.
       </div>
+
       <div class="chooseWrap">
-        <a href="https://buy.stripe.com/6oU4gydkQ0Ix9xueSFfjG02" target="_blank" class="btn">CHOOSE</a>
+        <a href="#" target="_blank" rel="noopener noreferrer" class="btn">NORWAY</a>
+        <a href="#" target="_blank" rel="noopener noreferrer" class="btn">EU</a>
+        <a href="#" target="_blank" rel="noopener noreferrer" class="btn na">
+          <span>NORTH</span>
+          <span>AMERICA</span>
+        </a>
       </div>
     </div>
 
   </div>
 
-    <div class="notice">Secure checkout powered by Stripe • Orders processed within 24h • Age verification required upon delivery
+  <div class="notice">
+    Secure checkout powered by Stripe • Orders processed within 24h • Age verification required upon delivery
   </div>
 
 </div>
@@ -339,6 +435,21 @@ body{
     <a href="privacy.html">Privacy</a>
   </div>
 </footer>
+
+<script>
+function swapImage(mainId, newSrc, thumbEl){
+  document.getElementById(mainId).src = newSrc;
+
+  const thumbRow = thumbEl.parentElement;
+  const thumbs = thumbRow.querySelectorAll('.thumb');
+
+  thumbs.forEach(function(thumb){
+    thumb.classList.remove('active');
+  });
+
+  thumbEl.classList.add('active');
+}
+</script>
 
 </body>
 </html>
