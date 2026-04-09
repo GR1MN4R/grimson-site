@@ -95,20 +95,30 @@ body{
 
 .product{
   display:grid;
-  grid-template-columns:1.3fr .9fr;
-  gap:60px;
-  align-items:center;
+  grid-template-columns:minmax(520px, 1.15fr) minmax(420px, .85fr);
+  gap:56px;
+  align-items:start;
 }
 
 /* image */
 
 .product img{
   width:100%;
-  max-width:520px;
+  max-width:none;
   border-radius:10px;
   display:block;
 }
 
+  .product > div:first-child{
+  align-self:start;
+}
+
+.description{
+  font-size:16px;
+  line-height:1.6;
+  color:#c9d8e8;
+  padding-top:6px;
+}
 /* description */
 
 .description{
