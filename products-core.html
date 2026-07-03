@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>GRIMSON MK-I — Reinforced Tanto Utility Knife for Construction and Field Use</title>
-<meta name="description" content="GRIMSON MK-I reinforced tanto utility knife built for construction, field work, and professional use. 440B stainless steel, flat grind, and durable controlled geometry for real work.">
+<title>GRIMSON MK-I CORE LINE — Reinforced Tanto Utility Knife for Construction and Field Use</title>
+<meta name="description" content="GRIMSON MK-I CORE LINE reinforced tanto utility knife built for construction, field work, and professional use. 440B stainless steel, flat grind, and durable controlled geometry for real work.">
 
 <style>
 
@@ -46,6 +46,7 @@ body{
   height:38px;
   opacity:.88;
   transition:.25s ease;
+  display:block;
 }
 
 .homeLogo img:hover{
@@ -72,7 +73,7 @@ body{
 .title h1{
   font-family:"ElementalEnd", Arial, sans-serif;
   font-size:42px;
-  margin-bottom:10px;
+  margin:0 0 10px;
   letter-spacing:3px;
 }
 
@@ -89,6 +90,7 @@ body{
   font-size:26px;
   color:#b7c9db;
   letter-spacing:.4px;
+  margin:0;
 }
 
 /* product layout */
@@ -100,17 +102,74 @@ body{
   align-items:start;
 }
 
-/* image */
+/* hero image viewer */
 
-.product img{
-  width:100%;
-  max-width:none;
-  border-radius:10px;
-  display:block;
+.heroGallery{
+  align-self:start;
+  background:rgba(8,12,17,.34);
+  border:1px solid rgba(74,123,181,.16);
+  border-radius:14px;
+  padding:24px 24px 26px;
+  box-sizing:border-box;
+  backdrop-filter:blur(2px);
+  -webkit-backdrop-filter:blur(2px);
 }
 
-.product > div:first-child{
-  align-self:start;
+.mainImageWrap{
+  width:100%;
+  max-width:100%;
+  height:720px;
+  margin:0 auto 16px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:12px;
+  background:rgba(255,255,255,.03);
+  overflow:hidden;
+}
+
+.mainImage{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  display:block;
+  cursor:pointer;
+  user-select:none;
+  -webkit-user-drag:none;
+}
+
+.thumbRow{
+  display:flex;
+  justify-content:center;
+  gap:12px;
+  margin:0 auto;
+  flex-wrap:wrap;
+}
+
+.thumb{
+  width:78px;
+  height:78px;
+  object-fit:contain;
+  display:block;
+  border-radius:8px;
+  border:2px solid rgba(255,255,255,.88);
+  background:rgba(255,255,255,.06);
+  cursor:pointer;
+  transition:.2s ease;
+  user-select:none;
+  -webkit-user-drag:none;
+  padding:4px;
+  box-sizing:border-box;
+}
+
+.thumb:hover{
+  border-color:#4a7bb5;
+  transform:translateY(-1px);
+}
+
+.thumb.active{
+  border-color:#4a7bb5;
+  box-shadow:0 0 0 1px rgba(74,123,181,.35);
 }
 
 /* description */
@@ -178,6 +237,127 @@ body{
 .btn:hover{
   background:linear-gradient(180deg,#21364a,#15212e);
   border-color:#4a7bb5;
+}
+
+/* lightbox */
+
+.lightbox{
+  position:fixed;
+  inset:0;
+  z-index:9999;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:40px 90px;
+  background:rgba(3,6,10,.88);
+  backdrop-filter:blur(6px);
+  -webkit-backdrop-filter:blur(6px);
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .22s ease;
+}
+
+.lightbox.open{
+  opacity:1;
+  pointer-events:auto;
+}
+
+.lightboxInner{
+  position:relative;
+  width:min(100%, 1500px);
+  height:min(100%, 960px);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.lightboxImg{
+  max-width:100%;
+  max-height:100%;
+  width:auto;
+  height:auto;
+  object-fit:contain;
+  display:block;
+  border-radius:14px;
+  box-shadow:0 24px 60px rgba(0,0,0,.45);
+  user-select:none;
+  -webkit-user-drag:none;
+}
+
+.lightboxClose{
+  position:absolute;
+  top:-8px;
+  right:-8px;
+  width:44px;
+  height:44px;
+  border:none;
+  border-radius:999px;
+  background:rgba(10,16,23,.86);
+  color:#e7f1fb;
+  font-size:28px;
+  line-height:1;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border:1px solid rgba(74,123,181,.32);
+  transition:.2s ease;
+}
+
+.lightboxClose:hover{
+  background:rgba(20,32,45,.96);
+  border-color:#4a7bb5;
+}
+
+.lightboxNav{
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  width:54px;
+  height:54px;
+  border:none;
+  border-radius:999px;
+  background:rgba(10,16,23,.80);
+  color:#e7f1fb;
+  font-size:34px;
+  line-height:1;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border:1px solid rgba(74,123,181,.28);
+  transition:.2s ease;
+}
+
+.lightboxNav:hover{
+  background:rgba(20,32,45,.96);
+  border-color:#4a7bb5;
+}
+
+.lightboxPrev{
+  left:-74px;
+}
+
+.lightboxNext{
+  right:-74px;
+}
+
+.lightboxCounter{
+  position:absolute;
+  left:50%;
+  bottom:-34px;
+  transform:translateX(-50%);
+  padding:7px 12px;
+  border-radius:999px;
+  font-size:12px;
+  letter-spacing:.5px;
+  color:#d6e6f7;
+  background:rgba(10,16,23,.72);
+  border:1px solid rgba(74,123,181,.18);
+}
+
+.noScroll{
+  overflow:hidden;
 }
 
 /* footer */
@@ -284,6 +464,34 @@ body{
     gap:28px;
   }
 
+  .heroGallery{
+    padding:18px 16px 18px;
+    background:rgba(255,255,255,.20);
+    border:1px solid rgba(22,50,76,.16);
+  }
+
+  .mainImageWrap{
+    height:430px;
+  }
+
+  .mainImageWrap img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    object-position:center;
+  }
+
+  .thumb{
+    border-color:rgba(22,50,76,.5);
+    width:54px;
+    height:54px;
+  }
+
+  .thumb.active{
+    border-color:#16324c;
+    box-shadow:0 0 0 1px rgba(22,50,76,.28);
+  }
+
   .homeLogo{
     display:block;
     top:20px;
@@ -318,6 +526,52 @@ body{
   .footerRow{
     gap:8px 12px;
   }
+
+  .lightbox{
+    padding:26px 16px 60px;
+  }
+
+  .lightboxInner{
+    width:100%;
+    height:auto;
+    max-height:100%;
+  }
+
+  .lightboxImg{
+    max-width:100%;
+    max-height:78vh;
+    border-radius:12px;
+  }
+
+  .lightboxClose{
+    top:-16px;
+    right:0;
+    width:40px;
+    height:40px;
+    font-size:24px;
+  }
+
+  .lightboxNav{
+    width:44px;
+    height:44px;
+    font-size:28px;
+    top:auto;
+    bottom:-56px;
+    transform:none;
+  }
+
+  .lightboxPrev{
+    left:calc(50% - 56px);
+  }
+
+  .lightboxNext{
+    right:calc(50% - 56px);
+  }
+
+  .lightboxCounter{
+    bottom:-52px;
+    font-size:11px;
+  }
 }
 
 </style>
@@ -332,14 +586,37 @@ body{
 <div class="container">
 
   <div class="title">
-    <h1>GrIMSON Mk-I</h1>
+    <h1>GRIMSON MK-I CORE LINE</h1>
     <p>Reinforced tanto engineered for strength and control</p>
   </div>
 
   <div class="product">
 
-    <div>
-      <img src="knife.jpg" alt="GRIMSON MK-I reinforced tanto utility knife for construction and field use">
+    <div class="heroGallery">
+      <div class="mainImageWrap">
+        <img
+          id="main-core"
+          class="mainImage"
+          src="knife1.jpg"
+          alt="GRIMSON MK-I CORE LINE reinforced tanto utility knife main image"
+          onclick="openLightbox()"
+        >
+      </div>
+
+      <div class="thumbRow">
+        <img src="knife1.jpg" alt="GRIMSON MK-I CORE LINE utility knife thumbnail 1" class="thumb active core-thumb"
+             onmouseenter="setPreview(0)"
+             onclick="setPreview(0)">
+        <img src="knife2.jpg" alt="GRIMSON MK-I CORE LINE utility knife thumbnail 2" class="thumb core-thumb"
+             onmouseenter="setPreview(1)"
+             onclick="setPreview(1)">
+        <img src="knife3.jpg" alt="GRIMSON MK-I CORE LINE utility knife thumbnail 3" class="thumb core-thumb"
+             onmouseenter="setPreview(2)"
+             onclick="setPreview(2)">
+        <img src="knife4.jpg" alt="GRIMSON MK-I CORE LINE utility knife thumbnail 4" class="thumb core-thumb"
+             onmouseenter="setPreview(3)"
+             onclick="setPreview(3)">
+      </div>
     </div>
 
     <div class="description">
@@ -347,7 +624,7 @@ body{
       <h2 class="sectionTitle">Intended Applications: Construction and Field Use</h2>
 
       <p>
-        The MK-I is GRIMSON’s flagship launch model, built around the strength and control of reinforced tanto blade geometry.
+        The MK-I CORE LINE is GRIMSON’s flagship launch platform, built around the strength and control of reinforced tanto blade geometry.
         Designed for demanding utility work, the blade’s angular tip provides exceptional penetration strength and structural durability where conventional profiles often fail.
       </p>
 
@@ -380,7 +657,7 @@ body{
 
       <div class="seoSupport">
         <p>
-          Built as a professional utility knife for construction and field work, the GRIMSON MK-I is suitable for controlled cutting tasks involving packaging, plastic sheeting, gypsum board, insulation materials, and general worksite use where strength and durability are essential.
+          Built as a professional utility knife for construction and field work, the GRIMSON MK-I CORE LINE is suitable for controlled cutting tasks involving packaging, plastic sheeting, gypsum board, insulation materials, and general worksite use where strength and durability are essential.
         </p>
       </div>
 
@@ -393,6 +670,16 @@ body{
 
   </div>
 
+</div>
+
+<div id="lightbox" class="lightbox" onclick="backdropClose(event)">
+  <div class="lightboxInner">
+    <button class="lightboxClose" type="button" aria-label="Close image viewer" onclick="closeLightbox(event)">×</button>
+    <button class="lightboxNav lightboxPrev" type="button" aria-label="Previous image" onclick="prevImage(event)">‹</button>
+    <img id="lightboxImg" class="lightboxImg" src="" alt="Expanded GRIMSON MK-I CORE LINE product image">
+    <button class="lightboxNav lightboxNext" type="button" aria-label="Next image" onclick="nextImage(event)">›</button>
+    <div id="lightboxCounter" class="lightboxCounter">1 / 4</div>
+  </div>
 </div>
 
 <footer class="footer">
@@ -408,6 +695,89 @@ body{
     <a href="privacy.html">Privacy</a>
   </div>
 </footer>
+
+<script>
+const coreGallery = ["knife1.jpg", "knife2.jpg", "knife3.jpg", "knife4.jpg"];
+
+let currentIndex = 0;
+
+function setPreview(index){
+  const mainImg = document.getElementById("main-core");
+  const thumbs = document.querySelectorAll(".core-thumb");
+
+  if(mainImg && coreGallery[index]){
+    mainImg.src = coreGallery[index];
+    currentIndex = index;
+  }
+
+  thumbs.forEach(function(thumb, i){
+    thumb.classList.toggle("active", i === index);
+  });
+}
+
+function findCurrentMainIndex(){
+  const mainImg = document.getElementById("main-core");
+  if(!mainImg) return 0;
+
+  const currentSrc = mainImg.getAttribute("src");
+  const foundIndex = coreGallery.indexOf(currentSrc);
+  return foundIndex >= 0 ? foundIndex : 0;
+}
+
+function updateLightbox(){
+  const lightboxImg = document.getElementById("lightboxImg");
+  const lightboxCounter = document.getElementById("lightboxCounter");
+
+  lightboxImg.src = coreGallery[currentIndex];
+  lightboxCounter.textContent = (currentIndex + 1) + " / " + coreGallery.length;
+}
+
+function openLightbox(){
+  currentIndex = findCurrentMainIndex();
+  updateLightbox();
+  document.getElementById("lightbox").classList.add("open");
+  document.body.classList.add("noScroll");
+}
+
+function closeLightbox(event){
+  if(event) event.stopPropagation();
+  document.getElementById("lightbox").classList.remove("open");
+  document.body.classList.remove("noScroll");
+}
+
+function backdropClose(event){
+  if(event.target.id === "lightbox"){
+    closeLightbox();
+  }
+}
+
+function prevImage(event){
+  if(event) event.stopPropagation();
+  currentIndex = (currentIndex - 1 + coreGallery.length) % coreGallery.length;
+  updateLightbox();
+  setPreview(currentIndex);
+}
+
+function nextImage(event){
+  if(event) event.stopPropagation();
+  currentIndex = (currentIndex + 1) % coreGallery.length;
+  updateLightbox();
+  setPreview(currentIndex);
+}
+
+document.addEventListener("keydown", function(event){
+  const lightbox = document.getElementById("lightbox");
+  if(!lightbox.classList.contains("open")) return;
+
+  if(event.key === "Escape"){
+    closeLightbox();
+  } else if(event.key === "ArrowLeft"){
+    prevImage();
+  } else if(event.key === "ArrowRight"){
+    nextImage();
+  }
+});
+</script>
 
 </body>
 </html>
