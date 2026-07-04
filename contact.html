@@ -177,6 +177,37 @@ body{
   resize:vertical;
 }
 
+
+.turnstileWrap{
+  display:flex;
+  justify-content:center;
+  margin:10px 0 18px;
+}
+
+.formStatus{
+  display:none;
+  margin:0 0 14px;
+  text-align:center;
+  font-size:14px;
+  line-height:1.5;
+  color:#cfe6ff;
+}
+
+.formStatus.error{
+  display:block;
+  color:#ffb7b7;
+}
+
+.formStatus.ok{
+  display:block;
+  color:#b7ffc9;
+}
+
+.btn[disabled]{
+  opacity:.65;
+  cursor:not-allowed;
+}
+
 .actions{
   display:flex;
   justify-content:center;
@@ -334,6 +365,8 @@ body{
   }
 }
 </style>
+
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 
 <body>
@@ -355,7 +388,7 @@ body{
     <div class="formWrap">
 
       <!-- NETLIFY FORM -->
-      <form name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/thanks.html" class="contactForm">
+      <form name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/.netlify/functions/contact-submit" class="contactForm">
 
         <input type="hidden" name="form-name" value="contact">
         <input type="hidden" name="subject" value="GRIMSON Website Inquiry">
@@ -378,6 +411,12 @@ body{
         </select>
 
         <textarea name="message" placeholder="Your Message" required></textarea>
+
+        <div id="formStatus" class="formStatus" aria-live="polite"></div>
+
+        <div class="turnstileWrap">
+          <div class="cf-turnstile" data-sitekey="0x4AAAAAADvj6mxBzXIqVWEz"></div>
+        </div>
 
         <div class="actions">
           <button type="submit" class="btn">Send Message</button>
