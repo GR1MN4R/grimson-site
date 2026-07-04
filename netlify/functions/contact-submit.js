@@ -1,9 +1,6 @@
 exports.handler = async function(event) {
   if (event.httpMethod !== "POST") {
-    return {
-      statusCode: 405,
-      body: "Method Not Allowed"
-    };
+    return { statusCode: 405, body: "Method Not Allowed" };
   }
 
   const params = new URLSearchParams(event.body || "");
@@ -17,39 +14,20 @@ exports.handler = async function(event) {
   const message = (params.get("message") || "").trim();
 
   if (botField) {
-    return {
-      statusCode: 302,
-      headers: { Location: "/thanks.html" },
-      body: ""
-    };
+    return { statusCode: 302, headers: { Location: "/thanks.html" }, body: "" };
   }
 
   if (!process.env.TURNSTILE_SECRET) {
-    return {
-      statusCode: 500,
-      body: "Server verification is not configured."
-    };
+    return { statusCode: 500, body: "Server verification is not configured." };
   }
 
   if (!token) {
-    return {
-      statusCode: 400,
-      body: "Human verification is missing. Please go back and try again."
-    };
-  }
-
-  if (!name || !email || !reason || !message) {
-    return {
-      statusCode: 400,
-      body: "Please complete all required fields."
-    };
+    return { statusCode: 400, body: "Human verification is missing. Please try again." };
   }
 
   const verifyResponse = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
     method: "POST",
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded"
-    },
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
     body: new URLSearchParams({
       secret: process.env.TURNSTILE_SECRET,
       response: token,
@@ -60,15 +38,10 @@ exports.handler = async function(event) {
   const verifyData = await verifyResponse.json();
 
   if (!verifyData.success) {
-    return {
-      statusCode: 403,
-      body: "Human verification failed. Please refresh the page and try again."
-    };
+    return { statusCode: 403, body: "Human verification failed. Please try again." };
   }
 
-  const siteUrl = process.env.URL || "https://grimson.no";
-
-  const netlifyFormData = new URLSearchParams({
+  const formData = new URLSearchParams({
     "form-name": "contact",
     "subject": "GRIMSON Website Inquiry",
     "name": name,
@@ -77,26 +50,15 @@ exports.handler = async function(event) {
     "message": message
   });
 
-  const netlifyResponse = await fetch(siteUrl, {
+  await fetch("https://grimson.netlify.app/contact.html", {
     method: "POST",
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded"
-    },
-    body: netlifyFormData.toString()
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: formData.toString()
   });
-
-  if (!netlifyResponse.ok) {
-    return {
-      statusCode: 502,
-      body: "Message verification passed, but the form could not be submitted. Please try again."
-    };
-  }
 
   return {
     statusCode: 302,
-    headers: {
-      Location: "/thanks.html"
-    },
+    headers: { Location: "/thanks.html" },
     body: ""
   };
 };
