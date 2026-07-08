@@ -254,15 +254,15 @@ body{
   flex-wrap:nowrap;
   align-items:center;
 }
-  
-.buttons .btn{
-  min-width:160px;
-  text-align:center;
-}  
 
 .btn{
-  display:inline-block;
-  padding:12px 28px;
+  display:inline-flex;
+  justify-content:center;
+  align-items:center;
+  height:44px;
+  padding:0 25px;
+  white-space:nowrap;
+
   border-radius:6px;
   border:1px solid #2c3f55;
   background:linear-gradient(180deg,#1a2633,#0f1822);
@@ -276,7 +276,7 @@ body{
   background:linear-gradient(180deg,#21364a,#15212e);
   border-color:#4a7bb5;
 }
-
+  
 /* lightbox */
 
 .lightbox{
