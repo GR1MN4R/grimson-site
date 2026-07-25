@@ -1,7 +1,7 @@
 const crypto = require("crypto");
+const nodemailer = require("nodemailer");
 
 const STRIPE_API_BASE = "https://api.stripe.com/v1";
-const RESEND_API_URL = "https://api.resend.com/emails";
 const SIGNATURE_TOLERANCE_SECONDS = 300;
 
 exports.handler = async function (event) {
@@ -15,9 +15,9 @@ exports.handler = async function (event) {
   const requiredVariables = [
     "STRIPE_SECRET_KEY",
     "STRIPE_WEBHOOK_SECRET",
-    "RESEND_API_KEY",
+    "PROTON_SMTP_USER",
+    "PROTON_SMTP_TOKEN",
     "ORDER_NOTIFICATION_TO",
-    "ORDER_NOTIFICATION_FROM",
   ];
 
   const missingVariables = requiredVariables.filter(
@@ -61,7 +61,7 @@ exports.handler = async function (event) {
 
     return {
       statusCode: 400,
-      body: `Webhook signature error: ${error.message}`,
+      body: "Invalid Stripe signature",
     };
   }
 
@@ -96,11 +96,8 @@ exports.handler = async function (event) {
     const webhookSession = stripeEvent.data.object;
 
     /*
-     * Za kartice je payment_status obično "paid" već u
-     * checkout.session.completed događaju.
-     *
-     * Za odgođene metode plaćanja čekamo
-     * checkout.session.async_payment_succeeded.
+     * Kod kartičnog plaćanja Checkout Session je obično odmah "paid".
+     * Kod odgođenih metoda čekamo async_payment_succeeded.
      */
     if (
       stripeEvent.type === "checkout.session.completed" &&
@@ -124,29 +121,50 @@ exports.handler = async function (event) {
 
     const customer = session.customer_details || {};
     const shipping =
-      session.shipping_details ||
       session.collected_information?.shipping_details ||
+      session.shipping_details ||
       {};
 
     const address = shipping.address || customer.address || {};
-    const customerName = shipping.name || customer.name || "Not provided";
+
+    const customerName =
+      shipping.name ||
+      customer.name ||
+      "Not provided";
+
     const customerEmail =
-      customer.email || session.customer_email || "Not provided";
-    const customerPhone = customer.phone || "Not provided";
+      customer.email ||
+      session.customer_email ||
+      "Not provided";
+
+    const customerPhone =
+      customer.phone ||
+      "Not provided";
 
     const products = lineItems.data.map((item) => ({
       name:
         item.description ||
         item.price?.product?.name ||
         "Unnamed Stripe product",
+
       quantity: item.quantity || 1,
-      amount: item.amount_total ?? item.amount_subtotal ?? 0,
+
+      amount:
+        item.amount_total ??
+        item.amount_subtotal ??
+        0,
+
       currency:
         item.currency ||
         item.price?.currency ||
         session.currency ||
         "nok",
     }));
+
+    const formattedTotal = formatMoney(
+      session.amount_total || 0,
+      session.currency || "nok"
+    );
 
     const productSummary =
       products.length > 0
@@ -157,13 +175,6 @@ exports.handler = async function (event) {
             )
             .join(", ")
         : "Product information unavailable";
-
-    const formattedTotal = formatMoney(
-      session.amount_total || 0,
-      session.currency || "nok"
-    );
-
-    const customFields = formatCustomFields(session.custom_fields || []);
 
     const paymentMethod =
       Array.isArray(session.payment_method_types) &&
@@ -177,13 +188,28 @@ exports.handler = async function (event) {
       dateStyle: "medium",
       timeStyle: "short",
       timeZone: "Europe/Oslo",
-    }).format(new Date((session.created || Date.now() / 1000) * 1000));
+    }).format(
+      new Date(
+        (session.created || Math.floor(Date.now() / 1000)) * 1000
+      )
+    );
 
-    const dashboardLink = session.payment_intent
-      ? `https://dashboard.stripe.com/payments/${session.payment_intent}`
-      : `https://dashboard.stripe.com/test/payments`;
+    const customFields = formatCustomFields(
+      session.custom_fields || []
+    );
 
-    const subject = `NEW ORDER • ${productSummary} • ${formattedTotal}`;
+    const paymentIntentId =
+      typeof session.payment_intent === "string"
+        ? session.payment_intent
+        : session.payment_intent?.id || "Not available";
+
+    const dashboardLink =
+      paymentIntentId !== "Not available"
+        ? `https://dashboard.stripe.com/payments/${paymentIntentId}`
+        : "https://dashboard.stripe.com/payments";
+
+    const subject =
+      `NEW ORDER • ${productSummary} • ${formattedTotal}`;
 
     const emailText = buildOrderEmail({
       products,
@@ -196,15 +222,18 @@ exports.handler = async function (event) {
       orderDate,
       customFields,
       checkoutSessionId: session.id,
-      paymentIntentId: session.payment_intent || "Not available",
+      paymentIntentId,
       paymentLinkId: session.payment_link || "Not available",
       dashboardLink,
     });
 
     await sendOrderEmail({
-      eventId: stripeEvent.id,
       subject,
       text: emailText,
+      replyTo:
+        customerEmail !== "Not provided"
+          ? customerEmail
+          : undefined,
     });
 
     console.log(
@@ -222,8 +251,8 @@ exports.handler = async function (event) {
     console.error("Webhook processing failed:", error);
 
     /*
-     * Vraćamo 500 kako bi Stripe ponovno pokušao poslati webhook.
-     * Resend Idempotency-Key sprječava dupliciranje istog e-maila.
+     * Stripe će kasnije ponovno pokušati dostaviti webhook
+     * ako endpoint vrati status 500.
      */
     return {
       statusCode: 500,
@@ -232,13 +261,25 @@ exports.handler = async function (event) {
   }
 };
 
-function verifyStripeSignature(payload, signatureHeader, webhookSecret) {
+function verifyStripeSignature(
+  payload,
+  signatureHeader,
+  webhookSecret
+) {
   const parts = signatureHeader.split(",");
+
   let timestamp;
   const signatures = [];
 
   for (const part of parts) {
-    const [key, value] = part.split("=");
+    const separatorIndex = part.indexOf("=");
+
+    if (separatorIndex === -1) {
+      continue;
+    }
+
+    const key = part.slice(0, separatorIndex);
+    const value = part.slice(separatorIndex + 1);
 
     if (key === "t") {
       timestamp = value;
@@ -263,7 +304,9 @@ function verifyStripeSignature(payload, signatureHeader, webhookSecret) {
   const age = Math.abs(currentTimestamp - timestampNumber);
 
   if (age > SIGNATURE_TOLERANCE_SECONDS) {
-    throw new Error("Webhook timestamp is outside the allowed tolerance");
+    throw new Error(
+      "Webhook timestamp is outside the allowed tolerance"
+    );
   }
 
   const signedPayload = `${timestamp}.${payload}`;
@@ -300,7 +343,9 @@ async function retrieveCheckoutSession(sessionId) {
   parameters.append("expand[]", "customer");
 
   return stripeRequest(
-    `/checkout/sessions/${encodeURIComponent(sessionId)}?${parameters}`
+    `/checkout/sessions/${encodeURIComponent(
+      sessionId
+    )}?${parameters.toString()}`
   );
 }
 
@@ -313,25 +358,29 @@ async function retrieveLineItems(sessionId) {
   return stripeRequest(
     `/checkout/sessions/${encodeURIComponent(
       sessionId
-    )}/line_items?${parameters}`
+    )}/line_items?${parameters.toString()}`
   );
 }
 
 async function stripeRequest(path) {
-  const response = await fetch(`${STRIPE_API_BASE}${path}`, {
-    method: "GET",
-    headers: {
-      Authorization: `Bearer ${process.env.STRIPE_SECRET_KEY}`,
-      "Content-Type": "application/x-www-form-urlencoded",
-    },
-  });
+  const response = await fetch(
+    `${STRIPE_API_BASE}${path}`,
+    {
+      method: "GET",
+      headers: {
+        Authorization:
+          `Bearer ${process.env.STRIPE_SECRET_KEY}`,
+      },
+    }
+  );
 
   const responseBody = await response.json();
 
   if (!response.ok) {
     throw new Error(
       `Stripe API error: ${
-        responseBody.error?.message || response.statusText
+        responseBody.error?.message ||
+        response.statusText
       }`
     );
   }
@@ -339,34 +388,41 @@ async function stripeRequest(path) {
   return responseBody;
 }
 
-async function sendOrderEmail({ eventId, subject, text }) {
-  const response = await fetch(RESEND_API_URL, {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
-      "Content-Type": "application/json",
-      "Idempotency-Key": `stripe-${eventId}`,
+async function sendOrderEmail({
+  subject,
+  text,
+  replyTo,
+}) {
+  const transporter = nodemailer.createTransport({
+    host: "smtp.protonmail.ch",
+    port: 587,
+    secure: false,
+
+    requireTLS: true,
+
+    auth: {
+      user: process.env.PROTON_SMTP_USER,
+      pass: process.env.PROTON_SMTP_TOKEN,
     },
-    body: JSON.stringify({
-      from: process.env.ORDER_NOTIFICATION_FROM,
-      to: [process.env.ORDER_NOTIFICATION_TO],
-      subject,
-      text,
-      reply_to: process.env.ORDER_NOTIFICATION_REPLY_TO || undefined,
-    }),
+
+    tls: {
+      minVersion: "TLSv1.2",
+    },
   });
 
-  const responseBody = await response.json();
+  await transporter.sendMail({
+    from:
+      process.env.ORDER_NOTIFICATION_FROM ||
+      `GRIMSON Orders <${process.env.PROTON_SMTP_USER}>`,
 
-  if (!response.ok) {
-    throw new Error(
-      `Resend API error: ${
-        responseBody.message || response.statusText
-      }`
-    );
-  }
+    to: process.env.ORDER_NOTIFICATION_TO,
 
-  return responseBody;
+    subject,
+
+    text,
+
+    replyTo,
+  });
 }
 
 function buildOrderEmail({
@@ -386,7 +442,10 @@ function buildOrderEmail({
 }) {
   const productLines = products
     .map((product) => {
-      const lineTotal = formatMoney(product.amount, product.currency);
+      const lineTotal = formatMoney(
+        product.amount,
+        product.currency
+      );
 
       return [
         `Product: ${product.name}`,
@@ -399,16 +458,19 @@ function buildOrderEmail({
   const addressLines = [
     address.line1,
     address.line2,
-    [address.postal_code, address.city].filter(Boolean).join(" "),
+    [address.postal_code, address.city]
+      .filter(Boolean)
+      .join(" "),
     address.state,
     address.country,
   ].filter(Boolean);
 
-  return [
+  const sections = [
     "NEW GRIMSON ORDER",
     "=================",
     "",
-    productLines || "Product information unavailable",
+    productLines ||
+      "Product information unavailable",
     "",
     `Paid: ${formattedTotal}`,
     "",
@@ -423,8 +485,19 @@ function buildOrderEmail({
     addressLines.length > 0
       ? addressLines.join("\n")
       : "Not provided",
+  ];
+
+  if (customFields) {
+    sections.push(
+      "",
+      "CHECKOUT ANSWERS",
+      "----------------",
+      customFields
+    );
+  }
+
+  sections.push(
     "",
-    customFields ? `CHECKOUT ANSWERS\n----------------\n${customFields}\n` : "",
     "PAYMENT",
     "-------",
     `Payment method: ${paymentMethod}`,
@@ -435,20 +508,27 @@ function buildOrderEmail({
     "",
     "STRIPE DASHBOARD",
     "----------------",
-    dashboardLink,
-  ]
-    .filter((line) => line !== "")
-    .join("\n");
+    dashboardLink
+  );
+
+  return sections.join("\n");
 }
 
 function formatCustomFields(customFields) {
-  if (!Array.isArray(customFields) || customFields.length === 0) {
+  if (
+    !Array.isArray(customFields) ||
+    customFields.length === 0
+  ) {
     return "";
   }
 
   return customFields
     .map((field) => {
-      const label = field.label?.custom || field.key || "Custom field";
+      const label =
+        field.label?.custom ||
+        field.key ||
+        "Custom field";
+
       const value =
         field.dropdown?.value ||
         field.numeric?.value ||
@@ -460,13 +540,19 @@ function formatCustomFields(customFields) {
     .join("\n");
 }
 
-function formatMoney(amountInMinorUnits, currency) {
-  const currencyCode = String(currency || "nok").toUpperCase();
+function formatMoney(
+  amountInMinorUnits,
+  currency
+) {
+  const currencyCode =
+    String(currency || "nok").toUpperCase();
 
   return new Intl.NumberFormat("en-GB", {
     style: "currency",
     currency: currencyCode,
-  }).format((amountInMinorUnits || 0) / 100);
+  }).format(
+    (amountInMinorUnits || 0) / 100
+  );
 }
 
 function formatPaymentMethodName(method) {
@@ -476,9 +562,8 @@ function formatPaymentMethodName(method) {
     link: "Link",
     paypal: "PayPal",
     vipps: "Vipps",
-    apple_pay: "Apple Pay",
-    google_pay: "Google Pay",
   };
 
   return names[method] || method;
+}
 }
