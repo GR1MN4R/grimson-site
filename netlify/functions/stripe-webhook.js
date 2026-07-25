@@ -900,11 +900,22 @@ function buildCustomerHtmlEmail({
 
           <tr>
             <td align="center" style="background:#05070a;padding:30px 24px;border-top:1px solid #2c3f55;">
-              <div style="font-size:20px;letter-spacing:5px;font-weight:800;color:#ffffff;">GRIMSON</div>
+              <img src="https://grimson.no/logo-home.png"
+  width="170"
+  alt="GRIMSON"
+  style="
+    display:block;
+    width:100%;
+    max-width:170px;
+    height:auto;
+    border:0;
+    outline:none;
+    text-decoration:none;
+    margin:0 auto 12px auto;
+  ">
 
               <div style="margin-top:16px;font-size:11px;line-height:1.8;letter-spacing:1.8px;color:#d3d3d3;">
-                BUILT 2 OPERATE<br>
-                EDGE 2 DOMINATE
+                RELIABILITY MATTERS
               </div>
 
               <div style="margin-top:20px;font-size:13px;line-height:1.8;color:#bdbdbd;">
