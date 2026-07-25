@@ -615,7 +615,6 @@ function buildCustomerPlainTextEmail({
 
   return [
     "GRIMSON",
-    "ORDER CONFIRMATION",
     "",
     "YOUR KNIFE HAS ENTERED THE GRIMSON WORKFLOW",
     "",
@@ -623,6 +622,8 @@ function buildCustomerPlainTextEmail({
     "",
     "Thank you for choosing GRIMSON.",
     "Your order has been received and your payment has been confirmed.",
+    "",
+    `ORDER ${orderReference}`,
     "",
     "ORDER DETAILS",
     "-------------",
@@ -637,6 +638,19 @@ function buildCustomerPlainTextEmail({
     "",
     `Total paid: ${formattedTotal}`,
     "",
+    "WORKFLOW STATUS",
+    "---------------",
+    "✓ Order received",
+    "✓ Payment confirmed",
+    "⏳ Production queue",
+    "○ Final inspection",
+    "○ Packaging",
+    "○ Ready for dispatch",
+    "○ Shipped",
+    "",
+    "Your order is currently waiting for final preparation.",
+    "We will hand it over to the carrier as soon as it completes our workflow.",
+    "",
     "SHIPPING ADDRESS",
     "----------------",
     addressLines.length > 0
@@ -645,26 +659,30 @@ function buildCustomerPlainTextEmail({
     "",
     "DELIVERY",
     "--------",
-    "Your order will be individually inspected, prepared and packed before dispatch.",
-    "Once the parcel enters the carrier's network, delivery notifications will be sent directly by the carrier.",
-    "Please use your local postal or courier application to follow shipments registered to your name and address.",
+    "Every GRIMSON knife undergoes a final inspection before leaving our workshop.",
+    "Once approved, it is securely packed and handed over to the carrier.",
+    "When the shipment enters the carrier's network, tracking notifications will be sent directly by the carrier.",
+    "Please use your local postal or courier application to follow deliveries registered to your name and address.",
     "",
     "IMPORTANT DELIVERY INFORMATION",
     "------------------------------",
-    "Age verification is mandatory upon delivery.",
+    "AGE VERIFICATION IS MANDATORY",
+    "",
+    "Age verification is mandatory and cannot be waived.",
     "The recipient must present valid identification before the parcel can be released.",
-    "If age verification cannot be completed, the shipment will be returned.",
+    "If age verification cannot be completed, the shipment will automatically be returned.",
     "",
     "INSPECTION",
     "----------",
     "Please inspect your knife immediately after delivery.",
-    "If the shipment arrives damaged or incomplete, contact us within 48 hours.",
+    "If anything appears damaged or incomplete, contact us within 48 hours.",
     "",
-    "sales@grimson.no",
-    "https://grimson.no",
+    "GRIMSON",
     "",
     "BUILT 2 OPERATE",
     "EDGE 2 DOMINATE",
+    "",
+    "https://grimson.no",
   ].join("\n");
 }
 
@@ -731,12 +749,11 @@ function buildCustomerHtmlEmail({
     <tr>
       <td align="center" style="padding:24px 12px;">
         <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="max-width:680px;background:#ffffff;border-collapse:collapse;">
+
           <tr>
-            <td align="center" style="background:#111111;padding:34px 24px 30px 24px;">
+            <td align="center" style="background:#111111;padding:36px 24px 32px 24px;">
               <div style="font-size:31px;letter-spacing:8px;font-weight:800;color:#ffffff;">GRIMSON</div>
-              <div style="margin-top:10px;font-size:10px;letter-spacing:2.5px;color:#bdbdbd;">
-                ENGINEERED IN NORTHERN NORWAY
-              </div>
+              <div style="margin-top:11px;font-size:10px;letter-spacing:3px;color:#bdbdbd;">NORTHERN NORWAY</div>
             </td>
           </tr>
 
@@ -745,14 +762,14 @@ function buildCustomerHtmlEmail({
           </tr>
 
           <tr>
-            <td style="padding:42px 38px 18px 38px;">
-              <div style="font-size:12px;letter-spacing:2px;font-weight:700;color:#651f2d;">
-                ORDER CONFIRMATION
+            <td style="padding:42px 38px 20px 38px;">
+              <div style="font-size:11px;letter-spacing:2px;font-weight:700;color:#777777;">
+                ORDER ${safeOrderReference}
               </div>
 
-              <h1 style="margin:14px 0 18px 0;font-size:31px;line-height:1.15;letter-spacing:-0.5px;color:#111111;">
+              <h1 style="margin:16px 0 20px 0;font-size:31px;line-height:1.15;letter-spacing:-0.5px;color:#111111;">
                 YOUR KNIFE HAS ENTERED<br>
-                THE GRIMSON WORKFLOW
+                THE GRIMSON <span style="color:#651f2d;">WORKFLOW</span>
               </h1>
 
               <p style="margin:0 0 10px 0;font-size:16px;line-height:1.7;color:#333333;">
@@ -796,6 +813,30 @@ function buildCustomerHtmlEmail({
 
           <tr>
             <td style="padding:34px 38px 0 38px;">
+              ${sectionHeading("WORKFLOW STATUS")}
+
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background:#111111;border-collapse:collapse;">
+                <tr>
+                  <td style="padding:24px 24px 22px 24px;">
+                    ${workflowRow("✓", "Order received", true)}
+                    ${workflowRow("✓", "Payment confirmed", true)}
+                    ${workflowRow("⏳", "Production queue", false, true)}
+                    ${workflowRow("○", "Final inspection", false)}
+                    ${workflowRow("○", "Packaging", false)}
+                    ${workflowRow("○", "Ready for dispatch", false)}
+                    ${workflowRow("○", "Shipped", false)}
+                  </td>
+                </tr>
+              </table>
+
+              <p style="margin:14px 0 0 0;font-size:13px;line-height:1.65;color:#666666;">
+                Your order is currently waiting for final preparation. We will hand it over to the carrier as soon as it completes our workflow.
+              </p>
+            </td>
+          </tr>
+
+          <tr>
+            <td style="padding:34px 38px 0 38px;">
               ${sectionHeading("SHIPPING ADDRESS")}
               <div style="font-size:15px;line-height:1.7;color:#333333;">
                 ${shippingAddressHtml}
@@ -807,10 +848,13 @@ function buildCustomerHtmlEmail({
             <td style="padding:34px 38px 0 38px;">
               ${sectionHeading("DELIVERY")}
               <p style="margin:0 0 12px 0;font-size:15px;line-height:1.7;color:#333333;">
-                Your order will be individually inspected, prepared and packed before dispatch.
+                Every GRIMSON knife undergoes a final inspection before leaving our workshop.
+              </p>
+              <p style="margin:0 0 12px 0;font-size:15px;line-height:1.7;color:#333333;">
+                Once approved, it is securely packed and handed over to the carrier.
               </p>
               <p style="margin:0;font-size:15px;line-height:1.7;color:#333333;">
-                Once the parcel enters the carrier's network, delivery notifications will be sent directly by the carrier. Please use your local postal or courier application to follow shipments registered to your name and address.
+                When the shipment enters the carrier's network, tracking notifications will be sent directly by the carrier. Please use your local postal or courier application to follow deliveries registered to your name and address.
               </p>
             </td>
           </tr>
@@ -823,11 +867,14 @@ function buildCustomerHtmlEmail({
                     <div style="font-size:12px;letter-spacing:1.7px;font-weight:800;color:#651f2d;">
                       IMPORTANT DELIVERY INFORMATION
                     </div>
-                    <p style="margin:12px 0 8px 0;font-size:16px;line-height:1.6;font-weight:800;color:#111111;">
-                      Age verification is mandatory upon delivery.
+                    <p style="margin:12px 0 8px 0;font-size:17px;line-height:1.6;font-weight:800;color:#111111;">
+                      AGE VERIFICATION IS MANDATORY
+                    </p>
+                    <p style="margin:0 0 8px 0;font-size:14px;line-height:1.65;color:#333333;">
+                      Age verification is mandatory and cannot be waived.
                     </p>
                     <p style="margin:0;font-size:14px;line-height:1.65;color:#333333;">
-                      The recipient must present valid identification before the parcel can be released. If age verification cannot be completed, the shipment will be returned.
+                      The recipient must present valid identification before the parcel can be released. If age verification cannot be completed, the shipment will automatically be returned.
                     </p>
                   </td>
                 </tr>
@@ -839,7 +886,7 @@ function buildCustomerHtmlEmail({
             <td style="padding:34px 38px 42px 38px;">
               ${sectionHeading("INSPECTION")}
               <p style="margin:0;font-size:15px;line-height:1.7;color:#333333;">
-                Please inspect your knife immediately after delivery. If the shipment arrives damaged or incomplete, contact us within 48 hours.
+                Please inspect your knife immediately after delivery. If anything appears damaged or incomplete, contact us within 48 hours.
               </p>
             </td>
           </tr>
@@ -854,17 +901,43 @@ function buildCustomerHtmlEmail({
               </div>
 
               <div style="margin-top:20px;font-size:13px;line-height:1.8;color:#bdbdbd;">
-                <a href="https://grimson.no" style="color:#ffffff;text-decoration:none;">grimson.no</a><br>
-                <a href="mailto:sales@grimson.no" style="color:#ffffff;text-decoration:none;">sales@grimson.no</a>
+                <a href="https://grimson.no" style="color:#ffffff;text-decoration:none;">grimson.no</a>
               </div>
             </td>
           </tr>
+
         </table>
       </td>
     </tr>
   </table>
 </body>
 </html>`;
+}
+
+function workflowRow(symbol, label, completed, current = false) {
+  const safeSymbol = escapeHtml(symbol);
+  const safeLabel = escapeHtml(label);
+
+  const symbolColor = completed
+    ? "#ffffff"
+    : current
+      ? "#d8a6b0"
+      : "#777777";
+
+  const labelColor = completed
+    ? "#ffffff"
+    : current
+      ? "#ffffff"
+      : "#9a9a9a";
+
+  const weight = current ? "800" : "700";
+
+  return `
+    <div style="padding:7px 0;font-size:14px;line-height:1.5;">
+      <span style="display:inline-block;width:28px;color:${symbolColor};font-weight:800;">${safeSymbol}</span>
+      <span style="color:${labelColor};font-weight:${weight};">${safeLabel}</span>
+    </div>
+  `;
 }
 
 function sectionHeading(label) {
