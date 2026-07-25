@@ -135,7 +135,7 @@ exports.handler = async function (event) {
     const customerEmail =
       customer.email ||
       session.customer_email ||
-      "Not provided";
+      "";
 
     const customerPhone =
       customer.phone ||
@@ -208,43 +208,82 @@ exports.handler = async function (event) {
         ? `https://dashboard.stripe.com/payments/${paymentIntentId}`
         : "https://dashboard.stripe.com/payments";
 
-    const subject =
+    const orderReference = createOrderReference(
+      session.id,
+      session.created
+    );
+
+    const internalSubject =
       `NEW ORDER • ${productSummary} • ${formattedTotal}`;
 
-    const emailText = buildOrderEmail({
+    const internalEmailText = buildInternalOrderEmail({
       products,
       formattedTotal,
       customerName,
-      customerEmail,
+      customerEmail: customerEmail || "Not provided",
       customerPhone,
       address,
       paymentMethod,
       orderDate,
       customFields,
+      orderReference,
       checkoutSessionId: session.id,
       paymentIntentId,
       paymentLinkId: session.payment_link || "Not available",
       dashboardLink,
     });
 
-    await sendOrderEmail({
-      subject,
-      text: emailText,
-      replyTo:
-        customerEmail !== "Not provided"
-          ? customerEmail
-          : undefined,
+    await sendInternalOrderEmail({
+      subject: internalSubject,
+      text: internalEmailText,
+      replyTo: customerEmail || undefined,
+      messageId: `<internal-${safeMessageIdPart(stripeEvent.id)}@grimson.no>`,
     });
 
+    let customerConfirmationSent = false;
+
+    if (customerEmail && isValidEmail(customerEmail)) {
+      const customerSubject =
+        products.length === 1
+          ? `GRIMSON // Order Confirmed — ${products[0].name}`
+          : `GRIMSON // Order Confirmed — ${orderReference}`;
+
+      const customerEmailData = {
+        products,
+        formattedTotal,
+        customerName,
+        address,
+        paymentMethod,
+        orderDate,
+        orderReference,
+      };
+
+      await sendCustomerConfirmationEmail({
+        to: customerEmail,
+        subject: customerSubject,
+        text: buildCustomerPlainTextEmail(customerEmailData),
+        html: buildCustomerHtmlEmail(customerEmailData),
+        messageId: `<customer-${safeMessageIdPart(session.id)}@grimson.no>`,
+      });
+
+      customerConfirmationSent = true;
+    } else {
+      console.warn(
+        `Customer confirmation skipped: no valid customer email for ${session.id}`
+      );
+    }
+
     console.log(
-      `Order notification sent for Stripe event ${stripeEvent.id}`
+      `Order emails processed for Stripe event ${stripeEvent.id}`
     );
 
     return {
       statusCode: 200,
       body: JSON.stringify({
         received: true,
-        emailSent: true,
+        internalNotificationSent: true,
+        customerConfirmationSent,
+        orderReference,
       }),
     };
   } catch (error) {
@@ -388,12 +427,8 @@ async function stripeRequest(path) {
   return responseBody;
 }
 
-async function sendOrderEmail({
-  subject,
-  text,
-  replyTo,
-}) {
-  const transporter = nodemailer.createTransport({
+function createTransporter() {
+  return nodemailer.createTransport({
     host: "smtp.protonmail.ch",
     port: 587,
     secure: false,
@@ -409,23 +444,54 @@ async function sendOrderEmail({
       minVersion: "TLSv1.2",
     },
   });
+}
+
+function getSender() {
+  return (
+    process.env.ORDER_NOTIFICATION_FROM ||
+    `GRIMSON <${process.env.PROTON_SMTP_USER}>`
+  );
+}
+
+async function sendInternalOrderEmail({
+  subject,
+  text,
+  replyTo,
+  messageId,
+}) {
+  const transporter = createTransporter();
 
   await transporter.sendMail({
-    from:
-      process.env.ORDER_NOTIFICATION_FROM ||
-      `GRIMSON Orders <${process.env.PROTON_SMTP_USER}>`,
-
+    from: getSender(),
     to: process.env.ORDER_NOTIFICATION_TO,
-
     subject,
-
     text,
-
     replyTo,
+    messageId,
   });
 }
 
-function buildOrderEmail({
+async function sendCustomerConfirmationEmail({
+  to,
+  subject,
+  text,
+  html,
+  messageId,
+}) {
+  const transporter = createTransporter();
+
+  await transporter.sendMail({
+    from: getSender(),
+    to,
+    subject,
+    text,
+    html,
+    replyTo: process.env.ORDER_NOTIFICATION_TO,
+    messageId,
+  });
+}
+
+function buildInternalOrderEmail({
   products,
   formattedTotal,
   customerName,
@@ -435,6 +501,7 @@ function buildOrderEmail({
   paymentMethod,
   orderDate,
   customFields,
+  orderReference,
   checkoutSessionId,
   paymentIntentId,
   paymentLinkId,
@@ -468,6 +535,8 @@ function buildOrderEmail({
   const sections = [
     "NEW GRIMSON ORDER",
     "=================",
+    "",
+    `Order reference: ${orderReference}`,
     "",
     productLines ||
       "Product information unavailable",
@@ -512,6 +581,398 @@ function buildOrderEmail({
   );
 
   return sections.join("\n");
+}
+
+
+function buildCustomerPlainTextEmail({
+  products,
+  formattedTotal,
+  customerName,
+  address,
+  paymentMethod,
+  orderDate,
+  orderReference,
+}) {
+  const firstName = getFirstName(customerName);
+  const addressLines = formatAddressLines(address);
+
+  const productLines = products
+    .map((product) => {
+      const specs = getProductSpecifications(product.name);
+      const lines = [`${product.quantity} × ${product.name}`];
+
+      if (specs.steel) {
+        lines.push(`Steel: ${specs.steel}`);
+      }
+
+      if (specs.hardness) {
+        lines.push(`Hardness: ${specs.hardness}`);
+      }
+
+      return lines.join("\n");
+    })
+    .join("\n\n");
+
+  return [
+    "GRIMSON",
+    "ORDER CONFIRMATION",
+    "",
+    "YOUR KNIFE HAS ENTERED THE GRIMSON WORKFLOW",
+    "",
+    `Hello ${firstName},`,
+    "",
+    "Thank you for choosing GRIMSON.",
+    "Your order has been received and your payment has been confirmed.",
+    "",
+    "ORDER DETAILS",
+    "-------------",
+    `Order reference: ${orderReference}`,
+    `Purchase date: ${orderDate}`,
+    "Payment status: PAID",
+    `Payment method: ${paymentMethod}`,
+    "",
+    "YOUR GRIMSON",
+    "------------",
+    productLines || "Product information unavailable",
+    "",
+    `Total paid: ${formattedTotal}`,
+    "",
+    "SHIPPING ADDRESS",
+    "----------------",
+    addressLines.length > 0
+      ? [customerName, ...addressLines].join("\n")
+      : customerName,
+    "",
+    "DELIVERY",
+    "--------",
+    "Your order will be individually inspected, prepared and packed before dispatch.",
+    "Once the parcel enters the carrier's network, delivery notifications will be sent directly by the carrier.",
+    "Please use your local postal or courier application to follow shipments registered to your name and address.",
+    "",
+    "IMPORTANT DELIVERY INFORMATION",
+    "------------------------------",
+    "Age verification is mandatory upon delivery.",
+    "The recipient must present valid identification before the parcel can be released.",
+    "If age verification cannot be completed, the shipment will be returned.",
+    "",
+    "INSPECTION",
+    "----------",
+    "Please inspect your knife immediately after delivery.",
+    "If the shipment arrives damaged or incomplete, contact us within 48 hours.",
+    "",
+    "sales@grimson.no",
+    "https://grimson.no",
+    "",
+    "BUILT 2 OPERATE",
+    "EDGE 2 DOMINATE",
+  ].join("\n");
+}
+
+function buildCustomerHtmlEmail({
+  products,
+  formattedTotal,
+  customerName,
+  address,
+  paymentMethod,
+  orderDate,
+  orderReference,
+}) {
+  const firstName = escapeHtml(getFirstName(customerName));
+  const safeCustomerName = escapeHtml(customerName);
+  const safePaymentMethod = escapeHtml(paymentMethod);
+  const safeOrderDate = escapeHtml(orderDate);
+  const safeOrderReference = escapeHtml(orderReference);
+  const safeFormattedTotal = escapeHtml(formattedTotal);
+
+  const addressLines = formatAddressLines(address)
+    .map((line) => escapeHtml(line));
+
+  const productsHtml = products
+    .map((product) => {
+      const specs = getProductSpecifications(product.name);
+
+      const specificationRows = [
+        specs.steel ? detailRow("Steel", specs.steel) : "",
+        specs.hardness ? detailRow("Hardness", specs.hardness) : "",
+        detailRow("Quantity", String(product.quantity)),
+      ].join("");
+
+      return `
+        <div style="padding:0 0 22px 0;">
+          <div style="font-size:18px;line-height:1.4;font-weight:700;color:#111111;">
+            ${escapeHtml(product.quantity)} × ${escapeHtml(product.name)}
+          </div>
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin-top:12px;border-collapse:collapse;">
+            ${specificationRows}
+          </table>
+        </div>
+      `;
+    })
+    .join("");
+
+  const shippingAddressHtml =
+    addressLines.length > 0
+      ? [safeCustomerName, ...addressLines].join("<br>")
+      : safeCustomerName;
+
+  return `<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GRIMSON Order Confirmation</title>
+</head>
+<body style="margin:0;padding:0;background:#eeeeee;font-family:Arial,Helvetica,sans-serif;color:#111111;">
+  <div style="display:none;max-height:0;overflow:hidden;opacity:0;color:transparent;">
+    Your GRIMSON order has been confirmed. Reference ${safeOrderReference}.
+  </div>
+
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background:#eeeeee;">
+    <tr>
+      <td align="center" style="padding:24px 12px;">
+        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="max-width:680px;background:#ffffff;border-collapse:collapse;">
+          <tr>
+            <td align="center" style="background:#111111;padding:34px 24px 30px 24px;">
+              <div style="font-size:31px;letter-spacing:8px;font-weight:800;color:#ffffff;">GRIMSON</div>
+              <div style="margin-top:10px;font-size:10px;letter-spacing:2.5px;color:#bdbdbd;">
+                ENGINEERED IN NORTHERN NORWAY
+              </div>
+            </td>
+          </tr>
+
+          <tr>
+            <td style="height:5px;background:#651f2d;font-size:0;line-height:0;">&nbsp;</td>
+          </tr>
+
+          <tr>
+            <td style="padding:42px 38px 18px 38px;">
+              <div style="font-size:12px;letter-spacing:2px;font-weight:700;color:#651f2d;">
+                ORDER CONFIRMATION
+              </div>
+
+              <h1 style="margin:14px 0 18px 0;font-size:31px;line-height:1.15;letter-spacing:-0.5px;color:#111111;">
+                YOUR KNIFE HAS ENTERED<br>
+                THE GRIMSON WORKFLOW
+              </h1>
+
+              <p style="margin:0 0 10px 0;font-size:16px;line-height:1.7;color:#333333;">
+                Hello ${firstName},
+              </p>
+
+              <p style="margin:0;font-size:16px;line-height:1.7;color:#333333;">
+                Thank you for choosing GRIMSON. Your order has been received and your payment has been confirmed.
+              </p>
+            </td>
+          </tr>
+
+          <tr>
+            <td style="padding:18px 38px 0 38px;">
+              ${sectionHeading("ORDER DETAILS")}
+
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="border-collapse:collapse;">
+                ${detailRow("Order reference", safeOrderReference)}
+                ${detailRow("Purchase date", safeOrderDate)}
+                ${detailRow("Payment status", "PAID")}
+                ${detailRow("Payment method", safePaymentMethod)}
+              </table>
+            </td>
+          </tr>
+
+          <tr>
+            <td style="padding:34px 38px 0 38px;">
+              ${sectionHeading("YOUR GRIMSON")}
+              ${productsHtml}
+
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="border-collapse:collapse;border-top:2px solid #111111;">
+                <tr>
+                  <td style="padding:16px 0 0 0;font-size:14px;font-weight:700;color:#555555;">TOTAL PAID</td>
+                  <td align="right" style="padding:16px 0 0 0;font-size:21px;font-weight:800;color:#111111;">
+                    ${safeFormattedTotal}
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <tr>
+            <td style="padding:34px 38px 0 38px;">
+              ${sectionHeading("SHIPPING ADDRESS")}
+              <div style="font-size:15px;line-height:1.7;color:#333333;">
+                ${shippingAddressHtml}
+              </div>
+            </td>
+          </tr>
+
+          <tr>
+            <td style="padding:34px 38px 0 38px;">
+              ${sectionHeading("DELIVERY")}
+              <p style="margin:0 0 12px 0;font-size:15px;line-height:1.7;color:#333333;">
+                Your order will be individually inspected, prepared and packed before dispatch.
+              </p>
+              <p style="margin:0;font-size:15px;line-height:1.7;color:#333333;">
+                Once the parcel enters the carrier's network, delivery notifications will be sent directly by the carrier. Please use your local postal or courier application to follow shipments registered to your name and address.
+              </p>
+            </td>
+          </tr>
+
+          <tr>
+            <td style="padding:34px 38px 0 38px;">
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background:#f5f1f2;border-left:5px solid #651f2d;border-collapse:collapse;">
+                <tr>
+                  <td style="padding:22px 22px 20px 22px;">
+                    <div style="font-size:12px;letter-spacing:1.7px;font-weight:800;color:#651f2d;">
+                      IMPORTANT DELIVERY INFORMATION
+                    </div>
+                    <p style="margin:12px 0 8px 0;font-size:16px;line-height:1.6;font-weight:800;color:#111111;">
+                      Age verification is mandatory upon delivery.
+                    </p>
+                    <p style="margin:0;font-size:14px;line-height:1.65;color:#333333;">
+                      The recipient must present valid identification before the parcel can be released. If age verification cannot be completed, the shipment will be returned.
+                    </p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <tr>
+            <td style="padding:34px 38px 42px 38px;">
+              ${sectionHeading("INSPECTION")}
+              <p style="margin:0;font-size:15px;line-height:1.7;color:#333333;">
+                Please inspect your knife immediately after delivery. If the shipment arrives damaged or incomplete, contact us within 48 hours.
+              </p>
+            </td>
+          </tr>
+
+          <tr>
+            <td align="center" style="background:#111111;padding:30px 24px;">
+              <div style="font-size:20px;letter-spacing:5px;font-weight:800;color:#ffffff;">GRIMSON</div>
+
+              <div style="margin-top:16px;font-size:11px;line-height:1.8;letter-spacing:1.8px;color:#d3d3d3;">
+                BUILT 2 OPERATE<br>
+                EDGE 2 DOMINATE
+              </div>
+
+              <div style="margin-top:20px;font-size:13px;line-height:1.8;color:#bdbdbd;">
+                <a href="https://grimson.no" style="color:#ffffff;text-decoration:none;">grimson.no</a><br>
+                <a href="mailto:sales@grimson.no" style="color:#ffffff;text-decoration:none;">sales@grimson.no</a>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>`;
+}
+
+function sectionHeading(label) {
+  return `
+    <div style="margin-bottom:16px;padding-bottom:9px;border-bottom:1px solid #d8d8d8;font-size:12px;letter-spacing:1.8px;font-weight:800;color:#651f2d;">
+      ${escapeHtml(label)}
+    </div>
+  `;
+}
+
+function detailRow(label, value) {
+  return `
+    <tr>
+      <td valign="top" style="width:42%;padding:7px 12px 7px 0;font-size:13px;line-height:1.5;color:#666666;">
+        ${escapeHtml(label)}
+      </td>
+      <td valign="top" style="padding:7px 0;font-size:14px;line-height:1.5;font-weight:700;color:#111111;">
+        ${escapeHtml(value)}
+      </td>
+    </tr>
+  `;
+}
+
+function createOrderReference(sessionId, createdTimestamp) {
+  const year = new Date(
+    (createdTimestamp || Math.floor(Date.now() / 1000)) * 1000
+  ).getFullYear();
+
+  const digest = crypto
+    .createHash("sha256")
+    .update(String(sessionId))
+    .digest("hex")
+    .slice(0, 10)
+    .toUpperCase();
+
+  return `GRM-${year}-${digest}`;
+}
+
+function safeMessageIdPart(value) {
+  return String(value || "unknown")
+    .replace(/[^a-zA-Z0-9._-]/g, "")
+    .slice(0, 120);
+}
+
+function isValidEmail(value) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(value || ""));
+}
+
+function getFirstName(fullName) {
+  const trimmed = String(fullName || "").trim();
+
+  if (!trimmed || trimmed === "Customer") {
+    return "Customer";
+  }
+
+  return trimmed.split(/\s+/)[0];
+}
+
+function formatAddressLines(address) {
+  return [
+    address.line1,
+    address.line2,
+    [address.postal_code, address.city]
+      .filter(Boolean)
+      .join(" "),
+    address.state,
+    address.country,
+  ].filter(Boolean);
+}
+
+function getProductSpecifications(productName) {
+  const name = String(productName || "").toLowerCase();
+
+  if (
+    name.includes("mk-i core") ||
+    name.includes("ranger") ||
+    name.includes("desert fox")
+  ) {
+    return {
+      steel: "440B Stainless Steel",
+      hardness: "58–60 HRC",
+    };
+  }
+
+  if (
+    name.includes("bloodrain") ||
+    name.includes("roseforge") ||
+    name.includes("damascus")
+  ) {
+    return {
+      steel: "15N20 + 1095 Damascus Steel",
+      hardness: "",
+    };
+  }
+
+  return {
+    steel: "",
+    hardness: "",
+  };
+}
+
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }
 
 function formatCustomFields(customFields) {
