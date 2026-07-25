@@ -1,0 +1,8 @@
+{
+  "name": "grimson-site",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "nodemailer": "^7.0.0"
+  }
+}
