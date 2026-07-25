@@ -566,4 +566,3 @@ function formatPaymentMethodName(method) {
 
   return names[method] || method;
 }
-}
