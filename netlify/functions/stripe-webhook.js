@@ -717,7 +717,7 @@ function buildCustomerHtmlEmail({
 
       return `
         <div style="padding:0 0 22px 0;">
-          <div style="font-size:18px;line-height:1.4;font-weight:700;color:#111111;">
+          <div style="font-size:18px;line-height:1.4;font-weight:700;color:#0f1822;">
             ${escapeHtml(product.quantity)} × ${escapeHtml(product.name)}
           </div>
           <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin-top:12px;border-collapse:collapse;">
@@ -740,43 +740,50 @@ function buildCustomerHtmlEmail({
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>GRIMSON Order Confirmation</title>
 </head>
-<body style="margin:0;padding:0;background:#eeeeee;font-family:Arial,Helvetica,sans-serif;color:#111111;">
+<body style="margin:0;padding:0;background:#d7dde3;font-family:Arial,Helvetica,sans-serif;color:#0f1822;">
   <div style="display:none;max-height:0;overflow:hidden;opacity:0;color:transparent;">
     Your GRIMSON order has been confirmed. Reference ${safeOrderReference}.
   </div>
 
-  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background:#eeeeee;">
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background:#d7dde3;">
     <tr>
       <td align="center" style="padding:24px 12px;">
-        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="max-width:680px;background:#ffffff;border-collapse:collapse;">
+        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="max-width:680px;background:#f7f9fb;border-collapse:collapse;">
 
           <tr>
-            <td align="center" style="background:#111111;padding:36px 24px 32px 24px;">
-              <div style="font-size:31px;letter-spacing:8px;font-weight:800;color:#ffffff;">GRIMSON</div>
-              <div style="margin-top:11px;font-size:10px;letter-spacing:3px;color:#bdbdbd;">NORTHERN NORWAY</div>
+            <td align="center" style="background:#eef3f7;padding:30px 24px 26px 24px;">
+              <img
+                src="https://grimson.no/logo-home.png"
+                width="430"
+                alt="GRIMSON"
+                style="display:block;width:100%;max-width:430px;height:auto;border:0;outline:none;text-decoration:none;margin:0 auto;"
+              >
+              <div style="margin-top:13px;font-size:10px;letter-spacing:3px;font-weight:700;color:#2c3f55;">
+                NORTHERN NORWAY
+              </div>
             </td>
           </tr>
 
           <tr>
-            <td style="height:5px;background:#651f2d;font-size:0;line-height:0;">&nbsp;</td>
+            <td style="height:5px;background:#2c3f55;font-size:0;line-height:0;">&nbsp;</td>
           </tr>
 
           <tr>
             <td style="padding:42px 38px 20px 38px;">
-              <div style="font-size:11px;letter-spacing:2px;font-weight:700;color:#777777;">
+              <div style="font-size:11px;letter-spacing:2px;font-weight:700;color:#6f8296;">
                 ORDER ${safeOrderReference}
               </div>
 
-              <h1 style="margin:16px 0 20px 0;font-size:31px;line-height:1.15;letter-spacing:-0.5px;color:#111111;">
+              <h1 style="margin:16px 0 20px 0;font-size:31px;line-height:1.15;letter-spacing:-0.5px;color:#0f1822;">
                 YOUR KNIFE HAS ENTERED<br>
-                THE GRIMSON <span style="color:#651f2d;">WORKFLOW</span>
+                THE GRIMSON <span style="color:#2c3f55;">WORKFLOW</span>
               </h1>
 
-              <p style="margin:0 0 10px 0;font-size:16px;line-height:1.7;color:#333333;">
+              <p style="margin:0 0 10px 0;font-size:16px;line-height:1.7;color:#1a2633;">
                 Hello ${firstName},
               </p>
 
-              <p style="margin:0;font-size:16px;line-height:1.7;color:#333333;">
+              <p style="margin:0;font-size:16px;line-height:1.7;color:#1a2633;">
                 Thank you for choosing GRIMSON. Your order has been received and your payment has been confirmed.
               </p>
             </td>
@@ -802,8 +809,8 @@ function buildCustomerHtmlEmail({
 
               <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="border-collapse:collapse;border-top:2px solid #111111;">
                 <tr>
-                  <td style="padding:16px 0 0 0;font-size:14px;font-weight:700;color:#555555;">TOTAL PAID</td>
-                  <td align="right" style="padding:16px 0 0 0;font-size:21px;font-weight:800;color:#111111;">
+                  <td style="padding:16px 0 0 0;font-size:14px;font-weight:700;color:#2c3f55;">TOTAL PAID</td>
+                  <td align="right" style="padding:16px 0 0 0;font-size:21px;font-weight:800;color:#0f1822;">
                     ${safeFormattedTotal}
                   </td>
                 </tr>
@@ -815,7 +822,7 @@ function buildCustomerHtmlEmail({
             <td style="padding:34px 38px 0 38px;">
               ${sectionHeading("WORKFLOW STATUS")}
 
-              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background:#111111;border-collapse:collapse;">
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background:#0f1822;border:1px solid #2c3f55;border-collapse:collapse;">
                 <tr>
                   <td style="padding:24px 24px 22px 24px;">
                     ${workflowRow("✓", "Order received", true)}
@@ -829,7 +836,7 @@ function buildCustomerHtmlEmail({
                 </tr>
               </table>
 
-              <p style="margin:14px 0 0 0;font-size:13px;line-height:1.65;color:#666666;">
+              <p style="margin:14px 0 0 0;font-size:13px;line-height:1.65;color:#526579;">
                 Your order is currently waiting for final preparation. We will hand it over to the carrier as soon as it completes our workflow.
               </p>
             </td>
@@ -838,7 +845,7 @@ function buildCustomerHtmlEmail({
           <tr>
             <td style="padding:34px 38px 0 38px;">
               ${sectionHeading("SHIPPING ADDRESS")}
-              <div style="font-size:15px;line-height:1.7;color:#333333;">
+              <div style="font-size:15px;line-height:1.7;color:#1a2633;">
                 ${shippingAddressHtml}
               </div>
             </td>
@@ -847,13 +854,13 @@ function buildCustomerHtmlEmail({
           <tr>
             <td style="padding:34px 38px 0 38px;">
               ${sectionHeading("DELIVERY")}
-              <p style="margin:0 0 12px 0;font-size:15px;line-height:1.7;color:#333333;">
+              <p style="margin:0 0 12px 0;font-size:15px;line-height:1.7;color:#1a2633;">
                 Every GRIMSON knife undergoes a final inspection before leaving our workshop.
               </p>
-              <p style="margin:0 0 12px 0;font-size:15px;line-height:1.7;color:#333333;">
+              <p style="margin:0 0 12px 0;font-size:15px;line-height:1.7;color:#1a2633;">
                 Once approved, it is securely packed and handed over to the carrier.
               </p>
-              <p style="margin:0;font-size:15px;line-height:1.7;color:#333333;">
+              <p style="margin:0;font-size:15px;line-height:1.7;color:#1a2633;">
                 When the shipment enters the carrier's network, tracking notifications will be sent directly by the carrier. Please use your local postal or courier application to follow deliveries registered to your name and address.
               </p>
             </td>
@@ -861,19 +868,19 @@ function buildCustomerHtmlEmail({
 
           <tr>
             <td style="padding:34px 38px 0 38px;">
-              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background:#f5f1f2;border-left:5px solid #651f2d;border-collapse:collapse;">
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background:#eef3f7;border-left:5px solid #2c3f55;border-collapse:collapse;">
                 <tr>
                   <td style="padding:22px 22px 20px 22px;">
-                    <div style="font-size:12px;letter-spacing:1.7px;font-weight:800;color:#651f2d;">
+                    <div style="font-size:12px;letter-spacing:1.7px;font-weight:800;color:#2c3f55;">
                       IMPORTANT DELIVERY INFORMATION
                     </div>
-                    <p style="margin:12px 0 8px 0;font-size:17px;line-height:1.6;font-weight:800;color:#111111;">
+                    <p style="margin:12px 0 8px 0;font-size:17px;line-height:1.6;font-weight:800;color:#0f1822;">
                       AGE VERIFICATION IS MANDATORY
                     </p>
-                    <p style="margin:0 0 8px 0;font-size:14px;line-height:1.65;color:#333333;">
+                    <p style="margin:0 0 8px 0;font-size:14px;line-height:1.65;color:#1a2633;">
                       Age verification is mandatory and cannot be waived.
                     </p>
-                    <p style="margin:0;font-size:14px;line-height:1.65;color:#333333;">
+                    <p style="margin:0;font-size:14px;line-height:1.65;color:#1a2633;">
                       The recipient must present valid identification before the parcel can be released. If age verification cannot be completed, the shipment will automatically be returned.
                     </p>
                   </td>
@@ -885,14 +892,14 @@ function buildCustomerHtmlEmail({
           <tr>
             <td style="padding:34px 38px 42px 38px;">
               ${sectionHeading("INSPECTION")}
-              <p style="margin:0;font-size:15px;line-height:1.7;color:#333333;">
+              <p style="margin:0;font-size:15px;line-height:1.7;color:#1a2633;">
                 Please inspect your knife immediately after delivery. If anything appears damaged or incomplete, contact us within 48 hours.
               </p>
             </td>
           </tr>
 
           <tr>
-            <td align="center" style="background:#111111;padding:30px 24px;">
+            <td align="center" style="background:#05070a;padding:30px 24px;border-top:1px solid #2c3f55;">
               <div style="font-size:20px;letter-spacing:5px;font-weight:800;color:#ffffff;">GRIMSON</div>
 
               <div style="margin-top:16px;font-size:11px;line-height:1.8;letter-spacing:1.8px;color:#d3d3d3;">
@@ -921,14 +928,14 @@ function workflowRow(symbol, label, completed, current = false) {
   const symbolColor = completed
     ? "#ffffff"
     : current
-      ? "#d8a6b0"
+      ? "#8fb7df"
       : "#777777";
 
   const labelColor = completed
     ? "#ffffff"
     : current
-      ? "#ffffff"
-      : "#9a9a9a";
+      ? "#cfe6ff"
+      : "#8fa2b5";
 
   const weight = current ? "800" : "700";
 
@@ -942,7 +949,7 @@ function workflowRow(symbol, label, completed, current = false) {
 
 function sectionHeading(label) {
   return `
-    <div style="margin-bottom:16px;padding-bottom:9px;border-bottom:1px solid #d8d8d8;font-size:12px;letter-spacing:1.8px;font-weight:800;color:#651f2d;">
+    <div style="margin-bottom:16px;padding-bottom:9px;border-bottom:1px solid #d8d8d8;font-size:12px;letter-spacing:1.8px;font-weight:800;color:#2c3f55;">
       ${escapeHtml(label)}
     </div>
   `;
@@ -951,10 +958,10 @@ function sectionHeading(label) {
 function detailRow(label, value) {
   return `
     <tr>
-      <td valign="top" style="width:42%;padding:7px 12px 7px 0;font-size:13px;line-height:1.5;color:#666666;">
+      <td valign="top" style="width:42%;padding:7px 12px 7px 0;font-size:13px;line-height:1.5;color:#526579;">
         ${escapeHtml(label)}
       </td>
-      <td valign="top" style="padding:7px 0;font-size:14px;line-height:1.5;font-weight:700;color:#111111;">
+      <td valign="top" style="padding:7px 0;font-size:14px;line-height:1.5;font-weight:700;color:#0f1822;">
         ${escapeHtml(value)}
       </td>
     </tr>
