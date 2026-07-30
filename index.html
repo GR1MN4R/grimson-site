@@ -330,7 +330,7 @@ body{
 .newsletterPanel{
   position:absolute;
   left:50%;
-  top:66%;
+  top:70%;
   margin-top:24px;
   transform:translateX(-50%);
   width:min(580px, calc(100vw - 40px));
@@ -702,6 +702,10 @@ body{
     line-height:1.4;
     margin-bottom:10px;
   }
+  .newsletterHighlight{
+    font-weight:600;
+    color:rgba(255,255,255,.92);
+  }
 
   .newsletterForm{
     gap:6px;
@@ -830,9 +834,13 @@ body{
 
       <h2 id="newsletterTitle">KEEP YOUR EDGE</h2>
       <p>
-        No weekly newsletters. No pointless promotions.<br>
-        You'll only hear from us when there's a new model, a new production batch, or something genuinely important.
-      </p>
+    <span class="newsletterHighlight">
+        No weekly newsletters. No pointless promotions.
+    </span><br><br>
+
+    You'll only hear from us when there's a new model,
+    a new production batch, or something genuinely important.
+</p>
 
       <form class="newsletterForm" id="newsletterForm">
         <input
