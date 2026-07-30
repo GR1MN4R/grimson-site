@@ -932,8 +932,46 @@ contactModal.addEventListener("click", function(e){
 });
 
 const newsletterForm = document.getElementById("newsletterForm");
-newsletterForm.addEventListener("submit", function(e){
+
+newsletterForm.addEventListener("submit", async function (e) {
   e.preventDefault();
+
+  const email = newsletterForm.email.value.trim();
+
+  if (!email) return;
+
+  const button = newsletterForm.querySelector("button");
+
+  button.disabled = true;
+  button.textContent = "JOINING...";
+
+  try {
+    const response = await fetch("/.netlify/functions/newsletter-subscribe", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email }),
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      newsletterForm.reset();
+      button.textContent = "JOINED ✓";
+    } else {
+      console.error(data);
+      button.textContent = "TRY AGAIN";
+    }
+  } catch (err) {
+    console.error(err);
+    button.textContent = "ERROR";
+  }
+
+  setTimeout(() => {
+    button.disabled = false;
+    button.textContent = "JOIN";
+  }, 3000);
 });
   const buyMenuBtn = document.getElementById("buyMenuBtn");
 const buyDropdown = buyMenuBtn.closest(".navDropdown");
