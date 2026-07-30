@@ -593,7 +593,265 @@ body{
   .footerRow{
     gap:8px 12px;
   }
+  /* =========================
+   GRIMSON NEWSLETTER PANEL
+   ========================= */
+
+.newsletterPanel {
+  position: absolute;
+  z-index: 20;
+
+  left: 50%;
+  top: 62%;
+  transform: translateX(-50%);
+
+  width: min(680px, calc(100vw - 40px));
+  box-sizing: border-box;
+
+  padding: 20px 28px 22px;
+
+  text-align: center;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(30, 39, 47, 0.96),
+      rgba(7, 11, 15, 0.97)
+    );
+
+  border: 1px solid rgba(117, 161, 194, 0.45);
+  border-radius: 4px;
+
+  box-shadow:
+    0 16px 35px rgba(0, 0, 0, 0.65),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.8),
+    0 0 18px rgba(38, 112, 160, 0.12);
+
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
 }
+
+/* metalni gornji sjaj */
+.newsletterPanel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      100deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.035) 43%,
+      rgba(255, 255, 255, 0.08) 50%,
+      transparent 58%
+    );
+
+  border-radius: inherit;
+}
+
+/* diskretni metalni vijci */
+.newsletterPanel::after {
+  content: "●                                      ●";
+  position: absolute;
+  top: 7px;
+  left: 10px;
+  right: 10px;
+
+  display: flex;
+  justify-content: space-between;
+
+  color: rgba(163, 187, 203, 0.6);
+  font-size: 8px;
+  letter-spacing: 0;
+
+  text-shadow:
+    0 1px 1px #000,
+    0 0 3px rgba(130, 190, 225, 0.35);
+
+  pointer-events: none;
+}
+
+.newsletterPanel h2 {
+  position: relative;
+  z-index: 1;
+
+  margin: 0 0 8px;
+
+  color: #e2e9ee;
+  font-family: "ElementalEnd", sans-serif;
+  font-size: clamp(19px, 1.7vw, 26px);
+  font-weight: 700;
+  letter-spacing: 0.16em;
+
+  text-shadow:
+    0 2px 2px rgba(0, 0, 0, 0.9),
+    0 0 10px rgba(73, 147, 190, 0.2);
+}
+
+.newsletterPanel p {
+  position: relative;
+  z-index: 1;
+
+  max-width: 610px;
+  margin: 0 auto 15px;
+
+  color: rgba(222, 230, 236, 0.78);
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.newsletterForm {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  width: 100%;
+  max-width: 590px;
+  margin: 0 auto;
+  gap: 8px;
+}
+
+.newsletterForm input {
+  flex: 1;
+  min-width: 0;
+  height: 44px;
+  box-sizing: border-box;
+
+  padding: 0 15px;
+
+  color: #edf3f7;
+  background: rgba(2, 6, 10, 0.88);
+
+  border: 1px solid rgba(92, 139, 170, 0.5);
+  border-radius: 4px;
+  outline: none;
+
+  font: inherit;
+  font-size: 14px;
+
+  box-shadow:
+    inset 0 2px 8px rgba(0, 0, 0, 0.75),
+    0 0 0 rgba(55, 145, 200, 0);
+    
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.newsletterForm input::placeholder {
+  color: rgba(201, 215, 225, 0.45);
+}
+
+.newsletterForm input:focus {
+  border-color: rgba(104, 182, 226, 0.85);
+
+  box-shadow:
+    inset 0 2px 8px rgba(0, 0, 0, 0.75),
+    0 0 10px rgba(55, 145, 200, 0.18);
+}
+
+.newsletterForm button {
+  width: 112px;
+  height: 44px;
+  flex: 0 0 112px;
+
+  color: #e8f0f5;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(30, 54, 71, 0.98),
+      rgba(10, 24, 34, 0.98)
+    );
+
+  border: 1px solid rgba(87, 143, 180, 0.58);
+  border-radius: 4px;
+
+  font-family: "ElementalEnd", sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.11em;
+
+  cursor: pointer;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 5px 12px rgba(0, 0, 0, 0.38);
+
+  transition:
+    transform 0.15s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.newsletterForm button:hover {
+  transform: translateY(-1px);
+  border-color: rgba(114, 190, 232, 0.88);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 7px 16px rgba(0, 0, 0, 0.48),
+    0 0 12px rgba(58, 145, 194, 0.18);
+}
+
+.newsletterForm button:active {
+  transform: translateY(1px);
+}
+
+
+/* MOBILE */
+@media (max-width: 700px) {
+
+  .newsletterPanel {
+    top: 61%;
+    width: calc(100vw - 28px);
+    padding: 17px 16px 18px;
+  }
+
+  .newsletterPanel h2 {
+    margin-bottom: 7px;
+    font-size: 18px;
+    letter-spacing: 0.12em;
+  }
+
+  .newsletterPanel p {
+    margin-bottom: 12px;
+    font-size: 12px;
+    line-height: 1.45;
+  }
+
+  .newsletterForm {
+    gap: 6px;
+  }
+
+  .newsletterForm input {
+    height: 42px;
+    padding: 0 12px;
+    font-size: 13px;
+  }
+
+  .newsletterForm button {
+    width: 88px;
+    height: 42px;
+    flex-basis: 88px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 420px) {
+
+  .newsletterPanel {
+    top: 60%;
+    width: calc(100vw - 20px);
+    padding: 15px 12px 16px;
+  }
+
+  .newsletterPanel p br {
+    display: none;
+  }
+}
+  
 </style>
   
 </head>
@@ -655,6 +913,33 @@ body{
       <a href="about.html">About</a>
       <a href="#" id="contactBtn">Contact</a>
     </nav>
+
+<div class="newsletterPanel">
+
+    <h2>KEEP YOUR EEDGE</h2>
+
+    <p>
+        No weekly newsletters. No pointless promotions.<br>
+    You'll only hear from us when there's a new model, a new production batch,
+    or something genuinely important.
+    </p>
+
+    <form class="newsletterForm">
+
+        <input
+            type="email"
+            placeholder="Enter your email"
+            required
+        >
+
+        <button type="submit">
+            JOIN
+        </button>
+
+    </form>
+
+</div>
+
   </div>
 </main>
 
