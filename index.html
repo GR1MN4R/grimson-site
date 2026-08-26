@@ -328,7 +328,7 @@ body{
 
 /* GRIMSON mailing list panel */
 .newsletterPanel{
-  position:absolute;
+  position:fixed;
   left:auto;
   right:6vw;
   top:74%;
@@ -365,28 +365,37 @@ body{
   border-radius:5px;
   background:linear-gradient(180deg,rgba(26,38,51,.88),rgba(15,24,34,.92));
   color:#a9bfd2;
-  font-size:20px;
+  font-size:22px;
   line-height:22px;
   font-weight:400;
   text-align:center;
   cursor:pointer;
-  box-shadow:0 0 5px rgba(40,90,140,.24), inset 0 0 5px rgba(80,140,200,.12);
-  transition:background .2s ease, border-color .2s ease, color .2s ease, box-shadow .2s ease, transform .2s ease;
+  box-shadow:
+    0 0 5px rgba(40,90,140,.24),
+    inset 0 0 5px rgba(80,140,200,.12);
+  transition:
+    background .2s ease,
+    border-color .2s ease,
+    color .2s ease,
+    box-shadow .2s ease,
+    transform .2s ease;
 }
 
 .newsletterClose:hover{
   background:linear-gradient(180deg,#21364a,#15212e);
   border-color:#4a7bb5;
-  color:#e7f3ff;
-  box-shadow:0 0 9px rgba(80,140,200,.65), inset 0 0 8px rgba(120,180,255,.28);
+  color:#e6f3ff;
+  box-shadow:
+    0 0 9px rgba(80,140,200,.62),
+    inset 0 0 8px rgba(120,180,255,.28);
   transform:translateY(-1px);
 }
 
 .newsletterClose:focus-visible{
-  outline:1px solid #6fa6d8;
+  outline:1px solid #6fa4d1;
   outline-offset:2px;
 }
-
+  
 .newsletterPanel::before{
   content:"";
   position:absolute;
@@ -737,7 +746,7 @@ body{
     min-width:170px;
   }
 
-  .newsletterPanel{
+ .newsletterPanel{
     position:relative;
     left:auto;
     right:auto;
@@ -746,6 +755,11 @@ body{
     transform:none;
     width:calc(100vw - 24px);
     padding:14px 14px 15px;
+  }
+
+  .newsletterClose{
+    top:7px;
+    right:8px;
   }
 
   .newsletterPanel h2{
