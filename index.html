@@ -329,10 +329,11 @@ body{
 /* GRIMSON mailing list panel */
 .newsletterPanel{
   position:absolute;
-  left:50%;
+  left:auto;
+  right:6vw;
   top:74%;
   margin-top:24px;
-  transform:translateX(-50%);
+  transform:none;
   width:min(580px, calc(100vw - 40px));
   box-sizing:border-box;
   padding:14px 20px 15px;
@@ -350,6 +351,40 @@ body{
   backdrop-filter:blur(4px);
   -webkit-backdrop-filter:blur(4px);
   z-index:3;
+}
+
+.newsletterClose{
+  position:absolute;
+  top:7px;
+  right:8px;
+  z-index:4;
+  width:26px;
+  height:26px;
+  padding:0;
+  border:1px solid rgba(91,135,166,.42);
+  border-radius:5px;
+  background:linear-gradient(180deg,rgba(26,38,51,.88),rgba(15,24,34,.92));
+  color:#a9bfd2;
+  font-size:20px;
+  line-height:22px;
+  font-weight:400;
+  text-align:center;
+  cursor:pointer;
+  box-shadow:0 0 5px rgba(40,90,140,.24), inset 0 0 5px rgba(80,140,200,.12);
+  transition:background .2s ease, border-color .2s ease, color .2s ease, box-shadow .2s ease, transform .2s ease;
+}
+
+.newsletterClose:hover{
+  background:linear-gradient(180deg,#21364a,#15212e);
+  border-color:#4a7bb5;
+  color:#e7f3ff;
+  box-shadow:0 0 9px rgba(80,140,200,.65), inset 0 0 8px rgba(120,180,255,.28);
+  transform:translateY(-1px);
+}
+
+.newsletterClose:focus-visible{
+  outline:1px solid #6fa6d8;
+  outline-offset:2px;
 }
 
 .newsletterPanel::before{
@@ -705,6 +740,7 @@ body{
   .newsletterPanel{
     position:relative;
     left:auto;
+    right:auto;
     top:auto;
     margin:6px auto 0;
     transform:none;
@@ -859,6 +895,7 @@ body{
     </nav>
 
     <section class="newsletterPanel" aria-labelledby="newsletterTitle">
+      <button class="newsletterClose" id="newsletterClose" type="button" aria-label="Close newsletter signup">×</button>
       <span class="newsletterRivet tl" aria-hidden="true"></span>
       <span class="newsletterRivet tr" aria-hidden="true"></span>
       <span class="newsletterRivet bl" aria-hidden="true"></span>
@@ -959,6 +996,12 @@ contactModal.addEventListener("click", function(e){
 });
 
 const newsletterForm = document.getElementById("newsletterForm");
+const newsletterPanel = document.querySelector(".newsletterPanel");
+const newsletterClose = document.getElementById("newsletterClose");
+
+newsletterClose.addEventListener("click", function(){
+  newsletterPanel.style.display = "none";
+});
 
 newsletterForm.addEventListener("submit", async function (e) {
   e.preventDefault();
