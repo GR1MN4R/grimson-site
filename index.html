@@ -669,6 +669,295 @@ body{
   pointer-events:auto;
 }
 
+
+/* GRIMSON guided product selector */
+.chooserMenuLink{
+  margin-top:6px !important;
+  padding-top:13px !important;
+  border-top:1px solid rgba(91,135,166,.28) !important;
+  color:#e3f0fb !important;
+}
+
+.chooserModal{
+  position:fixed;
+  inset:0;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  box-sizing:border-box;
+  background:rgba(1,4,7,.78);
+  backdrop-filter:blur(7px);
+  -webkit-backdrop-filter:blur(7px);
+  z-index:10050;
+}
+
+.chooserModal.active{
+  display:flex;
+}
+
+body.chooserOpen{
+  overflow:hidden !important;
+}
+
+.chooserBox{
+  position:relative;
+  width:min(760px, 100%);
+  max-height:88vh;
+  overflow-y:auto;
+  box-sizing:border-box;
+  padding:32px 34px 30px;
+  border:1px solid rgba(91,135,166,.52);
+  border-radius:12px;
+  color:#dfeaf5;
+  background:
+    linear-gradient(180deg, rgba(24,33,42,.985), rgba(7,11,16,.99)),
+    repeating-linear-gradient(90deg, rgba(255,255,255,.016) 0 1px, transparent 1px 4px);
+  box-shadow:
+    0 28px 80px rgba(0,0,0,.72),
+    inset 0 1px 0 rgba(255,255,255,.06),
+    0 0 28px rgba(56,125,173,.12);
+}
+
+.chooserBox::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  border-radius:inherit;
+  background:linear-gradient(115deg, transparent 18%, rgba(255,255,255,.028) 48%, transparent 72%);
+}
+
+.chooserBack,
+.chooserClose{
+  position:absolute;
+  top:13px;
+  z-index:3;
+  width:34px;
+  height:34px;
+  padding:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border:1px solid rgba(91,135,166,.38);
+  border-radius:6px;
+  color:#bcd0e1;
+  background:linear-gradient(180deg,rgba(26,38,51,.90),rgba(15,24,34,.94));
+  cursor:pointer;
+  transition:.2s ease;
+}
+
+.chooserBack{ left:14px; font-size:22px; }
+.chooserClose{ right:14px; font-size:25px; line-height:1; }
+
+.chooserBack:hover,
+.chooserClose:hover{
+  color:#fff;
+  border-color:#4a7bb5;
+  background:linear-gradient(180deg,#21364a,#15212e);
+  box-shadow:0 0 9px rgba(80,140,200,.36);
+}
+
+.chooserBack[hidden]{
+  display:none;
+}
+
+.chooserTopline{
+  position:relative;
+  z-index:1;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
+  margin:2px 48px 22px;
+  min-height:20px;
+  color:#8fa9bf;
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+}
+
+.chooserProgress{
+  color:#6687a3;
+  font-weight:600;
+}
+
+.chooserContent{
+  position:relative;
+  z-index:1;
+  text-align:center;
+}
+
+.chooserQuestion{
+  margin:0 auto 9px;
+  max-width:660px;
+  color:#edf5fb;
+  font-size:28px;
+  line-height:1.15;
+  letter-spacing:.045em;
+}
+
+.chooserIntro{
+  margin:0 auto 24px;
+  max-width:610px;
+  color:rgba(219,231,243,.72);
+  font-size:14px;
+  line-height:1.55;
+}
+
+.chooserOptions{
+  display:grid;
+  grid-template-columns:repeat(2, minmax(0,1fr));
+  gap:12px;
+  max-width:660px;
+  margin:0 auto;
+}
+
+.chooserOption{
+  min-height:76px;
+  padding:15px 16px;
+  border:1px solid rgba(74,123,181,.44);
+  border-radius:8px;
+  color:#dceaf6;
+  background:
+    linear-gradient(180deg,rgba(27,40,54,.84),rgba(12,20,29,.92));
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.04),
+    0 10px 22px rgba(0,0,0,.18);
+  cursor:pointer;
+  text-align:left;
+  transition:transform .18s ease, border-color .18s ease, background .18s ease, box-shadow .18s ease;
+}
+
+.chooserOption:hover{
+  transform:translateY(-2px);
+  border-color:#568bc1;
+  background:linear-gradient(180deg,rgba(35,54,72,.92),rgba(15,26,38,.96));
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.05),
+    0 12px 26px rgba(0,0,0,.24),
+    0 0 15px rgba(70,135,188,.12);
+}
+
+.chooserOption strong{
+  display:block;
+  margin-bottom:4px;
+  color:#f1f7fc;
+  font-size:14px;
+  letter-spacing:.055em;
+  text-transform:uppercase;
+}
+
+.chooserOption span{
+  display:block;
+  color:rgba(207,224,238,.67);
+  font-size:12px;
+  line-height:1.4;
+}
+
+.chooserFinePrint{
+  margin:20px auto 0;
+  color:rgba(182,201,218,.48);
+  font-size:11px;
+  line-height:1.45;
+}
+
+.chooserResultLabel{
+  margin:0 0 8px;
+  color:#86a7c2;
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+}
+
+.chooserResultTitle{
+  margin:0 0 7px;
+  color:#f2f7fb;
+  font-size:32px;
+  line-height:1.1;
+  letter-spacing:.045em;
+}
+
+.chooserResultSub{
+  margin:0 auto 22px;
+  max-width:610px;
+  color:#b9ccdc;
+  font-size:14px;
+  line-height:1.55;
+}
+
+.chooserReasons{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:10px;
+  margin:0 auto 22px;
+  max-width:680px;
+}
+
+.chooserReason{
+  padding:14px 12px;
+  border:1px solid rgba(91,135,166,.28);
+  border-radius:7px;
+  background:rgba(5,10,15,.55);
+  color:#c8d9e7;
+  font-size:12px;
+  line-height:1.45;
+}
+
+.chooserActions{
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.chooserPrimary,
+.chooserSecondary{
+  display:inline-block;
+  padding:12px 22px;
+  border-radius:6px;
+  font-size:13px;
+  font-weight:700;
+  letter-spacing:.055em;
+  text-decoration:none;
+  transition:.2s ease;
+}
+
+.chooserPrimary{
+  border:1px solid #4a7bb5;
+  background:linear-gradient(180deg,#24415c,#15283a);
+  color:#eff8ff;
+  box-shadow:0 0 12px rgba(75,142,196,.18);
+}
+
+.chooserSecondary{
+  border:1px solid rgba(91,135,166,.34);
+  background:rgba(10,17,24,.72);
+  color:#bed3e5;
+}
+
+.chooserPrimary:hover,
+.chooserSecondary:hover{
+  transform:translateY(-1px);
+  border-color:#6b9dca;
+}
+
+.chooserRestart{
+  display:block;
+  margin:18px auto 0;
+  padding:0;
+  border:0;
+  background:transparent;
+  color:#7f9ab0;
+  font-size:11px;
+  text-decoration:underline;
+  cursor:pointer;
+}
+
+.chooserRestart:hover{ color:#dbe9f5; }
+
 /* mobile */
 @media (max-width:700px){
 
@@ -837,6 +1126,61 @@ body{
     font-size:17px;
   }
 
+
+  .chooserModal{
+    align-items:flex-start;
+    padding:12px;
+  }
+
+  .chooserBox{
+    width:100%;
+    max-height:calc(100svh - 24px);
+    margin-top:0;
+    padding:58px 16px 22px;
+    border-radius:10px;
+  }
+
+  .chooserBack,
+  .chooserClose{
+    top:12px;
+  }
+
+  .chooserBack{ left:12px; }
+  .chooserClose{ right:12px; }
+
+  .chooserTopline{
+    margin:0 44px 18px;
+    font-size:10px;
+  }
+
+  .chooserQuestion{
+    font-size:22px;
+  }
+
+  .chooserIntro{
+    margin-bottom:18px;
+    font-size:13px;
+  }
+
+  .chooserOptions{
+    grid-template-columns:1fr;
+    gap:9px;
+  }
+
+  .chooserOption{
+    min-height:auto;
+    padding:13px 14px;
+  }
+
+  .chooserReasons{
+    grid-template-columns:1fr;
+    gap:8px;
+  }
+
+  .chooserResultTitle{
+    font-size:27px;
+  }
+
   .footer{
     font-size:11px;
     padding:9px 10px;
@@ -902,6 +1246,7 @@ body{
   <div class="navDropMenu" id="buyMenu">
     <a href="shop-core.html">Get CORE</a>
     <a href="shop-premium.html">Get PREMIUM</a>
+    <a href="#" id="chooserBtn" class="chooserMenuLink">Need help choosing?</a>
   </div>
 </div>
       <a href="about.html">About</a>
@@ -959,6 +1304,20 @@ body{
     </p>
 
     <a href="contact.html" class="contactAction">Use Contact Form</a>
+  </div>
+</div>
+
+<div id="chooserModal" class="chooserModal" aria-hidden="true">
+  <div class="chooserBox" role="dialog" aria-modal="true" aria-labelledby="chooserQuestion">
+    <button class="chooserBack" id="chooserBack" type="button" aria-label="Go back" hidden>←</button>
+    <button class="chooserClose" id="chooserClose" type="button" aria-label="Close product selector">×</button>
+
+    <div class="chooserTopline">
+      <span>GRIMSON SELECTOR</span>
+      <span class="chooserProgress" id="chooserProgress">STEP 01</span>
+    </div>
+
+    <div class="chooserContent" id="chooserContent"></div>
   </div>
 </div>
 
@@ -1070,6 +1429,329 @@ buyMenuBtn.addEventListener("click", function(e){
 
 document.addEventListener("click", function(){
   buyDropdown.classList.remove("open");
+});
+
+/* GRIMSON guided product selector */
+const chooserBtn = document.getElementById("chooserBtn");
+const chooserModal = document.getElementById("chooserModal");
+const chooserClose = document.getElementById("chooserClose");
+const chooserBack = document.getElementById("chooserBack");
+const chooserContent = document.getElementById("chooserContent");
+const chooserProgress = document.getElementById("chooserProgress");
+
+let chooserScreen = "buyingFor";
+let chooserHistory = [];
+let chooserState = {};
+
+function resetChooser(){
+  chooserScreen = "buyingFor";
+  chooserHistory = [];
+  chooserState = {};
+  renderChooser();
+}
+
+function openChooser(){
+  resetChooser();
+  chooserModal.classList.add("active");
+  chooserModal.setAttribute("aria-hidden", "false");
+  document.body.classList.add("chooserOpen");
+  buyDropdown.classList.remove("open");
+}
+
+function closeChooser(){
+  chooserModal.classList.remove("active");
+  chooserModal.setAttribute("aria-hidden", "true");
+  document.body.classList.remove("chooserOpen");
+  resetChooser();
+}
+
+function goChooser(nextScreen){
+  chooserHistory.push(chooserScreen);
+  chooserScreen = nextScreen;
+  renderChooser();
+}
+
+function answerChooser(key, value, nextScreen){
+  chooserState[key] = value;
+  goChooser(nextScreen);
+}
+
+function chooserOption(label, subtext, onClick){
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "chooserOption";
+  button.innerHTML = `<strong>${label}</strong>${subtext ? `<span>${subtext}</span>` : ""}`;
+  button.addEventListener("click", onClick);
+  return button;
+}
+
+function chooserQuestionScreen(title, intro, options, finePrint){
+  chooserContent.innerHTML = "";
+
+  const h2 = document.createElement("h2");
+  h2.className = "chooserQuestion";
+  h2.id = "chooserQuestion";
+  h2.textContent = title;
+
+  const p = document.createElement("p");
+  p.className = "chooserIntro";
+  p.textContent = intro;
+
+  const grid = document.createElement("div");
+  grid.className = "chooserOptions";
+  options.forEach(option => grid.appendChild(option));
+
+  chooserContent.append(h2, p, grid);
+
+  if(finePrint){
+    const small = document.createElement("p");
+    small.className = "chooserFinePrint";
+    small.textContent = finePrint;
+    chooserContent.appendChild(small);
+  }
+}
+
+function showChooserResult(line){
+  const isCore = line === "core";
+  const gift = chooserState.buyingFor === "gift";
+  const owner = gift ? "them" : "you";
+
+  let reasons;
+  let sub;
+
+  if(isCore){
+    reasons = [
+      "440B stainless steel for practical corrosion resistance and easier day-to-day care.",
+      chooserState.profile === "work" && chooserState.workUse === "wet"
+        ? "A particularly sensible fit for wet, coastal and weather-exposed use."
+        : "A strong fit when practical work and outdoor use comes before blade-care ritual.",
+      "The straightforward choice when low-maintenance ownership matters most."
+    ];
+    sub = `Based on the answers, the CORE line is the cleaner fit for ${owner}.`;
+  } else {
+    reasons = [
+      "15N20 + 1095 Damascus gives every PREMIUM blade a more individual material character.",
+      "Best suited to an owner who is comfortable drying, lightly oiling and storing the blade properly.",
+      "The stronger match when distinctive materials matter as much as everyday function."
+    ];
+    sub = `Based on the answers, the PREMIUM line is the stronger fit for ${owner}.`;
+  }
+
+  chooserContent.innerHTML = `
+    <p class="chooserResultLabel">YOUR MATCH</p>
+    <h2 class="chooserResultTitle" id="chooserQuestion">GRIMSON MK-I ${isCore ? "CORE" : "PREMIUM"}</h2>
+    <p class="chooserResultSub">${sub}</p>
+    <div class="chooserReasons">
+      ${reasons.map(reason => `<div class="chooserReason">${reason}</div>`).join("")}
+    </div>
+    <div class="chooserActions">
+      <a class="chooserPrimary" href="${isCore ? "shop-core.html" : "shop-premium.html"}">VIEW ${isCore ? "CORE" : "PREMIUM"} →</a>
+      <a class="chooserSecondary" href="${isCore ? "shop-premium.html" : "shop-core.html"}">COMPARE ${isCore ? "PREMIUM" : "CORE"}</a>
+    </div>
+    <button type="button" class="chooserRestart" id="chooserRestart">Start over</button>
+  `;
+
+  document.getElementById("chooserRestart").addEventListener("click", resetChooser);
+}
+
+function renderChooser(){
+  chooserBack.hidden = chooserHistory.length === 0;
+  chooserProgress.textContent = `STEP ${String(chooserHistory.length + 1).padStart(2,"0")}`;
+
+  const gift = chooserState.buyingFor === "gift";
+
+  if(chooserScreen === "buyingFor"){
+    chooserQuestionScreen(
+      "WHO ARE YOU BUYING FOR?",
+      "A few answers are enough. We'll point you toward the GRIMSON line that makes the most sense.",
+      [
+        chooserOption("MYSELF", "I'm choosing my own knife.", () => answerChooser("buyingFor", "self", "profile")),
+        chooserOption("AS A GIFT", "I'm choosing for someone else.", () => answerChooser("buyingFor", "gift", "profile"))
+      ],
+      "No account. No saved answers. Close the selector and it resets."
+    );
+    return;
+  }
+
+  if(chooserScreen === "profile"){
+    chooserQuestionScreen(
+      gift ? "WHAT BEST DESCRIBES THEM?" : "WHAT BEST DESCRIBES YOU?",
+      gift ? "Choose the closest fit. It doesn't have to be perfect." : "Choose the closest fit. It doesn't have to be perfect.",
+      [
+        chooserOption("WORK & OUTDOOR USER", "Practical use, field use, trade, camp or general utility.", () => answerChooser("profile", "work", "workUse")),
+        chooserOption("KNIFE ENTHUSIAST", "Materials, steel and the ownership experience matter too.", () => answerChooser("profile", "enthusiast", "experience")),
+        chooserOption("NOT SURE YET", "Keep it simple and we'll narrow it down another way.", () => answerChooser("profile", "unsure", "unsurePriority"))
+      ]
+    );
+    return;
+  }
+
+  if(chooserScreen === "workUse"){
+    chooserQuestionScreen(
+      gift ? "WHAT WILL THEY MOSTLY USE IT FOR?" : "WHAT WILL YOU MOSTLY USE IT FOR?",
+      "Pick the environment or use case that will matter most often.",
+      [
+        chooserOption("TRADE / CONSTRUCTION", "Site work, workshop tasks and demanding utility use.", () => answerChooser("workUse", "trade", "tradeType")),
+        chooserOption("GENERAL UTILITY", "A broad everyday work-and-outdoor role.", () => answerChooser("workUse", "utility", "workPriority")),
+        chooserOption("OUTDOOR / CAMP", "Field use, camp tasks and general outdoor carry.", () => answerChooser("workUse", "outdoor", "workPriority")),
+        chooserOption("WET / COASTAL CONDITIONS", "Frequent moisture, rain, sea air or weather exposure.", () => answerChooser("workUse", "wet", "workPriority"))
+      ]
+    );
+    return;
+  }
+
+  if(chooserScreen === "tradeType"){
+    chooserQuestionScreen(
+      gift ? "WHAT KIND OF WORK DO THEY DO?" : "WHAT KIND OF WORK DO YOU DO?",
+      "This one is partly practical and partly for us to understand the kind of daily abuse the knife will see.",
+      [
+        chooserOption("CARPENTRY / BUILDING", "Timber, packaging, materials and general site work.", () => answerChooser("tradeType", "carpentry", "workPriority")),
+        chooserOption("ELECTRICAL / INSTALLATION", "Installation work, cable, packaging and general utility tasks.", () => answerChooser("tradeType", "installation", "workPriority")),
+        chooserOption("WORKSHOP / MAINTENANCE", "Bench work, repairs, maintenance and mixed utility use.", () => answerChooser("tradeType", "workshop", "workPriority")),
+        chooserOption("GENERAL TRADE", "A bit of everything. The knife needs to earn its place.", () => answerChooser("tradeType", "general", "workPriority"))
+      ]
+    );
+    return;
+  }
+
+  if(chooserScreen === "workPriority"){
+    chooserQuestionScreen(
+      gift ? "WHAT WOULD MATTER MORE TO THEM?" : "WHAT MATTERS MORE TO YOU?",
+      "This is usually where CORE and PREMIUM separate.",
+      [
+        chooserOption("LOW-MAINTENANCE PRACTICALITY", "Easy ownership and less attention to blade care.", () => {
+          chooserState.priority = "practical";
+          goChooser("resultCore");
+        }),
+        chooserOption("DISTINCT MATERIALS & CHARACTER", "A more individual blade and a little more ownership ritual.", () => {
+          chooserState.priority = "character";
+          goChooser("care");
+        })
+      ]
+    );
+    return;
+  }
+
+  if(chooserScreen === "experience"){
+    chooserQuestionScreen(
+      gift ? "HOW EXPERIENCED ARE THEY WITH KNIVES?" : "HOW EXPERIENCED ARE YOU WITH KNIVES?",
+      "We're not testing knowledge — this only helps us judge how much maintenance makes sense.",
+      [
+        chooserOption("EXPERIENCED", "Knives and steels are already familiar territory.", () => answerChooser("experience", "experienced", "ownedDamascus")),
+        chooserOption("BUSHCRAFT / OUTDOOR ENTHUSIAST", "Comfortable with knives in the field, without turning steel charts into a religion.", () => answerChooser("experience", "casual", "enthusiastPriority")),
+        chooserOption("JUST GETTING INTO IT", "Newer to knife ownership or specialty steels.", () => answerChooser("experience", "new", "enthusiastPriority"))
+      ]
+    );
+    return;
+  }
+
+  if(chooserScreen === "ownedDamascus"){
+    chooserQuestionScreen(
+      gift ? "HAVE THEY OWNED DAMASCUS OR HIGH-CARBON STEEL BEFORE?" : "HAVE YOU OWNED DAMASCUS OR HIGH-CARBON STEEL BEFORE?",
+      "That experience usually tells us whether PREMIUM will feel natural or unnecessarily fussy.",
+      [
+        chooserOption("YES", "The care routine won't be completely new.", () => answerChooser("ownedDamascus", "yes", "careKnowledge")),
+        chooserOption("NO", "No problem — willingness to maintain it matters more than prior ownership.", () => answerChooser("ownedDamascus", "no", "careLearning"))
+      ]
+    );
+    return;
+  }
+
+  if(chooserScreen === "careKnowledge"){
+    chooserQuestionScreen(
+      gift ? "HOW FAMILIAR ARE THEY WITH THE CARE ROUTINE?" : "HOW FAMILIAR ARE YOU WITH THE CARE ROUTINE?",
+      "Damascus / high-carbon steel benefits from drying, light oiling and sensible storage.",
+      [
+        chooserOption(gift ? "THEY KNOW THE ROUTINE" : "I KNOW THE ROUTINE", "Regular blade care is already normal.", () => goChooser("resultPremium")),
+        chooserOption(gift ? "A REFRESHER WOULD BE FINE" : "A REFRESHER IS FINE", "A short maintenance guide is all that's needed.", () => goChooser("resultPremium")),
+        chooserOption(gift ? "THEY'D RATHER AVOID IT" : "I'D RATHER AVOID IT", "Keep ownership as simple as possible.", () => goChooser("resultCore"))
+      ]
+    );
+    return;
+  }
+
+  if(chooserScreen === "careLearning"){
+    chooserQuestionScreen(
+      gift ? "WOULD THEY BE HAPPY TO LEARN THE CARE ROUTINE?" : "ARE YOU HAPPY TO LEARN THE CARE ROUTINE?",
+      "It's not difficult, but PREMIUM does ask for more attention than stainless CORE.",
+      [
+        chooserOption(gift ? "YES, THEY WOULD" : "YES", "A little routine care is part of the appeal.", () => goChooser("resultPremium")),
+        chooserOption("KEEP IT SIMPLE", "Minimal maintenance matters more.", () => goChooser("resultCore"))
+      ]
+    );
+    return;
+  }
+
+  if(chooserScreen === "enthusiastPriority"){
+    chooserQuestionScreen(
+      gift ? "WHAT WOULD APPEAL MORE TO THEM?" : "WHAT APPEALS MORE TO YOU?",
+      "Think ownership experience rather than price.",
+      [
+        chooserOption("DISTINCTIVE MATERIALS", "Pattern, character and specialty-steel ownership.", () => goChooser("care")),
+        chooserOption("EASY OWNERSHIP", "Use it, clean it, keep moving.", () => goChooser("resultCore"))
+      ]
+    );
+    return;
+  }
+
+  if(chooserScreen === "unsurePriority"){
+    chooserQuestionScreen(
+      gift ? "WHICH SOUNDS MORE LIKE THEM?" : "WHICH SOUNDS MORE LIKE YOU?",
+      "This usually gets us to the right line faster than technical questions.",
+      [
+        chooserOption("PRACTICAL FIRST", "A knife to use without making maintenance a hobby.", () => goChooser("resultCore")),
+        chooserOption("MATERIALS MATTER", "Something more distinctive to own, use and care for.", () => goChooser("care"))
+      ]
+    );
+    return;
+  }
+
+  if(chooserScreen === "care"){
+    chooserQuestionScreen(
+      gift ? "ARE THEY COMFORTABLE WITH REGULAR BLADE CARE?" : "ARE YOU COMFORTABLE WITH REGULAR BLADE CARE?",
+      "PREMIUM uses Damascus / high-carbon steel. Drying, light oiling and sensible storage are part of ownership.",
+      [
+        chooserOption(gift ? "YES, THEY ARE" : "YES, THAT'S FINE", "The extra care is worth the material character.", () => goChooser("resultPremium")),
+        chooserOption(gift ? "BETTER KEEP IT SIMPLE" : "I'D RATHER KEEP IT SIMPLE", "Low-maintenance ownership wins.", () => goChooser("resultCore"))
+      ]
+    );
+    return;
+  }
+
+  if(chooserScreen === "resultCore"){
+    showChooserResult("core");
+    return;
+  }
+
+  if(chooserScreen === "resultPremium"){
+    showChooserResult("premium");
+  }
+}
+
+chooserBtn.addEventListener("click", function(e){
+  e.preventDefault();
+  e.stopPropagation();
+  openChooser();
+});
+
+chooserClose.addEventListener("click", closeChooser);
+
+chooserBack.addEventListener("click", function(){
+  if(!chooserHistory.length) return;
+  chooserScreen = chooserHistory.pop();
+  renderChooser();
+});
+
+chooserModal.addEventListener("click", function(e){
+  if(e.target === chooserModal){
+    closeChooser();
+  }
+});
+
+document.addEventListener("keydown", function(e){
+  if(e.key === "Escape" && chooserModal.classList.contains("active")){
+    closeChooser();
+  }
 });
 </script>
   
