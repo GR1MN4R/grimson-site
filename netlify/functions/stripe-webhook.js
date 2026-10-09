@@ -277,6 +277,16 @@ exports.handler = async function (event) {
       `Order emails processed for Stripe event ${stripeEvent.id}`
     );
 
+    // GA4 is analytics-only. Failure must never affect Stripe fulfilment or emails.
+    try {
+      await sendGa4PurchaseEvent(session);
+    } catch (ga4Error) {
+      console.error(
+        `GA4 purchase tracking failed for Checkout Session ${session.id}:`,
+        ga4Error.message
+      );
+    }
+
     return {
       statusCode: 200,
       body: JSON.stringify({
@@ -299,6 +309,74 @@ exports.handler = async function (event) {
     };
   }
 };
+
+// Send GA4 Purchase only after a real Stripe payment is confirmed.
+// The client_reference_id is attached to Stripe Payment Links by the shop script.
+async function sendGa4PurchaseEvent(session) {
+  if (session.payment_status !== "paid") {
+    console.warn(`GA4 purchase skipped: Session ${session.id} is not paid.`);
+    return;
+  }
+
+  const measurementId = process.env.GA4_MEASUREMENT_ID;
+  const apiSecret = process.env.GA4_API_SECRET;
+  const eventName = process.env.GA4_PURCHASE_EVENT || "manual_event_PURCHASE";
+
+  if (!measurementId || !apiSecret) {
+    console.warn("GA4 purchase skipped: missing Measurement Protocol configuration.");
+    return;
+  }
+
+  // Stripe Payment Links accept only letters, numbers, '-' and '_' here.
+  // The frontend encodes a GA4 client ID like 123.456 and session 789 as
+  // ga4_123_456_789. No customer email or other personal data is added.
+  const reference = String(session.client_reference_id || "");
+  const match = /^ga4_(\d+)_(\d+)_(\d+)$/.exec(reference);
+  if (!match) {
+    console.warn(`GA4 purchase skipped: missing valid reference for ${session.id}.`);
+    return;
+  }
+
+  const amountMinor = Number(session.amount_total);
+  const currency = String(session.currency || "").toUpperCase();
+  if (!Number.isFinite(amountMinor) || amountMinor < 0 || !/^[A-Z]{3}$/.test(currency)) {
+    console.warn(`GA4 purchase skipped: invalid amount/currency for ${session.id}.`);
+    return;
+  }
+
+  const [_, clientPart1, clientPart2, sessionId] = match;
+  const payload = {
+    client_id: `${clientPart1}.${clientPart2}`,
+    events: [{
+      name: eventName,
+      params: {
+        transaction_id: session.id,
+        value: amountMinor / 100,
+        currency,
+        session_id: sessionId,
+        engagement_time_msec: 1,
+      },
+    }],
+  };
+
+  const url = new URL("https://www.google-analytics.com/mp/collect");
+  url.searchParams.set("measurement_id", measurementId);
+  url.searchParams.set("api_secret", apiSecret);
+
+  const response = await fetch(url.toString(), {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+    signal: AbortSignal.timeout(5000),
+  });
+
+  if (!response.ok) {
+    throw new Error(`GA4 Measurement Protocol HTTP ${response.status}`);
+  }
+
+  // HTTP 2xx confirms receipt, not that Google accepted every event field.
+  console.log(`GA4 Measurement Protocol request received for ${session.id}.`);
+}
 
 function verifyStripeSignature(
   payload,
