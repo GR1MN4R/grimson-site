@@ -1243,6 +1243,56 @@ body.chooserOpen{
   overflow: hidden;
   pointer-events: none;
 }
+  /* GRIMSON newsletter - mobile layout */
+@media (max-width: 768px) {
+  .newsletterPanel {
+    position: fixed;
+    top: auto;
+    bottom: 24px;
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+    margin: 0;
+    width: calc(100vw - 24px);
+    max-width: 420px;
+    padding: 12px 14px 14px;
+    max-height: calc(100dvh - 48px);
+    overflow-y: auto;
+  }
+
+  .newsletterPanel h2 {
+    font-size: 18px;
+  }
+
+  .newsletterPanel p {
+    font-size: 11px;
+    margin-bottom: 8px;
+  }
+
+  .newsletterForm {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 80px;
+    gap: 8px;
+  }
+
+  .newsletterForm input {
+    width: 100%;
+    min-width: 0;
+    height: 38px;
+  }
+
+  .newsletterForm button {
+    width: 80px;
+    height: 38px;
+  }
+
+  #newsletterTurnstile {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    justify-self: center;
+    max-width: 100%;
+  }
+}
 </style>
   
 </head>
