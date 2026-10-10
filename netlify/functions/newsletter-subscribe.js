@@ -14,23 +14,33 @@ const json = (statusCode, data, extraHeaders = {}) => ({
 
 exports.handler = async (event) => {
   if (event.httpMethod !== "POST") {
-    return json(405, { error: "Method Not Allowed" }, {
-      Allow: "POST",
-    });
+    return json(
+      405,
+      { error: "Method Not Allowed" },
+      { Allow: "POST" }
+    );
   }
 
-  // Netlify's platform-managed rate limiting.
-  // Requires a supported Netlify Functions deployment.
   try {
     const raw = event.body || "";
 
-    if (raw.length > 2048) {
+    if (raw.length > 4096) {
       return json(413, { error: "Request too large." });
     }
 
-    const body = JSON.parse(raw);
+    let body;
 
-    // Honeypot: legitimate form submissions leave this empty.
+    try {
+      body = JSON.parse(raw);
+    } catch {
+      return json(400, { error: "Invalid request." });
+    }
+
+    if (!body || typeof body !== "object" || Array.isArray(body)) {
+      return json(400, { error: "Invalid request." });
+    }
+
+    // Honeypot protection
     if (body.website) {
       return json(200, {
         success: true,
@@ -52,13 +62,61 @@ exports.handler = async (event) => {
       });
     }
 
-    if (!process.env.BREVO_API_KEY) {
-      console.error("BREVO_API_KEY is missing");
+    const token =
+      typeof body.turnstileToken === "string"
+        ? body.turnstileToken
+        : "";
+
+    if (!token || token.length > 2048) {
+      return json(403, {
+        error: "Security verification required.",
+      });
+    }
+
+    const secret = process.env.TURNSTILE_NEWSLETTER_SECRET_KEY;
+
+    if (!secret || !process.env.BREVO_API_KEY) {
+      console.error("Newsletter configuration missing");
       return json(503, {
         error: "Subscription temporarily unavailable.",
       });
     }
 
+    // Verify Turnstile token on Cloudflare servers
+    const verification = await fetch(
+      "https://challenges.cloudflare.com/turnstile/v0/siteverify",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: new URLSearchParams({
+          secret,
+          response: token,
+        }),
+        signal: AbortSignal.timeout(8000),
+      }
+    );
+
+    if (!verification.ok) {
+      console.error("Turnstile verification service error");
+      return json(502, {
+        error: "Security verification unavailable.",
+      });
+    }
+
+    const result = await verification.json();
+
+    if (
+      result.success !== true ||
+      result.hostname !== "grimson.no"
+    ) {
+      return json(403, {
+        error: "Security verification failed.",
+      });
+    }
+
+    // Only verified requests can reach Brevo
     const response = await fetch(
       "https://api.brevo.com/v3/contacts",
       {
@@ -102,7 +160,7 @@ exports.handler = async (event) => {
   }
 };
 
-// Netlify Functions rate limiting configuration
+// Netlify rate limiting — must be verified after deployment
 exports.config = {
   rateLimit: {
     windowLimit: RATE_LIMIT,
