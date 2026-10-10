@@ -1233,7 +1233,15 @@ body.chooserOpen{
   justify-self: center;
   max-width: 100%;
 }
-
+/* GRIMSON Newsletter Honeypot */
+.newsletterHoneypot {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  pointer-events: none;
+}
 </style>
   
 </head>
@@ -1317,8 +1325,8 @@ body.chooserOpen{
     You'll only hear from us when there's a new model,
     a new production batch, or something genuinely important.
 </p>
+    
 
-     
 <form class="newsletterForm" id="newsletterForm">
   <input
     type="email"
@@ -1328,9 +1336,23 @@ body.chooserOpen{
     aria-label="Email address"
     required
   >
+
+  <!-- Honeypot: hidden from legitimate visitors -->
+  <div class="newsletterHoneypot" aria-hidden="true">
+    <label for="newsletterWebsite">Website</label>
+    <input
+      type="text"
+      id="newsletterWebsite"
+      name="website"
+      tabindex="-1"
+      autocomplete="off"
+    >
+  </div>
+
   <div id="newsletterTurnstile"></div>
   <button type="submit">JOIN</button>
 </form>
+
 
     </section>
 
@@ -1482,9 +1504,10 @@ newsletterForm.addEventListener("submit", async function (e) {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        email,
-        turnstileToken: token
-      })
+  email,
+  website: newsletterForm.elements.website.value,
+  turnstileToken: token
+})
     });
 
     const data = await response.json();
