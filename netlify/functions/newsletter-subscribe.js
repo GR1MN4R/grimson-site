@@ -2,17 +2,21 @@
 const RATE_LIMIT = 5;
 const RATE_WINDOW = 60;
 
-const json = (statusCode, data, extraHeaders = {}) => ({
-  statusCode,
-  headers: {
-    "Content-Type": "application/json; charset=utf-8",
-    "Cache-Control": "no-store",
-    ...extraHeaders,
-  },
-  body: JSON.stringify(data),
-});
+const json = (statusCode, data, extraHeaders = {}) =>
+  new Response(JSON.stringify(data), {
+    status: statusCode,
+    headers: {
+      "Content-Type": "application/json; charset=utf-8",
+      "Cache-Control": "no-store",
+      ...extraHeaders,
+    },
+  });
 
-exports.handler = async (event) => {
+export default async (request) => {
+  const event = {
+    httpMethod: request.method,
+    body: await request.text(),
+  };
   if (event.httpMethod !== "POST") {
     return json(
       405,
@@ -161,10 +165,11 @@ exports.handler = async (event) => {
 };
 
 // Netlify rate limiting — must be verified after deployment
-exports.config = {
+export const config = {
+  path: "/.netlify/functions/newsletter-subscribe",
   rateLimit: {
-    windowLimit: RATE_LIMIT,
-    windowSize: RATE_WINDOW,
+    windowLimit: 5,
+    windowSize: 60,
     aggregateBy: ["ip"],
   },
 };
