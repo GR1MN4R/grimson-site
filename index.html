@@ -1205,6 +1205,35 @@ body.chooserOpen{
     gap:8px 12px;
   }
 }
+  
+/* GRIMSON Newsletter Turnstile layout */
+
+.newsletterForm {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 96px;
+  gap: 8px;
+  align-items: center;
+}
+
+.newsletterForm input {
+  grid-column: 1;
+  grid-row: 1;
+  width: 100%;
+}
+
+.newsletterForm button {
+  grid-column: 2;
+  grid-row: 1;
+  width: 96px;
+}
+
+#newsletterTurnstile {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  justify-self: center;
+  max-width: 100%;
+}
+
 </style>
   
 </head>
