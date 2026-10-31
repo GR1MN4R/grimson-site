@@ -107,6 +107,11 @@ exports.handler = async (event) => {
     }
 
     const result = await verification.json();
+    console.log("CORE Turnstile verification:", {
+  success: result.success,
+  hostname: result.hostname,
+  errors: result["error-codes"]
+});
 
     if (!result.success ||
         result.hostname !== "grimson.no") {
