@@ -1,8 +1,12 @@
+
 {
   "name": "grimson-site",
   "version": "1.0.0",
   "private": true,
   "dependencies": {
-    "nodemailer": "^7.0.0"
+    "@netlify/blobs": "^11.1.7",
+    "@netlify/database": "^2.0.1",
+    "netlify-identity-widget": "^2.0.3",
+    "nodemailer": "^10.3.1"
   }
 }
