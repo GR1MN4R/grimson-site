@@ -86,7 +86,10 @@ exports.handler = async (event) => {
 
   try {
     const secret = process.env.CHRISTMAS_TURNSTILE_SECRET || "";
-
+console.log(
+  "CHRISTMAS SECRET SHA256:",
+  crypto.createHash("sha256").update(secret, "utf8").digest("hex")
+);
 console.log("CORE secret diagnostics:", {
   present: secret.length > 0,
   length: secret.length,
