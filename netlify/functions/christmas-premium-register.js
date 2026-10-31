@@ -122,7 +122,9 @@ connectLambda(event);
 if (!result.success || (result.hostname !== "grimson.no" && !localTest))
   return reply(403, { error: "Human verification failed." });
 
-    db = getDatabase();
+    db = getDatabase({
+  connectionString: process.env.GRIMSON_DATABASE_URL
+});
 
     const existing = await db.pool.query(
       "SELECT 1 FROM christmas_premium_entries WHERE email=$1 LIMIT 1",
