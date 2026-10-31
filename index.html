@@ -2410,5 +2410,12 @@ document.addEventListener("keydown", function(e){
 })();
 </script>
 
+<script src="https://unpkg.com/netlify-identity-widget@1.9.2/build/netlify-identity-widget.js"></script>
+<script>
+  if (window.netlifyIdentity) {
+    netlifyIdentity.init();
+  }
+</script>
+
 </body>
 </html>
