@@ -101,7 +101,7 @@ console.log("CORE secret diagnostics:", {
           "Content-Type": "application/x-www-form-urlencoded",
         },
         body: new URLSearchParams({
-          secret: process.env.TURNSTILE_SECRET,
+          secret: process.env.CHRISTMAS_TURNSTILE_SECRET,
           response: token,
           remoteip:
             event.headers?.["x-nf-client-connection-ip"] || "",
