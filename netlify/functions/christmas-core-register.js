@@ -75,7 +75,7 @@ exports.handler = async (event) => {
     });
   }
 
-  if (!process.env.TURNSTILE_SECRET ||
+  if (!process.env.CHRISTMAS_TURNSTILE_SECRET ||
       !process.env.PROTON_SMTP_USER ||
       !process.env.PROTON_SMTP_TOKEN) {
     console.error("Christmas registration configuration missing.");
@@ -85,7 +85,7 @@ exports.handler = async (event) => {
   }
 
   try {
-    const secret = process.env.TURNSTILE_SECRET || "";
+    const secret = process.env.CHRISTMAS_TURNSTILE_SECRET || "";
 
 console.log("CORE secret diagnostics:", {
   present: secret.length > 0,
