@@ -1293,6 +1293,107 @@ transform: none;
     max-width: 100%;
   }
 }
+
+/* GRIMSON CHRISTMAS 2026 — isolated campaign additions */
+:root { --xmas-red-hot:#ff3449; --xmas-red-deep:#85091a; }
+body.xmas-active .newsletterPanel { display:none !important; }
+.xmasPanel {
+  display:none; box-sizing:border-box; position:fixed; z-index:80;
+  left:50%; top:26px; transform:translateX(-50%);
+  width:min(740px,calc(100vw - 28px));
+  padding:25px 27px 24px;
+  border:1px solid rgba(91,135,166,.58); border-radius:9px;
+  background:linear-gradient(180deg,rgba(23,32,42,.98),rgba(6,10,16,.98));
+  box-shadow:0 22px 70px rgba(0,0,0,.78),inset 0 1px 0 rgba(255,255,255,.08),0 0 32px rgba(225,25,48,.14);
+  color:#dbe7f3; text-align:center;
+}
+body.xmas-active.siteEntered .xmasPanel:not([hidden]) {display:block}
+.xmasPanel * {box-sizing:border-box}
+.xmasClose {position:absolute;top:7px;right:12px;border:0;background:transparent;color:#dbe7f3;font-size:26px;cursor:pointer;z-index:2}
+.xmasPanel h2 {font-size:clamp(19px,2.6vw,28px);letter-spacing:.045em;line-height:1.24;margin:6px 24px 21px;color:#f1f6fb}
+.xmasPanel h2 span {color:var(--xmas-red-hot)}
+/* Twin tanto-tip blade: the entire silhouette is the clickable link. */
+.xmasEnter {
+  --blade-cut:polygon(0 50%, 5% 25%, 12% 0, 88% 0, 95% 25%, 100% 50%, 95% 75%, 88% 100%, 12% 100%, 5% 75%);
+  position:relative; isolation:isolate;
+  display:flex; align-items:center; justify-content:center;
+  width:100%; min-height:78px; padding:16px 11%; text-decoration:none;
+  clip-path:var(--blade-cut);
+  background:linear-gradient(180deg,#ff8790 0%,#ed263c 12%,#b90922 51%,#740514 88%,#ff6371 100%);
+  filter:drop-shadow(0 3px 8px rgba(235,16,45,.4));
+  color:#fff;font-weight:900;font-size:26px;letter-spacing:.075em;line-height:1.2;
+  text-shadow:0 2px 2px rgba(0,0,0,.65);
+  transition:filter .16s ease, background .16s ease;
+}
+.xmasEnter::before {
+  content:"";position:absolute;inset:4px;z-index:-1;
+  clip-path:var(--blade-cut);
+  background:linear-gradient(180deg,#f3384a 0%,#d0112a 22%,#a00920 70%,#620310 100%);
+}
+.xmasEnter::after {
+  content:"";position:absolute;left:3%;right:3%;top:49%;height:1px;z-index:-1;
+  background:linear-gradient(90deg,transparent,rgba(255,192,196,.34) 15%,rgba(255,192,196,.34) 85%,transparent);
+}
+.xmasNewsletterNote {margin:14px 0 0;font-size:17px;font-weight:600;line-height:1.4;color:#cbd7e3}
+.xmasEnter:hover,.xmasEnter:focus-visible {filter:brightness(1.2) drop-shadow(0 3px 9px rgba(235,16,45,.55));color:white}
+.xmasEnter:focus-visible {outline:3px solid #fff;outline-offset:4px}
+@media(max-width:768px) {
+  .xmasPanel {top:14px;width:calc(100vw - 22px);padding:22px 14px 16px}
+  .xmasPanel h2 {font-size:clamp(18px,5vw,23px);margin:6px 20px 17px}
+  .xmasEnter {font-size:clamp(15px,4.4vw,22px);min-height:64px;padding:12px 10%}
+}
+
+/* Christmas selection dialog — preview only */
+.xmasEnter {border:0;cursor:pointer;font-family:inherit}
+.xmasChooseBackdrop[hidden]{display:none!important}
+.xmasChooseBackdrop{position:fixed;inset:0;z-index:110;display:flex;align-items:flex-start;justify-content:center;padding:clamp(18px,8vh,80px) 14px 20px;background:rgba(0,0,0,.76);overflow-y:auto}
+.xmasChooseDialog{position:relative;box-sizing:border-box;width:min(710px,100%);padding:32px 30px 25px;border:1px solid rgba(91,135,166,.65);border-radius:9px;background:linear-gradient(180deg,#192430,#070c13);box-shadow:0 24px 75px #000,inset 0 1px 0 #ffffff18;text-align:center;color:#e9f1f8}
+.xmasChooseDialog h2{font-size:clamp(19px,3vw,27px);line-height:1.2;letter-spacing:.045em;margin:0 26px 24px}
+.xmasChooseClose{position:absolute;right:11px;top:5px;background:none;border:0;color:#e4edf6;font-size:29px;cursor:pointer}
+.xmasChoice{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;margin:13px 0;padding:17px 10px;min-height:93px;text-decoration:none;color:white;background:linear-gradient(180deg,#f13a4b,#bc0b25 48%,#780617);border:1px solid #ff7580;border-radius:4px;box-shadow:inset 0 1px #ffb4b966;text-shadow:0 2px 2px #0008}
+.xmasChoice:hover,.xmasChoice:focus-visible{filter:brightness(1.17)}
+.xmasChoice strong{font-size:clamp(21px,3.8vw,28px);letter-spacing:.055em;font-weight:900}
+.xmasChoice span{font-size:clamp(11px,2vw,14px);letter-spacing:.04em;font-weight:700}
+.xmasChooseNote{font-size:16px;font-weight:600;color:#cbd7e3;margin:19px 0 0}
+@media(max-width:560px){.xmasChooseDialog{padding:32px 14px 20px}.xmasChoice{min-height:84px}.xmasChooseDialog h2{margin-bottom:18px}}
+
+
+/* Terms dialogs — form state remains intact while terms are displayed. */
+.xmasTermsDialog{max-width:760px;text-align:left;padding:28px 30px}
+.xmasTermsDialog h2{text-align:center;margin:0 26px 20px}
+.xmasTermsList{padding-left:25px;margin:0;color:#d9e5ef;font-size:14px;line-height:1.65}
+.xmasTermsList li{padding-left:4px;margin-bottom:11px}
+.xmasTermsList strong{color:#fff}
+.xmasTermsOrganizer{margin:18px 0;color:#d9e5ef;font-size:14px}
+.xmasTermsBack{display:block;margin:18px auto 0;font-weight:800}
+.xmasTermsLink{border:0;padding:0;background:none;color:#ff7383;text-decoration:underline;cursor:pointer;font:inherit;font-weight:800}
+.xmasPremiumChecks a{color:#ff7383;text-decoration:underline}
+#xmasCoreSubmit:not(:disabled){opacity:1;cursor:pointer}
+#xmasCoreSubmit:disabled{opacity:.6;cursor:not-allowed}
+@media(max-width:560px){.xmasTermsDialog{padding:27px 17px}.xmasTermsList{font-size:13px}}
+
+/* PREMIUM contest — test integration; not production validated. */
+.xmasChoice{width:100%;font-family:inherit;cursor:pointer}
+.xmasPremiumDialog{max-width:670px;text-align:left;padding:25px 28px 22px}
+.xmasPremiumDialog h2{text-align:center;margin:0 30px 8px;font-size:clamp(20px,3vw,27px)}
+.xmasPremiumSubtitle{text-align:center;font-size:13px;color:#b9cbd9;margin:0 0 16px}
+.xmasPremiumProduct{display:block;width:min(220px,60%);max-height:135px;object-fit:contain;margin:0 auto 12px;pointer-events:none;user-select:none}
+.xmasPremiumText{font-size:14px;color:#d3dfeb;line-height:1.5;margin:10px 0 15px}
+.xmasPremiumFields{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.xmasPremiumFields label{display:block;font-size:13px;font-weight:700;margin:0 0 6px}
+.xmasPremiumFields input,.xmasPremiumFile{display:block;width:100%;background:#080f17;border:1px solid #56758e;border-radius:4px;color:#f1f6fb;padding:11px;font:inherit;font-size:14px}
+.xmasPremiumFile{margin:7px 0 5px}
+.xmasPremiumChecks{display:grid;gap:11px;margin:16px 0}
+.xmasPremiumChecks label{display:flex;gap:10px;align-items:flex-start;font-size:13px;line-height:1.4;color:#d2dfeb}
+.xmasPremiumChecks input{margin-top:3px;accent-color:#d71934;flex:none}
+.xmasPremiumActions{display:flex;gap:10px;align-items:center;justify-content:space-between}
+.xmasPremiumBack{padding:10px 14px;background:#202e3c;color:#e6eff6;border:1px solid #64809a;border-radius:4px;cursor:pointer}
+.xmasPremiumSubmit{padding:13px 18px;background:#a80e27;color:white;border:1px solid #f36c7d;border-radius:4px;font-weight:900;letter-spacing:.07em;cursor:pointer}
+.xmasPremiumSubmit:disabled{opacity:.65;cursor:not-allowed}
+.xmasPremiumStatus{font-size:13px;color:#f5c9c9;min-height:20px;margin:7px 0}
+.xmasPremiumPreviewNote{font-size:12px;color:#d5b7a6;margin:8px 0 0}
+.xmasGalleryLink{display:block;text-align:center;color:#cde7ff;font-size:13px;margin:13px auto 0;cursor:pointer;border:0;background:none;text-decoration:underline}
+@media(max-width:560px){.xmasPremiumDialog{padding:26px 16px 20px}.xmasPremiumFields{grid-template-columns:1fr}.xmasPremiumProduct{max-height:110px}}
 </style>
   
 </head>
@@ -1409,6 +1510,136 @@ transform: none;
 
   </div>
 </main>
+
+
+<section class="xmasPanel" id="xmasPanel" role="region" aria-labelledby="xmasTitle">
+  <button class="xmasClose" id="xmasClose" type="button" aria-label="Close Christmas invitation">×</button>
+  <span class="newsletterRivet tl" aria-hidden="true"></span>
+  <span class="newsletterRivet tr" aria-hidden="true"></span>
+  <span class="newsletterRivet bl" aria-hidden="true"></span>
+  <span class="newsletterRivet br" aria-hidden="true"></span>
+  <h2 id="xmasTitle">READY FOR <span>GRIMSON CHRISTMAS</span>?</h2>
+  <button class="xmasEnter" id="xmasChooseOpen" type="button" aria-haspopup="dialog" aria-controls="xmasChoose">ENTER THE GIVEAWAY</button>
+  <p class="xmasNewsletterNote">Newsletter subscription is optional. No spam.</p>
+</section>
+
+
+<div class="xmasChooseBackdrop" id="xmasChooseBackdrop" hidden>
+  <section class="xmasChooseDialog" id="xmasChoose" role="dialog" aria-modal="true" aria-labelledby="xmasChooseTitle" tabindex="-1">
+    <button class="xmasChooseClose" id="xmasChooseClose" type="button" aria-label="Close selection">×</button>
+    <span class="newsletterRivet tl" aria-hidden="true"></span><span class="newsletterRivet tr" aria-hidden="true"></span>
+    <span class="newsletterRivet bl" aria-hidden="true"></span><span class="newsletterRivet br" aria-hidden="true"></span>
+    <h2 id="xmasChooseTitle">CHOOSE YOUR CHRISTMAS CHALLENGE</h2>
+    <button class="xmasChoice" id="xmasCoreOpen" type="button"><strong>3× MK-I CORE</strong><span>FREE GIVEAWAY · ENTRY DEADLINE: NOV 30, 2026</span></button>
+    <button class="xmasChoice" id="xmasPremiumOpen" type="button"><strong>MK-I PREMIUM BLOODRAIN</strong><span>PHOTO CONTEST · ENTRY DEADLINE: JAN 7, 2027</span></button>
+    <p class="xmasChooseNote">Newsletter subscription is optional. No spam.</p>
+  </section>
+</div>
+
+
+
+<div class="xmasChooseBackdrop" id="xmasCoreBackdrop" hidden>
+ <section class="xmasChooseDialog xmasPremiumDialog" id="xmasCoreDialog" role="dialog" aria-modal="true" aria-labelledby="xmasCoreTitle" tabindex="-1">
+  <button class="xmasChooseClose" id="xmasCoreClose" type="button" aria-label="Close CORE giveaway">×</button>
+  <h2 id="xmasCoreTitle">WIN 1 OF 3 GRIMSON MK-I CORE KNIVES</h2>
+  <p class="xmasPremiumSubtitle">FREE GIVEAWAY · ENTRY DEADLINE: NOV 30, 2026</p>
+  <img class="xmasPremiumProduct" src="mk1-core-1.png" alt="GRIMSON MK-I CORE" draggable="false">
+  <p class="xmasPremiumText">Three winners will be selected. One entry per person. No purchase or newsletter subscription required. You must confirm your email address to complete your entry.</p>
+  <form id="xmasCoreForm" novalidate>
+   <div class="xmasPremiumFields">
+    <div><label for="xmasCoreName">FULL NAME</label><input id="xmasCoreName" type="text" maxlength="150" autocomplete="name" required></div>
+    <div><label for="xmasCoreEmail">EMAIL ADDRESS</label><input id="xmasCoreEmail" type="email" maxlength="254" autocomplete="email" required></div>
+   </div>
+   <div class="xmasPremiumChecks">
+    <label><input id="xmasCoreAge" type="checkbox" required>I confirm that I am at least 18 years old.</label>
+    <label><input id="xmasCoreRules" type="checkbox" required>I accept the <button type="button" class="xmasTermsLink" id="xmasCoreTermsOpen">GIVEAWAY TERMS</button> and <a href="privacy.html" target="_blank" rel="noopener">Privacy Policy</a>.</label>
+    <label><input id="xmasCoreNewsletter" type="checkbox">Subscribe to GRIMSON product updates (optional; not required to enter).</label>
+   </div>
+   <div id="xmasCoreTurnstile" style="display:flex;justify-content:center;margin:14px 0;min-height:65px"></div>
+   <div class="xmasPremiumActions"><button type="button" class="xmasPremiumBack" id="xmasCoreBack">← BACK</button><button class="xmasPremiumSubmit" id="xmasCoreSubmit" type="submit">SUBMIT ENTRY</button></div>
+   <p class="xmasPremiumStatus" id="xmasCoreStatus" role="status" aria-live="polite"></p>
+   <p class="xmasPremiumPreviewNote">A confirmation email is required to complete your entry. Newsletter subscription is optional.</p>
+  </form>
+ </section>
+</div>
+
+<div class="xmasChooseBackdrop" id="xmasCoreTermsBackdrop" hidden>
+ <section class="xmasChooseDialog xmasTermsDialog" id="xmasCoreTermsDialog" role="dialog" aria-modal="true" aria-labelledby="xmasCoreTermsTitle" tabindex="-1">
+  <button type="button" class="xmasChooseClose" id="xmasCoreTermsClose" aria-label="Back to contest">×</button>
+  <h2 id="xmasCoreTermsTitle">MK-I CORE — GIVEAWAY TERMS</h2>
+  <ol class="xmasTermsList"><li><strong>Eligibility:</strong> Open to individuals aged 18 or older who are legally permitted to receive and possess the prize in their country of residence.</li>
+<li><strong>Entry period:</strong> Entries are accepted until November 30, 2026, at 23:59 Norwegian time.</li>
+<li><strong>How to enter:</strong> Complete the registration form with your full name and a valid email address, accept these terms, and confirm your email through the verification link.</li>
+<li><strong>Entry limit:</strong> One entry per person. Multiple registrations do not increase the chances of winning.</li>
+<li><strong>Prizes:</strong> Three GRIMSON MK-I CORE knives will be awarded to three separate winners. No purchase is necessary.</li>
+<li><strong>Winner selection:</strong> Winners will be selected randomly from eligible, verified entries. The planned announcement date is December 1, 2026.</li>
+<li><strong>Age and identity verification:</strong> Winners may be required to provide satisfactory proof of age and identity before receiving their prizes.</li>
+<li><strong>Prize delivery:</strong> GRIMSON will cover standard shipping costs to destinations where delivery is legally permitted and reasonably available. Prizes cannot be exchanged for cash.</li>
+<li><strong>Newsletter:</strong> Subscription is entirely optional and does not affect the chances of winning.</li>
+<li><strong>Personal data:</strong> Registration information will be processed to administer the giveaway, verify entries, contact winners and arrange delivery, as described in the GRIMSON Privacy Policy.</li>
+<li><strong>Import duties and taxes:</strong> Depending on your country of residence, you may be required to pay customs duties, import VAT, taxes or other charges when receiving your prize. These costs are the recipient&#x27;s responsibility.</li>
+<li><strong>Disqualification:</strong> GRIMSON reserves the right to reject or disqualify an entry at its discretion, without providing an individual explanation, subject to applicable law. Disqualified participants will be notified of the decision.</li></ol>
+  <p class="xmasTermsOrganizer"><strong>Organizer:</strong> GRIMSON / GWR TEAM, Norway.</p>
+  <button type="button" class="xmasPremiumBack xmasTermsBack" id="xmasCoreTermsBack">← BACK TO CORE GIVEAWAY</button>
+ </section>
+</div>
+
+<div class="xmasChooseBackdrop" id="xmasPremiumTermsBackdrop" hidden>
+ <section class="xmasChooseDialog xmasTermsDialog" id="xmasPremiumTermsDialog" role="dialog" aria-modal="true" aria-labelledby="xmasPremiumTermsTitle" tabindex="-1">
+  <button type="button" class="xmasChooseClose" id="xmasPremiumTermsClose" aria-label="Back to contest">×</button>
+  <h2 id="xmasPremiumTermsTitle">MK-I PREMIUM BLOODRAIN — PHOTO CONTEST TERMS</h2>
+  <ol class="xmasTermsList"><li><strong>Eligibility:</strong> Open to individuals aged 18 or older who are legally permitted to receive and possess the prize in their country of residence.</li>
+<li><strong>Entry deadline:</strong> January 7, 2027, at 23:59 Norwegian time.</li>
+<li><strong>Entry requirements:</strong> Submit one original photograph featuring a GRIMSON MK-I CORE knife. You do not need to appear in the photograph.</li>
+<li><strong>Submission limits:</strong> One photograph and one entry per person. JPG or PNG format only, maximum 4 MB.</li>
+<li><strong>Prize:</strong> One GRIMSON MK-I PREMIUM Bloodrain knife. Participants must have access to a GRIMSON MK-I CORE knife to photograph.</li>
+<li><strong>Winner selection:</strong> The winning photograph will be selected by GRIMSON based on photographic quality, originality, composition and presentation of the knife.</li>
+<li><strong>Photo rights:</strong> By submitting a photograph, participants grant GRIMSON / GWR TEAM a perpetual, worldwide, non-exclusive, royalty-free licence to reproduce, publish, display, edit, adapt and use the photograph for advertising, promotional and commercial purposes, including websites, social media, paid advertisements, printed materials and future marketing campaigns.</li>
+<li><strong>All submissions:</strong> The licence applies to every valid submitted photograph, whether or not it wins or appears in the public gallery. No additional payment is owed for uses covered by the licence.</li>
+<li><strong>Ownership:</strong> Participants retain copyright ownership of their photographs. GRIMSON may exercise the agreed licence without obtaining additional permission for each covered use, subject to applicable law.</li>
+<li><strong>Third-party rights:</strong> Participants confirm that they own or control the necessary rights to their photographs and have obtained any required permissions from identifiable people depicted, including for commercial and promotional use.</li>
+<li><strong>Public gallery:</strong> GRIMSON may review, approve or reject submitted photographs before publication. Publication in the gallery is not guaranteed.</li>
+<li><strong>Verification:</strong> GRIMSON may request proof of age, identity, eligibility and photograph ownership.</li>
+<li><strong>Prize delivery:</strong> GRIMSON will cover standard shipping costs to destinations where delivery is legally permitted and reasonably available. The prize cannot be exchanged for cash.</li>
+<li><strong>Photo presentation and attribution:</strong> Submitted photographs must be free of watermarks, logos, signatures and other added ownership markings. GRIMSON may, but is not required to, display the photographer&#x27;s name or chosen display name alongside a published photograph, subject to applicable law and the participant&#x27;s agreed attribution preferences.</li>
+<li><strong>Import duties and taxes:</strong> Depending on the winner&#x27;s country of residence, customs duties, import VAT, taxes or other charges may apply. These costs are the recipient&#x27;s responsibility.</li>
+<li><strong>Newsletter:</strong> Subscription is optional and does not affect contest eligibility or winner selection.</li>
+<li><strong>Disqualification:</strong> GRIMSON reserves the right to reject or disqualify submissions at its discretion, without providing an individual explanation, subject to applicable law. Disqualified participants will be notified.</li>
+<li><strong>Personal data:</strong> Personal information will be processed for contest administration, verification, communication and prize delivery, as described in the GRIMSON Privacy Policy.</li></ol>
+  <p class="xmasTermsOrganizer"><strong>Organizer:</strong> GRIMSON / GWR TEAM, Norway.</p>
+  <button type="button" class="xmasPremiumBack xmasTermsBack" id="xmasPremiumTermsBack">← BACK TO PREMIUM CONTEST</button>
+ </section>
+</div>
+
+<div class="xmasChooseBackdrop" id="xmasPremiumBackdrop" hidden>
+ <section class="xmasChooseDialog xmasPremiumDialog" id="xmasPremiumDialog" role="dialog" aria-modal="true" aria-labelledby="xmasPremiumTitle" tabindex="-1">
+  <button class="xmasChooseClose" id="xmasPremiumClose" type="button" aria-label="Close photo contest">×</button>
+  <h2 id="xmasPremiumTitle">WIN A MK-I PREMIUM BLOODRAIN</h2>
+  <p class="xmasPremiumSubtitle">PHOTO CONTEST · ENTRY DEADLINE: JAN 7, 2027</p>
+  <img class="xmasPremiumProduct" src="mk1-premium-1.png" alt="GRIMSON MK-I PREMIUM" draggable="false">
+  <p class="xmasPremiumText">Submit one photograph featuring your GRIMSON MK-I CORE. You do not need to appear in the photograph. One photograph and one entry per person. Entries are reviewed before appearing in the public gallery.</p>
+  <form id="xmasPremiumForm" novalidate>
+   <div class="xmasPremiumFields">
+    <div><label for="xmasPremiumName">FULL NAME</label><input id="xmasPremiumName" type="text" maxlength="150" autocomplete="name" required></div>
+    <div><label for="xmasPremiumEmail">EMAIL ADDRESS</label><input id="xmasPremiumEmail" type="email" maxlength="254" autocomplete="email" required></div>
+   </div>
+   <label for="xmasPremiumPhoto" style="display:block;font-size:13px;font-weight:700;margin-top:14px">UPLOAD YOUR PHOTO</label>
+   <input class="xmasPremiumFile" id="xmasPremiumPhoto" type="file" accept=".jpg,.jpeg,.png,image/jpeg,image/png" required>
+   <p class="xmasPremiumSubtitle" style="text-align:left;margin:0">JPG or PNG only · Max. 4 MB · One photo per participant</p>
+   <div class="xmasPremiumChecks">
+    <label><input id="xmasPremiumAge" type="checkbox" required>I confirm that I am at least 18 years old.</label>
+    <label><input id="xmasPremiumRules" type="checkbox" required>I accept the <button type="button" class="xmasTermsLink" id="xmasPremiumTermsOpen">PHOTO CONTEST TERMS</button> and <a href="privacy.html" target="_blank" rel="noopener">Privacy Policy</a>.</label>
+    <label><input id="xmasPremiumPublish" type="checkbox" required>I grant GRIMSON the commercial photo-use licence described in the contest terms, for all valid submissions, including non-winning photographs.</label>
+    <label><input id="xmasPremiumNewsletter" type="checkbox">Send me GRIMSON product updates (optional; not required to enter).</label>
+   </div>
+   <div id="xmasPremiumTurnstile" style="display:flex;justify-content:center;margin:14px 0;min-height:65px"></div>
+   <div class="xmasPremiumActions"><button type="button" class="xmasPremiumBack" id="xmasPremiumBack">← BACK</button><button class="xmasPremiumSubmit" id="xmasPremiumSubmit" type="submit">SUBMIT ENTRY</button></div>
+   <p class="xmasPremiumStatus" id="xmasPremiumStatus" role="status" aria-live="polite"></p>
+   <p class="xmasPremiumPreviewNote">A confirmation email is required to complete your entry. Photographs are reviewed before publication.</p>
+  </form>
+  <button class="xmasGalleryLink" id="xmasGalleryInfo" type="button">VIEW CONTEST ENTRIES (GALLERY COMING SOON)</button>
+ </section>
+</div>
 
 <div class="stealthSeoText">
   <h2>PROFESSIONAL UTILITY KNIVES BUILT FOR REAL WORK</h2>
@@ -1921,6 +2152,263 @@ document.addEventListener("keydown", function(e){
 </script>
   
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>
+
+
+<script>
+/* Preview only. Newsletter restored after both Christmas campaigns end. */
+(function () {
+  'use strict';
+  const END_UTC = Date.parse('2027-01-07T23:00:00Z');
+  const CORE_END_UTC = Date.parse('2026-11-30T23:00:00Z');
+  const panel = document.getElementById('xmasPanel');
+  function refresh() {
+    const ongoing = Date.now() <= END_UTC;
+    const coreClosed = Date.now() > CORE_END_UTC;
+    const coreButton = document.getElementById('xmasCoreOpen');
+    coreButton.disabled = coreClosed;
+    coreButton.style.opacity = coreClosed ? '.5' : '1';
+    coreButton.querySelector('span').textContent = coreClosed ? 'GIVEAWAY CLOSED · NOV 30, 2026' : 'FREE GIVEAWAY · ENTRY DEADLINE: NOV 30, 2026';
+    const visible = ongoing && sessionStorage.getItem('grimsonXmasClosed') !== 'yes';
+    document.body.classList.toggle('xmas-active', visible);
+    panel.hidden = !ongoing;
+  }
+  document.getElementById('xmasClose').addEventListener('click', function () {
+    sessionStorage.setItem('grimsonXmasClosed', 'yes');
+    refresh();
+  });
+  const chooseBackdrop = document.getElementById('xmasChooseBackdrop');
+  const chooseDialog = document.getElementById('xmasChoose');
+  const chooseOpen = document.getElementById('xmasChooseOpen');
+  const chooseClose = document.getElementById('xmasChooseClose');
+  function closeChoose() { chooseBackdrop.hidden = true; chooseOpen.focus(); }
+  chooseOpen.addEventListener('click', function () { chooseBackdrop.hidden = false; chooseDialog.focus(); });
+  chooseClose.addEventListener('click', closeChoose);
+  chooseBackdrop.addEventListener('click', function (event) { if (event.target === chooseBackdrop) closeChoose(); });
+  document.addEventListener('keydown', function (event) {
+    if (chooseBackdrop.hidden) return;
+    if (event.key === 'Escape') { closeChoose(); return; }
+    if (event.key === 'Tab') {
+      const items = [...chooseDialog.querySelectorAll('button, a[href]')];
+      const first = items[0], last = items[items.length - 1];
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+    }
+  });
+  const coreBackdrop = document.getElementById('xmasCoreBackdrop');
+  const coreDialog = document.getElementById('xmasCoreDialog');
+  const coreOpen = document.getElementById('xmasCoreOpen');
+  function closeCore() { coreBackdrop.hidden = true; chooseOpen.focus(); }
+  coreOpen.addEventListener('click', function () {
+    if (Date.now() > Date.parse('2026-11-30T23:00:00Z')) return;
+    chooseBackdrop.hidden = true; coreBackdrop.hidden = false; coreDialog.focus();
+  });
+  document.getElementById('xmasCoreClose').addEventListener('click', closeCore);
+  document.getElementById('xmasCoreBack').addEventListener('click', function () { coreBackdrop.hidden = true; chooseBackdrop.hidden = false; chooseDialog.focus(); });
+  coreBackdrop.addEventListener('click', function (e) { if (e.target === coreBackdrop) closeCore(); });
+  document.addEventListener('keydown', function (e) { if (!coreBackdrop.hidden && e.key === 'Escape') closeCore(); });
+  const coreForm = document.getElementById('xmasCoreForm');
+   const coreStatus = document.getElementById('xmasCoreStatus');
+   const coreSubmit = document.getElementById('xmasCoreSubmit');
+   let coreTurnstileId = null;
+   let coreTurnstileLoading = false;
+   function ensureCoreTurnstile() {
+     if (coreTurnstileId !== null || coreTurnstileLoading) return;
+     if (!window.turnstile) {
+       coreStatus.textContent = 'Human verification is loading. Please wait.';
+       return;
+     }
+     coreTurnstileLoading = true;
+     try {
+       coreTurnstileId = window.turnstile.render('#xmasCoreTurnstile', {
+         sitekey: NEWSLETTER_TURNSTILE_SITE_KEY,
+         theme: 'dark',
+         size: 'flexible',
+         'error-callback': function () { coreStatus.textContent = 'Human verification failed. Please retry.'; },
+         'expired-callback': function () { coreStatus.textContent = 'Human verification expired. Please verify again.'; }
+       });
+       coreStatus.textContent = '';
+     } catch (error) {
+       console.error('CORE Turnstile initialization failed:', error);
+       coreStatus.textContent = 'Human verification unavailable. Please try again later.';
+     } finally {
+       coreTurnstileLoading = false;
+     }
+   }
+   coreOpen.addEventListener('click', ensureCoreTurnstile);
+   coreForm.addEventListener('submit', async function (e) {
+     e.preventDefault();
+     if (coreSubmit.disabled) return;
+     coreStatus.textContent = '';
+     if (Date.now() >= CORE_END_UTC) {
+       coreStatus.textContent = 'Registration is closed.';
+       return;
+     }
+     const name = document.getElementById('xmasCoreName').value.trim();
+     const emailField = document.getElementById('xmasCoreEmail');
+     const email = emailField.value.trim();
+     if (!name || name.length > 150 || /[\r\n\x00-\x1f]/.test(name) || !emailField.checkValidity()) {
+       coreStatus.textContent = 'Please enter a valid name and email.';
+       return;
+     }
+     if (!document.getElementById('xmasCoreAge').checked || !document.getElementById('xmasCoreRules').checked) {
+       coreStatus.textContent = 'Please confirm your age and accept the giveaway rules.';
+       return;
+     }
+     if (coreTurnstileId === null || !window.turnstile) {
+       ensureCoreTurnstile();
+       coreStatus.textContent = 'Please complete human verification first.';
+       return;
+     }
+     const turnstileToken = window.turnstile.getResponse(coreTurnstileId);
+     if (!turnstileToken) {
+       coreStatus.textContent = 'Please complete human verification first.';
+       return;
+     }
+     coreSubmit.disabled = true;
+     coreSubmit.textContent = 'SENDING...';
+     try {
+       const response = await fetch('/.netlify/functions/christmas-core-register', {
+         method: 'POST',
+         headers: {'Content-Type': 'application/json'},
+         body: JSON.stringify({
+           name, email,
+           ageConfirmed: true,
+           termsAccepted: true,
+           newsletterConsent: document.getElementById('xmasCoreNewsletter').checked,
+           turnstileToken
+         })
+       });
+       const data = await response.json();
+       if (!response.ok || data.success !== true) {
+         throw new Error(typeof data.error === 'string' ? data.error : 'Registration unavailable. Please try again.');
+       }
+       coreForm.reset();
+       coreStatus.style.color = '#b7f4c5';
+       coreStatus.textContent = 'Request received. If eligible, a confirmation email will be sent. Check your inbox and spam folder, then confirm within 24 hours. Your entry is not complete until confirmed.';
+       coreSubmit.textContent = 'REQUEST RECEIVED';
+       return;
+     } catch (error) {
+       coreStatus.style.color = '#f5c9c9';
+       coreStatus.textContent = error.message || 'Registration unavailable. Please try again.';
+     } finally {
+       if (coreTurnstileId !== null && window.turnstile) window.turnstile.reset(coreTurnstileId);
+       if (coreSubmit.textContent !== 'REQUEST RECEIVED') {
+         coreSubmit.disabled = false;
+         coreSubmit.textContent = 'SUBMIT ENTRY';
+       }
+     }
+   });
+  const premiumBackdrop = document.getElementById('xmasPremiumBackdrop');
+  const premiumDialog = document.getElementById('xmasPremiumDialog');
+  const premiumOpen = document.getElementById('xmasPremiumOpen');
+  const premiumClose = document.getElementById('xmasPremiumClose');
+  const premiumBack = document.getElementById('xmasPremiumBack');
+  const premiumPhoto = document.getElementById('xmasPremiumPhoto');
+  const premiumStatus = document.getElementById('xmasPremiumStatus');
+  function backToChoose() { premiumBackdrop.hidden = true; chooseBackdrop.hidden = false; chooseDialog.focus(); }
+  let premiumTurnstileId = null;
+  function ensurePremiumTurnstile() {
+    if (premiumTurnstileId !== null) return;
+    if (!window.turnstile) {
+      premiumStatus.textContent = 'Human verification is loading. Please wait.';
+      return;
+    }
+    try {
+      premiumTurnstileId = window.turnstile.render('#xmasPremiumTurnstile', {
+        sitekey: NEWSLETTER_TURNSTILE_SITE_KEY,
+        theme: 'dark',
+        size: 'flexible',
+        'error-callback': function () { premiumStatus.textContent = 'Human verification failed. Please retry.'; },
+        'expired-callback': function () { premiumStatus.textContent = 'Human verification expired. Please verify again.'; }
+      });
+      if (premiumStatus.textContent === 'Human verification is loading. Please wait.') premiumStatus.textContent = '';
+    } catch (error) {
+      console.error('PREMIUM Turnstile initialization failed:', error);
+      premiumStatus.textContent = 'Human verification unavailable. Please try again later.';
+    }
+  }
+  premiumOpen.addEventListener('click', function () { chooseBackdrop.hidden = true; premiumBackdrop.hidden = false; premiumDialog.focus(); ensurePremiumTurnstile(); });
+  premiumClose.addEventListener('click', function () { premiumBackdrop.hidden = true; chooseOpen.focus(); });
+  premiumBack.addEventListener('click', backToChoose);
+  premiumBackdrop.addEventListener('click', function (e) { if (e.target === premiumBackdrop) {premiumBackdrop.hidden = true; chooseOpen.focus();} });
+  document.addEventListener('keydown', function (e) { if (!premiumBackdrop.hidden && e.key === 'Escape') {premiumBackdrop.hidden = true; chooseOpen.focus();} });
+  premiumPhoto.addEventListener('change', function () {
+    premiumStatus.textContent = '';
+    const files = premiumPhoto.files;
+    if (!files || files.length === 0) return;
+    if (files.length !== 1) {premiumStatus.textContent='Only one photograph can be selected.'; premiumPhoto.value=''; return;}
+    const f=files[0];
+    if (!['image/jpeg','image/png'].includes(f.type) || !/\.(jpe?g|png)$/i.test(f.name)) {premiumStatus.textContent='JPG or PNG files only.';premiumPhoto.value='';return;}
+    if (f.size > 4 * 1024 * 1024) {premiumStatus.textContent='Maximum file size is 4 MB.';premiumPhoto.value='';return;}
+    premiumStatus.textContent='Photo selected: ' + f.name + ' (' + (f.size / 1048576).toFixed(2) + ' MB).';
+  });
+  document.getElementById('xmasPremiumForm').addEventListener('submit', async function (e) {
+    e.preventDefault();
+    const btn = document.getElementById('xmasPremiumSubmit');
+    if (btn.disabled) return;
+    premiumStatus.style.color='#f5c9c9';
+    if (Date.now() > END_UTC) {premiumStatus.textContent='Contest is closed.';return;}
+    const f = premiumPhoto.files && premiumPhoto.files[0];
+    if (!f || premiumPhoto.files.length !== 1 || f.size < 1 || f.size > 4194304 || !['image/jpeg','image/png'].includes(f.type) || !/\.(jpe?g|png)$/i.test(f.name)) { premiumStatus.textContent='Choose one JPG/PNG photograph (maximum 4 MB).'; return; }
+    const name = document.getElementById('xmasPremiumName').value.trim();
+    const email = document.getElementById('xmasPremiumEmail').value.trim();
+    const ageConfirmed = document.getElementById('xmasPremiumAge').checked;
+    const termsAccepted = document.getElementById('xmasPremiumRules').checked;
+    const licenseAccepted = document.getElementById('xmasPremiumPublish').checked;
+    const newsletterConsent = document.getElementById('xmasPremiumNewsletter').checked;
+    if (!name || name.length > 150 || /[\x00-\x1f]/.test(name) || !document.getElementById('xmasPremiumEmail').checkValidity() || !ageConfirmed || !termsAccepted || !licenseAccepted) {premiumStatus.textContent='Complete all required fields and agreements.';return;}
+    const turnstileToken = premiumTurnstileId !== null && window.turnstile ? window.turnstile.getResponse(premiumTurnstileId) : '';
+    if (!turnstileToken) {premiumStatus.textContent='Complete human verification.';return;}
+    btn.disabled=true; btn.textContent='SUBMITTING...'; premiumStatus.textContent='Uploading photograph...';
+    try {
+      const photoBase64 = await new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(String(reader.result).split(',')[1]);reader.onerror=reject;reader.readAsDataURL(f);});
+      const response = await fetch('/.netlify/functions/christmas-premium-register', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,email,filename:f.name,mime:f.type,photoBase64,ageConfirmed,termsAccepted,licenseAccepted,newsletterConsent,turnstileToken})});
+      const result=await response.json();
+      if(!response.ok || !result.success) throw new Error(result.error || 'Submission failed.');
+      premiumStatus.style.color='#b5f3c3';premiumStatus.textContent='Request received. If eligible, check your email (including spam) and confirm within 24 hours. Entry is incomplete until confirmed.';
+      btn.textContent='REQUEST RECEIVED';
+    } catch(err) {premiumStatus.style.color='#f5c9c9';premiumStatus.textContent=err.message || 'Submission unavailable.';btn.disabled=false;btn.textContent='SUBMIT ENTRY';}
+    finally {if(premiumTurnstileId!==null && window.turnstile) window.turnstile.reset(premiumTurnstileId);}
+  });
+  document.getElementById('xmasGalleryInfo').addEventListener('click', function () {premiumStatus.textContent='Public gallery will be available after the moderation system is ready.';});
+
+  // Terms open as sibling dialogs; returning does not reset form inputs.
+  function attachTerms(kind, formBackdrop, formDialog) {
+    const termsBackdrop = document.getElementById('xmas' + kind + 'TermsBackdrop');
+    const termsDialog = document.getElementById('xmas' + kind + 'TermsDialog');
+    const openButton = document.getElementById('xmas' + kind + 'TermsOpen');
+    function goBack() {
+      termsBackdrop.hidden = true;
+      formBackdrop.hidden = false;
+      openButton.focus();
+    }
+    openButton.addEventListener('click', function () {
+      formBackdrop.hidden = true;
+      termsBackdrop.hidden = false;
+      termsDialog.focus();
+    });
+    document.getElementById('xmas' + kind + 'TermsBack').addEventListener('click', goBack);
+    document.getElementById('xmas' + kind + 'TermsClose').addEventListener('click', goBack);
+    termsBackdrop.addEventListener('click', function (e) { if (e.target === termsBackdrop) goBack(); });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && !termsBackdrop.hidden) { e.preventDefault(); goBack(); }
+      if (e.key !== 'Tab' || termsBackdrop.hidden) return;
+      const items = [...termsDialog.querySelectorAll('button, a[href]')];
+      const first = items[0], last = items[items.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    });
+  }
+  attachTerms('Core', coreBackdrop, coreDialog);
+  attachTerms('Premium', premiumBackdrop, premiumDialog);
+
+  refresh();
+  const interval = setInterval(function () {
+    refresh();
+    if (Date.now() > END_UTC) clearInterval(interval);
+  }, 30000);
+})();
+</script>
 
 </body>
 </html>
