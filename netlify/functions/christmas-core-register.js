@@ -85,6 +85,14 @@ exports.handler = async (event) => {
   }
 
   try {
+    const secret = process.env.TURNSTILE_SECRET || "";
+
+console.log("CORE secret diagnostics:", {
+  present: secret.length > 0,
+  length: secret.length,
+  hasWhitespace: secret !== secret.trim(),
+  looksLikeSiteKey: secret.startsWith("0x4")
+});
     const verification = await fetch(
       "https://challenges.cloudflare.com/turnstile/v0/siteverify",
       {
