@@ -78,7 +78,9 @@ exports.handler = async (event) => {
   }
 
   try {
-    const db = getDatabase();
+    const db = getDatabase({
+  connectionString: process.env.GRIMSON_DATABASE_URL
+});
 
     const result = await db.pool.query(
       `UPDATE christmas_premium_entries
