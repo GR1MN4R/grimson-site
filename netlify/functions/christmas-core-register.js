@@ -124,7 +124,9 @@ exports.handler = async (event) => {
       Date.now() + TOKEN_LIFETIME_MS
     );
 
-    const db = getDatabase();
+    const db = getDatabase({
+  connectionString: process.env.GRIMSON_DATABASE_URL
+});
 
     const insert = await db.pool.query(
       `INSERT INTO christmas_core_entries
