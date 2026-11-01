@@ -35,6 +35,13 @@
     .actions .undo { background:#45494d; }
     .moderationNote { color:#bbb; font-size:12px; margin-top:9px; }
 
+    .adminTabs { display:flex; flex-wrap:wrap; gap:10px; margin-bottom:18px; }
+    .adminTabs button[aria-pressed="false"] { background:#45494d; }
+    #coreSection { display:none; }
+    .coreTableWrap { overflow-x:auto; }
+    .coreTable { width:100%; border-collapse:collapse; font-size:14px; }
+    .coreTable th, .coreTable td { padding:11px 9px; text-align:left; border-bottom:1px solid #383a3d; overflow-wrap:anywhere; }
+    .coreTable th { color:#fff; }
     #photoDialog { max-width: min(95vw, 1200px); max-height: 95vh; padding: 12px; background: #151719; color: #eee; border: 1px solid #555; border-radius: 8px; }
     #photoDialog::backdrop { background: rgba(0,0,0,.9); }
     #photoDialog img { display: block; max-width: 90vw; max-height: 80vh; width: auto; height: auto; object-fit: contain; }
@@ -60,6 +67,18 @@
         <p id="loadStatus" role="status"></p>
         <div id="entries"></div>
       </div>
+      <div id="coreSection" class="box">
+        <h2>3× CORE participants</h2>
+        <p>Names, email addresses and verification status. Read-only.</p>
+        <button id="coreReloadButton" type="button">REFRESH PARTICIPANTS</button>
+        <p id="coreStatus" role="status"></p>
+        <div class="coreTableWrap">
+          <table class="coreTable">
+            <thead><tr><th>Name</th><th>Email</th><th>Verified</th><th>Registered</th></tr></thead>
+            <tbody id="coreRows"></tbody>
+          </table>
+        </div>
+      </div>
     </section>
     <p id="message" role="status"></p>
   </main>
@@ -83,6 +102,103 @@
     const photoDialog = document.getElementById("photoDialog");
     const largePhoto = document.getElementById("largePhoto");
     const photoCaption = document.getElementById("photoCaption");
+
+    const premiumSection = document.getElementById("premiumSection");
+    const coreSection = document.getElementById("coreSection");
+    const premiumTab = document.getElementById("premiumTab");
+    const coreTab = document.getElementById("coreTab");
+    const coreRows = document.getElementById("coreRows");
+    const coreStatus = document.getElementById("coreStatus");
+    const coreReloadButton = document.getElementById("coreReloadButton");
+    let coreController = null;
+    let coreRun = 0;
+    let activeTab = "premium";
+
+    function clearCore() {
+      coreRun++;
+      if (coreController) coreController.abort();
+      coreController = null;
+      coreRows.replaceChildren();
+      coreStatus.textContent = "";
+      coreReloadButton.disabled = false;
+    }
+
+    function showTab(tab) {
+      if (!isAdmin(netlifyIdentity.currentUser())) return;
+      activeTab = tab;
+      premiumSection.style.display = tab === "premium" ? "block" : "none";
+      coreSection.style.display = tab === "core" ? "block" : "none";
+      premiumTab.setAttribute("aria-pressed", String(tab === "premium"));
+      coreTab.setAttribute("aria-pressed", String(tab === "core"));
+      if (tab === "core") {
+        clearSubmissions();
+        loadCore();
+      } else {
+        clearCore();
+        loadEntries();
+      }
+    }
+
+    function appendCoreRow(item) {
+      const tr = document.createElement("tr");
+      const values = [
+        item.full_name || "",
+        item.email || "",
+        item.email_verified_at ? "Yes" : "No",
+        item.created_at ? new Date(item.created_at).toLocaleString() : "Unknown"
+      ];
+      for (const value of values) {
+        const td = document.createElement("td");
+        td.textContent = value;
+        tr.append(td);
+      }
+      coreRows.append(tr);
+    }
+
+    async function loadCore() {
+      const user = netlifyIdentity.currentUser();
+      if (!isAdmin(user) || activeTab !== "core") return;
+      clearCore();
+      const run = coreRun;
+      coreController = new AbortController();
+      const signal = coreController.signal;
+      coreReloadButton.disabled = true;
+      coreStatus.textContent = "Loading CORE participants...";
+      let count = 0;
+      let verified = 0;
+      try {
+        const jwt = await user.jwt();
+        let page = 0;
+        while (true) {
+          if (signal.aborted || run !== coreRun || !isAdmin(netlifyIdentity.currentUser())) return;
+          const response = await fetch(
+            "/.netlify/functions/christmas-admin-core-list?page=" + page,
+            { headers: { Authorization: "Bearer " + jwt }, cache: "no-store", signal }
+          );
+          const data = await response.json().catch(() => ({}));
+          if (!response.ok) throw new Error(data.error || "HTTP " + response.status);
+          if (!Array.isArray(data.entries) || typeof data.hasMore !== "boolean") {
+            throw new Error("Invalid CORE response.");
+          }
+          if (signal.aborted || run !== coreRun || !isAdmin(netlifyIdentity.currentUser())) return;
+          for (const item of data.entries) {
+            appendCoreRow(item);
+            count++;
+            if (item.email_verified_at) verified++;
+          }
+          coreStatus.textContent = count + " participant(s) loaded...";
+          if (!data.hasMore) break;
+          page++;
+        }
+        coreStatus.textContent = count + " participant(s) — " + verified + " verified, " + (count - verified) + " unverified.";
+      } catch (error) {
+        if (!signal.aborted && run === coreRun) {
+          coreStatus.textContent = "Loading stopped: " + error.message + " (" + count + " loaded).";
+        }
+      } finally {
+        if (run === coreRun) coreReloadButton.disabled = false;
+      }
+    }
 
     let generation = 0;
     let controller = null;
@@ -262,6 +378,12 @@
 
     function refresh(user) {
       clearSubmissions();
+      clearCore();
+      activeTab = "premium";
+      premiumSection.style.display = "block";
+      coreSection.style.display = "none";
+      premiumTab.setAttribute("aria-pressed", "true");
+      coreTab.setAttribute("aria-pressed", "false");
       const authorized = isAdmin(user);
       login.style.display = authorized ? "none" : "block";
       panel.style.display = authorized ? "block" : "none";
@@ -285,6 +407,9 @@
       document.getElementById("loginButton").onclick = () => netlifyIdentity.open("login");
       logout.onclick = () => netlifyIdentity.logout();
       reloadButton.onclick = loadEntries;
+      premiumTab.onclick = () => showTab("premium");
+      coreTab.onclick = () => showTab("core");
+      coreReloadButton.onclick = loadCore;
       netlifyIdentity.init();
     }
   </script>
