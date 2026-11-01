@@ -1734,7 +1734,7 @@ newsletterClose.addEventListener("click", function(){
 });
 
 
-const NEWSLETTER_TURNSTILE_SITE_KEY = "0x4AAAAAAFS6mnNdY5oTdGUf";
+const NEWSLETTER_TURNSTILE_SITE_KEY = "0x4AAAAAAFue7Q805UD3uOhI";
 
 let newsletterTurnstileWidgetId = null;
 
@@ -2220,7 +2220,7 @@ document.addEventListener("keydown", function(e){
      coreTurnstileLoading = true;
      try {
        coreTurnstileId = window.turnstile.render('#xmasCoreTurnstile', {
-         sitekey: NEWSLETTER_TURNSTILE_SITE_KEY,
+         sitekey: CHRISTMAS_TURNSTILE_SITE_KEY,
          theme: 'dark',
          size: 'flexible',
          'error-callback': function () { coreStatus.textContent = 'Human verification failed. Please retry.'; },
@@ -2315,7 +2315,7 @@ document.addEventListener("keydown", function(e){
     }
     try {
       premiumTurnstileId = window.turnstile.render('#xmasPremiumTurnstile', {
-        sitekey: NEWSLETTER_TURNSTILE_SITE_KEY,
+        sitekey: CHRISTMAS_TURNSTILE_SITE_KEY,
         theme: 'dark',
         size: 'flexible',
         'error-callback': function () { premiumStatus.textContent = 'Human verification failed. Please retry.'; },
