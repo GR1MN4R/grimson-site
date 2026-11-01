@@ -60,7 +60,11 @@
       <button id="loginButton" type="button">ADMIN LOGIN</button>
     </section>
     <section id="panel">
-      <div class="box">
+      <nav class="adminTabs" aria-label="Competition administration">
+        <button id="premiumTab" type="button" aria-pressed="true">PREMIUM SUBMISSIONS</button>
+        <button id="coreTab" type="button" aria-pressed="false">3× CORE — PARTICIPANTS</button>
+      </nav>
+      <div id="premiumSection" class="box">
         <h2>PREMIUM submissions</h2>
         <p id="account"></p>
         <button id="reloadButton" type="button">REFRESH SUBMISSIONS</button>
