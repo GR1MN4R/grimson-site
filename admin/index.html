@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,93 +7,62 @@
   <title>GRIMSON | Administration</title>
   <style>
     * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      min-height: 100vh;
-      background: #101113;
-      color: #e8e8e8;
-      font-family: Arial, sans-serif;
-      padding: 40px 20px;
-    }
+    body { margin: 0; min-height: 100vh; background: #101113; color: #e8e8e8; font-family: Arial, sans-serif; padding: 40px 20px; }
     main { max-width: 1100px; margin: auto; }
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 20px;
-      border-bottom: 1px solid #383a3d;
-      padding-bottom: 22px;
-      margin-bottom: 30px;
-    }
+    header { display: flex; justify-content: space-between; align-items: center; gap: 20px; border-bottom: 1px solid #383a3d; padding-bottom: 22px; margin-bottom: 30px; }
     h1 { margin: 0; letter-spacing: 3px; }
     h2 { margin-top: 0; }
     p { color: #aaa; line-height: 1.6; }
-    button {
-      background: #b92929;
-      border: 0;
-      padding: 12px 20px;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-      border-radius: 4px;
-    }
+    button { background: #b92929; border: 0; padding: 12px 20px; color: white; font-weight: bold; cursor: pointer; border-radius: 4px; }
     button:hover { background: #d13636; }
     button:disabled { opacity: .5; cursor: wait; }
-    .box {
-      padding: 26px;
-      background: #1b1d20;
-      border: 1px solid #383a3d;
-      border-radius: 8px;
-    }
+    .box { padding: 26px; background: #1b1d20; border: 1px solid #383a3d; border-radius: 8px; }
     #panel, #logout { display: none; }
-    #entries { display: grid; gap: 14px; }
-    .entry {
-      padding: 20px;
-      background: #151719;
-      border: 1px solid #383a3d;
-      border-radius: 6px;
-    }
+    #entries { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 14px; }
+    .entry { min-width: 0; padding: 20px; background: #151719; border: 1px solid #383a3d; border-radius: 6px; }
     .entry strong { color: #fff; }
     .entry p { margin: 7px 0; overflow-wrap: anywhere; }
-    .status {
-      display: inline-block;
-      padding: 5px 10px;
-      background: #383a3d;
-      border-radius: 4px;
-      font-size: 12px;
-    }
+    .status { display: inline-block; padding: 5px 10px; background: #383a3d; border-radius: 4px; font-size: 12px; }
+    .preview { display: flex; width: 100%; aspect-ratio: 4 / 3; padding: 0; margin: 0 0 15px; background: #0c0d0f; border: 1px solid #383a3d; border-radius: 5px; align-items: center; justify-content: center; overflow: hidden; color: #aaa; font-weight: normal; }
+    .preview:disabled { cursor: default; opacity: 1; }
+    .preview img { width: 100%; height: 100%; object-fit: contain; }
+    .preview:not(:disabled):hover { border-color: #b92929; background: #0c0d0f; }
     #message { margin-top: 20px; }
+    #photoDialog { max-width: min(95vw, 1200px); max-height: 95vh; padding: 12px; background: #151719; color: #eee; border: 1px solid #555; border-radius: 8px; }
+    #photoDialog::backdrop { background: rgba(0,0,0,.9); }
+    #photoDialog img { display: block; max-width: 90vw; max-height: 80vh; width: auto; height: auto; object-fit: contain; }
+    .dialogBar { display: flex; justify-content: space-between; align-items: center; gap: 15px; margin-bottom: 10px; }
+    #photoCaption { overflow-wrap: anywhere; }
   </style>
 </head>
 <body>
   <main>
     <header>
-      <div>
-        <h1>GRIMSON</h1>
-        <p>PRIVATE ADMINISTRATION</p>
-      </div>
-      <button id="logout">LOG OUT</button>
+      <div><h1>GRIMSON</h1><p>PRIVATE ADMINISTRATION</p></div>
+      <button id="logout" type="button">LOG OUT</button>
     </header>
-
     <section id="login" class="box">
-      <h2>Administrator login</h2>
-      <p>Authorized personnel only.</p>
-      <button id="loginButton">ADMIN LOGIN</button>
+      <h2>Administrator login</h2><p>Authorized personnel only.</p>
+      <button id="loginButton" type="button">ADMIN LOGIN</button>
     </section>
-
     <section id="panel">
       <div class="box">
         <h2>PREMIUM submissions</h2>
         <p id="account"></p>
-        <button id="reloadButton">REFRESH SUBMISSIONS</button>
+        <button id="reloadButton" type="button">REFRESH SUBMISSIONS</button>
         <p id="loadStatus" role="status"></p>
         <div id="entries"></div>
       </div>
     </section>
-
     <p id="message" role="status"></p>
   </main>
-
+  <dialog id="photoDialog" aria-label="Enlarged submission photo">
+    <div class="dialogBar">
+      <span id="photoCaption"></span>
+      <button id="closePhoto" type="button">CLOSE</button>
+    </div>
+    <img id="largePhoto" alt="Enlarged contest submission">
+  </dialog>
   <script src="https://unpkg.com/netlify-identity-widget@2.0.3/build/netlify-identity-widget.js"></script>
   <script>
     const login = document.getElementById("login");
@@ -105,6 +73,13 @@
     const entries = document.getElementById("entries");
     const loadStatus = document.getElementById("loadStatus");
     const reloadButton = document.getElementById("reloadButton");
+    const photoDialog = document.getElementById("photoDialog");
+    const largePhoto = document.getElementById("largePhoto");
+    const photoCaption = document.getElementById("photoCaption");
+
+    let generation = 0;
+    let controller = null;
+    let photoUrls = [];
 
     function isAdmin(user) {
       return user?.email?.toLowerCase() === "admin@grimson.no" &&
@@ -112,190 +87,147 @@
         user.app_metadata.roles.includes("admin");
     }
 
+    function clearSubmissions() {
+      generation++;
+      if (controller) controller.abort();
+      controller = null;
+      if (photoDialog.open) photoDialog.close();
+      largePhoto.removeAttribute("src");
+      entries.replaceChildren();
+      for (const url of photoUrls) URL.revokeObjectURL(url);
+      photoUrls = [];
+    }
+
+    function addText(parent, label, value) {
+      const p = document.createElement("p");
+      p.textContent = label + value;
+      parent.append(p);
+    }
+
+    function makeEntry(item) {
+      const card = document.createElement("article");
+      card.className = "entry";
+      const preview = document.createElement("button");
+      preview.type = "button";
+      preview.className = "preview";
+      preview.disabled = true;
+      preview.textContent = "Loading photo...";
+      preview.setAttribute("aria-label", "Preview photo for " + (item.full_name || "submission"));
+      card.append(preview);
+
+      const title = document.createElement("h3");
+      title.textContent = item.full_name || "Unnamed";
+      card.append(title);
+      addText(card, "Email: ", item.email || "");
+      addText(card, "Display name: ", item.display_name || "Not provided");
+      addText(card, "Email verified: ", item.email_verified_at ? "Yes" : "No");
+      addText(card, "Photo: ", item.photo_original_filename || "");
+      addText(card, "Submitted: ", item.created_at ? new Date(item.created_at).toLocaleString() : "Unknown");
+      const status = document.createElement("span");
+      status.className = "status";
+      status.textContent = item.moderation_status || "Unknown status";
+      card.append(status);
+      return { card, preview, item };
+    }
+
+    async function loadPhoto(entry, jwt, signal, run) {
+      const { preview, item } = entry;
+      try {
+        const response = await fetch(
+          "/.netlify/functions/christmas-admin-photo?id=" + encodeURIComponent(String(item.id)),
+          { headers: { Authorization: "Bearer " + jwt }, cache: "no-store", signal }
+        );
+        if (!response.ok) {
+          const errorData = await response.json().catch(() => ({}));
+          throw new Error(errorData.error || "HTTP " + response.status);
+        }
+        const blob = await response.blob();
+        if (signal.aborted || run !== generation || !isAdmin(netlifyIdentity.currentUser())) return;
+        if (!["image/jpeg", "image/png"].includes(blob.type)) throw new Error("Invalid image response.");
+        const url = URL.createObjectURL(blob);
+        photoUrls.push(url);
+        const img = document.createElement("img");
+        img.src = url;
+        img.alt = "Submitted photograph";
+        preview.replaceChildren(img);
+        preview.disabled = false;
+        preview.onclick = () => {
+          if (!isAdmin(netlifyIdentity.currentUser())) return;
+          largePhoto.src = url;
+          photoCaption.textContent = (item.full_name || "Submission") + " — " + (item.photo_original_filename || "Photo");
+          photoDialog.showModal();
+        };
+      } catch (error) {
+        if (signal.aborted || run !== generation) return;
+        preview.textContent = "Photo unavailable: " + error.message;
+        preview.disabled = true;
+      }
+    }
+
     async function loadEntries() {
       const user = netlifyIdentity.currentUser();
-
       if (!isAdmin(user)) return;
-
-      entries.replaceChildren();
+      clearSubmissions();
+      const run = generation;
+      controller = new AbortController();
+      const signal = controller.signal;
       loadStatus.textContent = "Loading submissions...";
       reloadButton.disabled = true;
-
       try {
-        const token = await user.jwt();
-
-        const response = await fetch(
-          "/.netlify/functions/christmas-admin-list",
-          {
-            headers: {
-              "Authorization": "Bearer " + token
-            },
-            cache: "no-store"
-          }
-        );
-
+        const jwt = await user.jwt();
+        if (signal.aborted || run !== generation) return;
+        const response = await fetch("/.netlify/functions/christmas-admin-list", {
+          headers: { Authorization: "Bearer " + jwt },
+          cache: "no-store", signal
+        });
         const data = await response.json();
-
-        if (!response.ok) {
-          throw new Error(data.error || "Request failed.");
-        }
-
-        if (!isAdmin(netlifyIdentity.currentUser())) return;
-
-        const submissions = data.entries || [];
-
-        loadStatus.textContent =
-          submissions.length + " submission(s) found.";
-
-        for (const item of submissions) {
-          const card = document.createElement("article");
-          card.className = "entry";
-
-          const title = document.createElement("h3");
-          title.textContent = item.full_name || "Unnamed";
-
-          const email = document.createElement("p");
-          email.textContent = "Email: " + (item.email || "");
-
-          const display = document.createElement("p");
-          display.textContent =
-            "Display name: " + (item.display_name || "Not provided");
-
-          const verified = document.createElement("p");
-          verified.textContent =
-            "Email verified: " +
-            (item.email_verified_at ? "Yes" : "No");
-
-          const filename = document.createElement("p");
-          filename.textContent =
-            "Photo: " + (item.photo_original_filename || "");
-
-          const date = document.createElement("p");
-          date.textContent =
-            "Submitted: " +
-            (item.created_at
-              ? new Date(item.created_at).toLocaleString()
-              : "Unknown");
-
-          const status = document.createElement("span");
-          status.className = "status";
-          status.textContent =
-            item.moderation_status || "Unknown status";
-
-          card.append(
-            title, email, display, verified, filename, date, status
-          );
-
-          const photoButton = document.createElement("button");
-          photoButton.type = "button";
-          photoButton.textContent = "VIEW PHOTO";
-
-          photoButton.onclick = async () => {
-            photoButton.disabled = true;
-            photoButton.textContent = "LOADING...";
-
-            try {
-              const currentUser = netlifyIdentity.currentUser();
-
-              if (!isAdmin(currentUser)) {
-                throw new Error("Administrator login required.");
-              }
-
-              const photoToken = await currentUser.jwt();
-
-              const photoResponse = await fetch(
-                "/.netlify/functions/christmas-admin-photo?id=" +
-                  encodeURIComponent(item.id),
-                {
-                  headers: {
-                    Authorization: "Bearer " + photoToken
-                  },
-                  cache: "no-store"
-                }
-              );
-
-              if (!photoResponse.ok) {
-                throw new Error(
-                  "Photo request failed: HTTP " + photoResponse.status
-                );
-              }
-
-              const photoBlob = await photoResponse.blob();
-              const photoUrl = URL.createObjectURL(photoBlob);
-
-              const photoWindow = window.open("", "_blank");
-
-              if (!photoWindow) {
-                URL.revokeObjectURL(photoUrl);
-                throw new Error("Browser blocked the photo window.");
-              }
-
-              const image = photoWindow.document.createElement("img");
-              image.src = photoUrl;
-              image.style.maxWidth = "100%";
-              image.style.height = "auto";
-
-              photoWindow.document.body.append(image);
-
-              photoWindow.addEventListener(
-                "pagehide",
-                () => URL.revokeObjectURL(photoUrl),
-                { once: true }
-              );
-            } catch (error) {
-              alert(error.message);
-            } finally {
-              photoButton.disabled = false;
-              photoButton.textContent = "VIEW PHOTO";
-            }
-          };
-
-          card.append(photoButton);
-
-          entries.append(card);
-        }
+        if (!response.ok) throw new Error(data.error || "Request failed.");
+        if (!Array.isArray(data.entries)) throw new Error("Invalid submissions response.");
+        if (signal.aborted || run !== generation || !isAdmin(netlifyIdentity.currentUser())) return;
+        const cards = data.entries.map(makeEntry);
+        entries.replaceChildren(...cards.map(e => e.card));
+        loadStatus.textContent = cards.length + " submission(s) found.";
+        // Limit simultaneous private-photo requests to four.
+        let next = 0;
+        const workers = Array.from({ length: Math.min(4, cards.length) }, async () => {
+          while (!signal.aborted && run === generation && next < cards.length) {
+            const entry = cards[next++];
+            await loadPhoto(entry, jwt, signal, run);
+          }
+        });
+        await Promise.all(workers);
       } catch (error) {
-        loadStatus.textContent = error.message;
+        if (!signal.aborted && run === generation) loadStatus.textContent = error.message;
       } finally {
-        reloadButton.disabled = false;
+        if (run === generation) reloadButton.disabled = false;
       }
     }
 
     function refresh(user) {
+      clearSubmissions();
       const authorized = isAdmin(user);
-
       login.style.display = authorized ? "none" : "block";
       panel.style.display = authorized ? "block" : "none";
       logout.style.display = user ? "inline-block" : "none";
-
       account.textContent = authorized ? user.email : "";
-      entries.replaceChildren();
-
-      message.textContent = !user
-        ? "Please sign in."
-        : authorized
-          ? "Administrator authenticated."
-          : "This account does not have administrator access.";
-
+      loadStatus.textContent = "";
+      message.textContent = !user ? "Please sign in." : authorized
+        ? "Administrator authenticated." : "This account does not have administrator access.";
       if (authorized) loadEntries();
     }
+
+    document.getElementById("closePhoto").onclick = () => photoDialog.close();
+    photoDialog.addEventListener("close", () => largePhoto.removeAttribute("src"));
 
     if (typeof netlifyIdentity === "undefined") {
       message.textContent = "Identity service could not be loaded.";
     } else {
       netlifyIdentity.on("init", refresh);
-      netlifyIdentity.on("login", user => {
-        refresh(user);
-        netlifyIdentity.close();
-      });
+      netlifyIdentity.on("login", user => { refresh(user); netlifyIdentity.close(); });
       netlifyIdentity.on("logout", () => refresh(null));
-
-      document.getElementById("loginButton").onclick =
-        () => netlifyIdentity.open("login");
-
+      document.getElementById("loginButton").onclick = () => netlifyIdentity.open("login");
       logout.onclick = () => netlifyIdentity.logout();
       reloadButton.onclick = loadEntries;
-
       netlifyIdentity.init();
     }
   </script>
