@@ -38,7 +38,7 @@ exports.handler = async (event, context) => {
   connectionString: process.env.GRIMSON_DATABASE_URL
 });
 
-    const result = await db.sql`
+    const result = await db.pool.query(`
       SELECT
         id,
         full_name,
@@ -53,7 +53,7 @@ exports.handler = async (event, context) => {
       FROM christmas_premium_entries
       ORDER BY created_at DESC
       LIMIT 100
-    `;
+    `);
 
     return reply(200, {
       entries: result.rows
