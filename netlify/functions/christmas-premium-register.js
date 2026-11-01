@@ -86,7 +86,7 @@ connectLambda(event);
       !data.turnstileToken)
     return reply(400, { error: "Human verification required." });
 
-  if (!process.env.TURNSTILE_SECRET ||
+  if (!process.env.CHRISTMAS_TURNSTILE_SECRET ||
       !process.env.PROTON_SMTP_USER ||
       !process.env.PROTON_SMTP_TOKEN)
     return reply(503, { error: "Contest configuration unavailable." });
@@ -102,7 +102,7 @@ connectLambda(event);
           "Content-Type": "application/x-www-form-urlencoded"
         },
         body: new URLSearchParams({
-          secret: process.env.TURNSTILE_SECRET,
+          secret: process.env.CHRISTMAS_TURNSTILE_SECRET,
           response: data.turnstileToken,
           remoteip: event.headers?.["x-nf-client-connection-ip"] || ""
         }),
