@@ -28,6 +28,13 @@
     .preview img { width: 100%; height: 100%; object-fit: contain; }
     .preview:not(:disabled):hover { border-color: #b92929; background: #0c0d0f; }
     #message { margin-top: 20px; }
+    .actions { display:flex; flex-wrap:wrap; gap:7px; margin-top:14px; }
+    .actions button { padding:9px 12px; font-size:12px; }
+    .actions .reject { background:#775d2d; }
+    .actions .ban { background:#821f1f; }
+    .actions .undo { background:#45494d; }
+    .moderationNote { color:#bbb; font-size:12px; margin-top:9px; }
+
     #photoDialog { max-width: min(95vw, 1200px); max-height: 95vh; padding: 12px; background: #151719; color: #eee; border: 1px solid #555; border-radius: 8px; }
     #photoDialog::backdrop { background: rgba(0,0,0,.9); }
     #photoDialog img { display: block; max-width: 90vw; max-height: 80vh; width: auto; height: auto; object-fit: contain; }
@@ -127,7 +134,57 @@
       status.className = "status";
       status.textContent = item.moderation_status || "Unknown status";
       card.append(status);
+      const actions = document.createElement("div");
+      actions.className = "actions";
+      for (const [action, label, css] of [["approve","APPROVE",""],["reject","REJECT","reject"],["ban","BAN","ban"],["undo","UNDO","undo"]]) {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = css;
+        button.textContent = label;
+        button.disabled = !item.email_verified_at || (action === "approve" && item.moderation_status === "approved") || (action === "reject" && item.moderation_status === "rejected") || (action === "ban" && item.moderation_status === "banned");
+        button.onclick = () => moderate(item, action, actions);
+        actions.append(button);
+      }
+      card.append(actions);
+      const note = document.createElement("p");
+      note.className = "moderationNote";
+      note.textContent = "Moderation decisions send an automatic email.";
+      card.append(note);
       return { card, preview, item };
+    }
+
+    let moderationBusy = false;
+    async function moderate(item, action, actions) {
+      if (moderationBusy || !isAdmin(netlifyIdentity.currentUser())) return;
+      let reason = "";
+      if (action === "reject" || action === "ban") {
+        const entered = window.prompt("Reason for " + action.toUpperCase() + " (required; will be included in the email):");
+        if (entered === null) return;
+        reason = entered.trim();
+        if (!reason || reason.length > 1000) { alert("Enter a reason of 1–1000 characters."); return; }
+      }
+      const verb = { approve:"APPROVE", reject:"REJECT", ban:"BAN", undo:"UNDO" }[action];
+      if (!window.confirm(verb + " submission for " + (item.full_name || item.email) + "?\nAn automatic email will be sent after saving the decision.")) return;
+      moderationBusy = true;
+      actions.querySelectorAll("button").forEach(b => b.disabled = true);
+      loadStatus.textContent = "Saving moderation decision...";
+      try {
+        const jwt = await netlifyIdentity.currentUser().jwt();
+        const response = await fetch("/.netlify/functions/christmas-admin-moderate", {
+          method: "POST",
+          headers: { "Authorization": "Bearer " + jwt, "Content-Type": "application/json" },
+          cache: "no-store",
+          body: JSON.stringify({ id: String(item.id), action, reason, requestId: crypto.randomUUID() })
+        });
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok || !data.success) throw new Error(data.error || "Moderation failed (HTTP " + response.status + ").");
+        if (data.warning) alert(data.warning);
+        else alert("Status: " + data.status + ". Notification: " + data.notification + ".");
+        await loadEntries();
+      } catch (error) {
+        alert(error.message + "\nIf the request timed out, refresh the page to check the saved status before trying again.");
+        await loadEntries();
+      } finally { moderationBusy = false; }
     }
 
     async function loadPhoto(entry, jwt, signal, run) {
